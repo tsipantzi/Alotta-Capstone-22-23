@@ -1,0 +1,45 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.4' apply(false)
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+	id "ru.vyarus.quality" version "4.8.0"
+}
+
+group = 'liberty.capstone'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configure(subprojects.findAll{!it.name.endsWith("-client")}) {
+	project.version = project.rootProject.version
+	project.group = project.rootProject.group
+
+	repositories {
+		mavenCentral()
+	}
+
+	apply plugin: 'java'
+	apply plugin: 'ru.vyarus.quality'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	apply from: "../gradle/plugins/quality-check.gradle"
+	apply from: "../gradle/plugins/junit-test-config.gradle"
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testCompileOnly 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.projectlombok:lombok'
+	}
+
+}

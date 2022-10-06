@@ -1,4 +1,4 @@
-package liberty.capstone.demo;
+package liberty.capstone;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "checkstyle:FinalClass",
         "checkstyle:HideUtilityClassConstructor",
         "PMD.UseUtilityClass"})
-public class DemoApplication {
+public class ProcessApplication {
     public static void main(final String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(ProcessApplication.class, args);
     }
 }

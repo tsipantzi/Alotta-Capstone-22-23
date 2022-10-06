@@ -21,11 +21,24 @@ configure(subprojects.findAll{!it.name.endsWith("-client")}) {
 	apply plugin: 'ru.vyarus.quality'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
+	bootJar.enabled = false
 
 	configurations {
 		compileOnly {
 			extendsFrom annotationProcessor
 		}
+	}
+
+	jar {
+		enabled = true
+	}
+
+	bootRun {
+		enabled = false
+	}
+
+	bootBuildImage {
+		enabled = false
 	}
 
 	apply from: "../gradle/plugins/quality-check.gradle"
@@ -42,4 +55,9 @@ configure(subprojects.findAll{!it.name.endsWith("-client")}) {
 		testAnnotationProcessor 'org.projectlombok:lombok'
 	}
 
+}
+
+dependencies {
+	implementation project(":alotta-database")
+	implementation project(":alotta-process")
 }

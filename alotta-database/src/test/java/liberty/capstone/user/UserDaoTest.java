@@ -11,12 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Sql(scripts = "/user-setup.sql")
 class UserDaoTest {
     @Autowired
-    private UserDao UserDao;
+    private UserDao userDao;
 
     @Test
     void saveUser() {
-        final UserEntity entity = new UserEntity();
+        final User entity = new User();
         entity.setUsername("TestName");
+        entity.setPassword("password");
+        entity.setAccountType("Business");
+        entity.setFirstName("Dean");
+        entity.setLastName("Natale");
+        entity.setEmail("danatale@liberty.edu");
+        entity.setPhoneNumber("5404218636");
+        entity.setZipcode("24515");
         userDao.save(entity);
 
         assertTrue(userDao.findById(entity.getId()).isPresent());

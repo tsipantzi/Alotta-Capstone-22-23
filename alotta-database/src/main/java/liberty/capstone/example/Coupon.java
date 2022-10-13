@@ -6,17 +6,17 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "example")
+@Table(name = "coupon")
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long CouponId;
     private String CouponType;
-    private float PercentageOff;
-    private float DollarsOff;
+    private Long PercentageOff;
+    private Long DollarsOff;
     private String CouponInfo;
     private String FoodCategories;
-    private int NumberOfCouponsPerCustomer;
-    private int TotalNumberOfCoupons;
-    private int NumberOfCouponsSold;
+    private Long NumberOfCouponsPerCustomer;
+    private Long TotalNumberOfCoupons;
+    private Long NumberOfCouponsSold;
 }

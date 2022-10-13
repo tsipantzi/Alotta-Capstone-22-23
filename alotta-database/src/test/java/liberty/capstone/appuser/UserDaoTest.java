@@ -1,4 +1,4 @@
-package liberty.capstone.user;
+package liberty.capstone.appuser;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ class UserDaoTest {
 
     @Test
     void saveUser() {
-        final User entity = new User();
+        final AppUser entity = new AppUser();
         entity.setUsername("TestName");
         entity.setPassword("password");
         entity.setAccountType("Business");

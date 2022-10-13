@@ -1,4 +1,4 @@
-package liberty.capstone.user;
+package liberty.capstone.appuser;
 
 import lombok.Data;
 
@@ -6,8 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "user")
-public class User {
+@Table(name = "appuser")
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

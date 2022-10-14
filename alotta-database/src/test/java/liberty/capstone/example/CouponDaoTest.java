@@ -27,7 +27,7 @@ class CouponTest {
     
         couponDao.save(entity);
 
-        assertTrue(CouponDao.findById(entity.getId()).isPresent());
+        assertTrue(couponDao.findById(entity.getId()).isPresent());
     }
 
 }

@@ -15,7 +15,7 @@ public final class CouponServices implements Service {
     }
 
     @Override
-    public List<Coupon> findExamplesByType(final String name) {
+    public List<Coupon> findCouponsByCouponType(final String CouponType) {
         return couponDao.findAll()
                 .stream()
                 .peek(entity -> log.info("Found entity in database : {}", entity))
@@ -24,15 +24,15 @@ public final class CouponServices implements Service {
     }
 
     @Override
-    public Coupon save(final String type) {
+    public Coupon save(final String CouponType) {
         final var newEntity = new Coupon();
-        newEntity.setCouponType(type);
+        newEntity.setCouponType(CouponType);
         return toExampleObject(couponDao.save(newEntity));
     }
 
     private Coupon toExampleObject(final Coupon entity) {
         final var newExampleObject = new Coupon();
-        newExampleObject.setName(entity.getName());
+        newExampleObject.setCouponType(entity.getCouponType());
         return newExampleObject;
     }
 }

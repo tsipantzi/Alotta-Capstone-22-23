@@ -1,8 +1,0 @@
-test {
-    systemProperty 'de.adesso.junitinsights.enabled', 'true'
-    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
-    useJUnitPlatform()
-    testLogging {
-        events 'failed', 'passed', 'skipped'
-    }
-}

@@ -1,7 +1,0 @@
-quality {
-    lintOptions = ['deprecation']
-    checkstyle = true
-    pmd = true
-    strict = true
-    configDir = './gradle/quality-configs/'
-}

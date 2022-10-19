@@ -1,0 +1,11 @@
+bootJar.enabled = true
+bootRun.enabled = true
+
+bootBuildImage {
+    enabled = true
+}
+
+dependencies {
+    implementation project(":alotta-core")
+    implementation project(":alotta-database")
+}

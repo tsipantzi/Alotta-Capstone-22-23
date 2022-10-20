@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Sql(scripts = "/restaurant-setup.sql")
-class RestaurantDaoTest {
+class RestaurantEntityDaoTest {
     @Autowired
-    private RestaurantDao restaurantDao;
+    private RestaurantEntityDao restaurantDao;
 
     @Test
     void saveAndFindByName() {

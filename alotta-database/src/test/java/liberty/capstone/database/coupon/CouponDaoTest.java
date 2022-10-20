@@ -1,7 +1,6 @@
 package liberty.capstone.database.coupon;
 
-import liberty.capstone.database.coupon.Coupon;
-import liberty.capstone.database.coupon.CouponDao;
+import liberty.capstone.database.coupon.CouponEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @Sql(scripts = "/coupon-setup.sql")
-class CouponTest {
+class CouponDaoTest {
     @Autowired
-    private CouponDao couponDao;
+    private CouponEntityDao couponDao;
 
     @Test
     void saveExample() {
-        final Coupon entity = new Coupon();
+        final CouponEntity entity = new CouponEntity();
         entity.setCouponType("This is a test of the Type field");
         entity.setPercentageOff((long) 74);
         entity.setDollarsOff((long)10.25);

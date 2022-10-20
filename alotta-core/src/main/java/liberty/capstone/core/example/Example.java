@@ -1,4 +1,4 @@
-package liberty.capstone.example;
+package liberty.capstone.core.example;
 
 import lombok.Data;
 

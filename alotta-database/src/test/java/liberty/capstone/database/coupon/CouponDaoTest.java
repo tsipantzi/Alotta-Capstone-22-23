@@ -1,5 +1,7 @@
-package liberty.capstone.example;
+package liberty.capstone.database.coupon;
 
+import liberty.capstone.database.coupon.Coupon;
+import liberty.capstone.database.coupon.CouponDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -8,7 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@Sql(scripts = "/coupon.sql")
+@Sql(scripts = "/coupon-setup.sql")
 class CouponTest {
     @Autowired
     private CouponDao couponDao;

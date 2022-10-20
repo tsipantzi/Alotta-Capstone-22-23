@@ -1,4 +1,4 @@
-package liberty.capstone.example;
+package liberty.capstone.database.example;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

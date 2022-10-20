@@ -1,4 +1,4 @@
-package liberty.capstone.appuser;
+package liberty.capstone.database.appuser;
 
 import lombok.Data;
 

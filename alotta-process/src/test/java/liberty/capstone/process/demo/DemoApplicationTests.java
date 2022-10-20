@@ -1,4 +1,4 @@
-package liberty.capstone.demo;
+package liberty.capstone.process.demo;
 
 
 import lombok.extern.slf4j.Slf4j;

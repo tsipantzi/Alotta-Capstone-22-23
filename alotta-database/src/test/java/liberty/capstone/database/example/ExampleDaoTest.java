@@ -1,4 +1,4 @@
-package liberty.capstone.example;
+package liberty.capstone.database.example;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

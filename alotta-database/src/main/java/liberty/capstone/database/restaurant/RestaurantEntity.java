@@ -1,4 +1,4 @@
-package liberty.capstone.restaurant;
+package liberty.capstone.database.restaurant;
 
 import lombok.Data;
 

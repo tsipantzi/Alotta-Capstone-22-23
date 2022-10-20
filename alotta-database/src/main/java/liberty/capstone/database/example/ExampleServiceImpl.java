@@ -1,5 +1,7 @@
-package liberty.capstone.example;
+package liberty.capstone.database.example;
 
+import liberty.capstone.core.example.Example;
+import liberty.capstone.core.example.ExampleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

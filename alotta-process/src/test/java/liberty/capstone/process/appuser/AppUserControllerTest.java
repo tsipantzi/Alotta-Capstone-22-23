@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.process.appuser.AppUserController;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -16,7 +17,17 @@ class ExampleControllerTest {
 
     @Test
     void appUserControllerCanSave() {
-        final var result = appUserController.saveAppUser("test");
+        AppUser user;
+        user.setUsername("test");
+        user.setPassword("password");
+        user.setAccountType("Consumer");
+        user.setFirstName("Dean");
+        user.setLastName("Natale");
+        user.setEmail("danatale@liberty.edu");
+        user.setPhoneNumber("5404218636");
+        user.setZipcode("24515");
+
+        final var result = appUserController.saveAppUser(user);
         assertEquals("test", result.getUsername());
     }
 

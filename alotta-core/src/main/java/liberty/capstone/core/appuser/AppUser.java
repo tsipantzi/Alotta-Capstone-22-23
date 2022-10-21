@@ -1,16 +1,9 @@
-package liberty.capstone.database.appuser;
+package liberty.capstone.core.appuser;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
-@Entity
 @Data
-@Table(name = "appuser")
 public class AppUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String username;
     private String password;
     private String accountType;

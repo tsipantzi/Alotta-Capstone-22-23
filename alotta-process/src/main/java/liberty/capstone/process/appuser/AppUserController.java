@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/rest/appuser")
+@RequestMapping("/appuser")
 public class AppUserController {
     private final AppUserService appUserService;
 

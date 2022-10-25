@@ -7,6 +7,7 @@ import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.appuser.AppUserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,9 +22,8 @@ public final class AppUserServiceImpl implements AppUserService {
     public List<AppUser> findExamplesByName(final String name) {
         return userDao.findAllByUsername(name)
                 .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
                 .map(this::toUserObject)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -35,12 +35,26 @@ public final class AppUserServiceImpl implements AppUserService {
     private AppUser toUserObject(final AppUserEntity entity) {
         final var newUserObject = new AppUser();
         newUserObject.setUsername(entity.getUsername());
+        newUserObject.setPassword(entity.getPassword());
+        newUserObject.setAccountType(entity.getAccountType());
+        newUserObject.setFirstName(entity.getFirstName());
+        newUserObject.setLastName(entity.getLastName());
+        newUserObject.setEmail(entity.getEmail());
+        newUserObject.setPhoneNumber(entity.getPhoneNumber());
+        newUserObject.setZipcode(entity.getZipcode());
         return newUserObject;
     }
 
     private AppUserEntity toUserEntity(final AppUser user) {
         final var newUserEntity = new AppUserEntity();
         newUserEntity.setUsername(user.getUsername());
+        newUserEntity.setPassword(user.getPassword());
+        newUserEntity.setAccountType(user.getAccountType());
+        newUserEntity.setFirstName(user.getFirstName());
+        newUserEntity.setLastName(user.getLastName());
+        newUserEntity.setEmail(user.getEmail());
+        newUserEntity.setPhoneNumber(user.getPhoneNumber());
+        newUserEntity.setZipcode(user.getZipcode());
         return newUserEntity;
     }
 }

@@ -5,19 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import liberty.capstone.core.appuser.AppUser;
-import liberty.capstone.process.appuser.AppUserController;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class ExampleControllerTest {
+class AppUserControllerTest {
     @Autowired
     private AppUserController appUserController;
 
     @Test
     void appUserControllerCanSave() {
-        AppUser user;
+        final var user = new AppUser();
         user.setUsername("test");
         user.setPassword("password");
         user.setAccountType("Consumer");
@@ -28,20 +26,16 @@ class ExampleControllerTest {
         user.setZipcode("24515");
 
         final var result = appUserController.saveAppUser(user);
-        assertEquals("test", result.getUsername());
-    }
-
-    @Test
-    void appUserControllerFindAllRecordsAfterSave() {
-        appUserController.saveAppUser("test");
-        appUserController.saveAppUser("test");
-
-        final var result = appUserController.getExamplesByName("test");
-
         assertAll(() -> {
-            assertEquals(2, result.size());
-            assertEquals("test", result.get(0).getUsername());
-            assertEquals("test", result.get(1).getUsername());
+            assertEquals(user.getUsername(), result.getUsername());
+            assertEquals(user.getPassword(), result.getPassword());
+            assertEquals(user.getAccountType(), result.getAccountType());
+            assertEquals(user.getFirstName(), result.getFirstName());
+            assertEquals(user.getLastName(), result.getLastName());
+            assertEquals(user.getEmail(), result.getEmail());
+            assertEquals(user.getPhoneNumber(), result.getPhoneNumber());
+            assertEquals(user.getZipcode(), result.getZipcode());
         });
     }
+
 }

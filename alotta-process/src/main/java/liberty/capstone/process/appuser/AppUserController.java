@@ -2,6 +2,7 @@ package liberty.capstone.process.appuser;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.bind.annotation.*;
 
 import liberty.capstone.core.appuser.AppUser;

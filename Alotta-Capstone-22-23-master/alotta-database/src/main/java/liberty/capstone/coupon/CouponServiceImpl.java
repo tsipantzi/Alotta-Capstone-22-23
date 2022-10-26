@@ -1,159 +1,56 @@
-package liberty.capstone.example;
+package liberty.capstone.database.coupon;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import liberty.capstone.example.CouponDao;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-public final class CouponServicesImpl implements CouponServices {
+@RequiredArgsConstructor
+public class CouponServiceImpl implements CouponService {
     private final CouponDao couponDao;
-
-    public CouponServicesImpl(final CouponDa0 couponDao) {
-        this.couponDao = couponDao;
-    }    
-
     @Override
-    public List<Example> findExamplesByName(final String name) {
-        return exampleDao.findAllByName(name)
+    public List<Coupon> findCouponByType(final String type) {
+        return couponDao.findAllByType(type)
                 .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toExampleObject)
-                .toList();
-    }
-
-    @Override
-    public List<Coupon> findCouponsByCouponType(final String couponType) {
-        return couponDao.findAllByCouponType(couponType)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
                 .map(this::toCouponObject)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Coupon> findCouponsByPercentageOff(final Long percentageOff) {
-        return couponDao.findCouponsByPercentageOff(percentageOff)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
+    public Coupon saveCoupon(final Coupon coupon) {
+        final var entityToSave = toCouponEntity(coupon);
+        return toCouponObject(couponDao.save(entityToSave));
     }
 
-    @Override
-    public List<Coupon> findCouponsByDollarsOff(final Long dollarsOff) {
-        return couponDao.findCouponsByDollarsOff(dollarsOff)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
+    private Coupon toCouponObject(final CouponEntity entity) {
+        final var coupon = new Coupon();
+        coupon.setId(entity.getId());
+        coupon.setType(entity.getCouponType());
+        coupon.setPercentageOff(entity.getPercentageOff());
+        coupon.setDollarsOff(entity.getDollarsOff());
+        coupon.setCouponInfo(entity.getCouponInfo());
+        coupon.setFoodCategories(entity.getFoodCategories());
+        coupon.setNumberOfCouponsPerCustomer(entity.getNumberOfCouponsPerCustomer());
+        coupon.setTotalNumberOfCoupons(entity.getTotalNumberOfCoupons());
+        coupon.setNumberOfCouponsSold(entity.getNumberOfCouponsSold());
+        return coupon;
     }
 
-    @Override
-    public List<Coupon> findCouponsByCouponInfo(final String couponInfo) {
-        return couponDao.findCouponsByCouponInfo(couponInfo)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
-    }
-
-    @Override
-    public List<Coupon> findCouponsByFoodCategories(final String foodCategories) {
-        return couponDao.findCouponsByFoodCategories(foodCategories)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
-    }
-
-    @Override
-    public List<Coupon> findCouponsByNumberOfCouponsPerCustome(final Long numberOfCouponsPerCustomer) {
-        return couponDao.findCouponsByNumberOfCouponsPerCustome(numberOfCouponsPerCustomer)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
-    }
-
-    @Override
-    public List<Coupon> findCouponsByTotalNumberOfCoupons(final Long totalNumberOfCoupons) {
-        return couponDao.findCouponsByTotalNumberOfCoupons(totalNumberOfCoupons)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
-    }
-
-    @Override
-    public List<Coupon> findCouponsByNumberOfCouponsSold(final Long numberOfCouponsSold) {
-        return couponDao.findCouponsByNumberOfCouponsSold(numberOfCouponsSold)
-                .stream()
-                .peek(entity -> log.info("Found entity in database : {}", entity))
-                .map(this::toCouponObject)
-                .toList();
-    }
-
-    @Override
-    public Example save(final String name) {
-        final var newEntity = new ExampleEntity();
-        newEntity.setName(name);
-        return toExampleObject(exampleDao.save(newEntity));
-    }
-
-    @Override
-    public Coupon save(final String couponType) {
-        final var newCoupon = new Coupon();
-        newCoupon.setCouponType(couponType);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final Long percentageOff) {
-        final var newCoupon = new Coupon();
-        newCoupon.setCouponPercentageOff(percentageOff);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final Long dollarsOff) {
-        final var newCoupon = new Coupon();
-        newCoupon.setCouponDollarsOff(dollarsOff);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final String couponInfo) {
-        final var newCoupon = new Coupon();
-        newCoupon.setInfo(couponInfo);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final String foodCategories) {
-        final var newCoupon = new Coupon();
-        newCoupon.setCouponFoodCategories(foodCategories);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final Long numberOfCouponsPerCustomer) {
-        final var newCoupon = new Coupon();
-        newCoupon.setNumberOfCouponsPerCustomer(numberOfCouponsPerCustomer);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    @Override
-    public Coupon save(final Long numberOfCouponsSold) {
-        final var newCoupon = new Coupon();
-        newCoupon.setNumberOfCouponsSold(numberOfCouponsSold);
-        return toCouponObject(couponDao.save(newCoupon));
-    }
-
-    private Example toExampleObject(final ExampleEntity entity) {
-        final var newExampleObject = new Example();
-        newExampleObject.setName(entity.getName());
-        return newExampleObject;
+    private couponEntity tocouponEntity(final liberty.capstone.example.Coupon object) {
+        final var entity = new couponEntity();
+        entity.setId(object.getIf());
+        entity.setType(object.getCouponType());
+        entity.setPercentageOff(object.getPercentageOff());
+        entity.setDollarsOff(object.getDollarsOff());
+        entity.setCouponInfo(object.getCouponInfo());
+        entity.setFoodCategories(object.getFoodCategories());
+        entity.setNumberOfCouponsPerCustomer(object.getNumberOfCouponsPerCustomer());
+        entity.setTotalNumberOfCoupons(object.getTotalNumberOfCoupons());
+        entity.setNumberOfCouponsSold(object.getNumberOfCouponsSold());
+        return entity;
     }
 }

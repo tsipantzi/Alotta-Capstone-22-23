@@ -17,9 +17,9 @@ public class ExampleController {
 
     @GetMapping
     public List<Example> getExamplesByName(@RequestParam final String name) {
-        final var objectRecieved = exampleService.findExamplesByName(name);
-        log.warn("Got object from database as : {}", objectRecieved);
-        return objectRecieved;
+        final var objectReceived = exampleService.findExamplesByName(name);
+        log.warn("Got object from database as : {}", objectReceived);
+        return objectReceived;
     }
 
     @PostMapping("/{name}")

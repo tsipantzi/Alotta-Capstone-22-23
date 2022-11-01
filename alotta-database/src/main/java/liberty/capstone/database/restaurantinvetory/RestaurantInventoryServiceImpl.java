@@ -1,21 +1,23 @@
 package liberty.capstone.database.restaurantinvetory;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.restaurantinventory.RestaurantInventory;
 import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
 import liberty.capstone.database.restaurant.RestaurantEntity;
 import liberty.capstone.database.restaurant.RestaurantEntityDao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RestaurantInventoryServiceImpl implements RestaurantInventoryService {
     private final RestaurantEntityDao restaurantDao;
     private final RestaurantInventoryEntityDao restaurantInventoryDao;
+
     @Override
     public List<RestaurantInventory> getRestaurantInventoryById(final Long id) {
         final var restaurant = restaurantDao.findById(id).orElseThrow();

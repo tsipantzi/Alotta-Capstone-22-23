@@ -14,6 +14,7 @@ public class CouponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
     private String couponType;
     private Long percentageOff;
     private Long dollarsOff;

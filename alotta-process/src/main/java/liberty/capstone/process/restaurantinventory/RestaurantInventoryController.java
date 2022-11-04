@@ -21,13 +21,4 @@ public class RestaurantInventoryController {
         log.info("Found inventory for restaurant {} : {}", inventory.get(0).getRestaurant().getName(), inventory);
         return inventory;
     }
-
-    @PostMapping
-    public RestaurantInventory saveRestaurantInventoryItem(@PathVariable final Long id,
-                                                           @RequestBody final RestaurantInventory item) {
-        final var inventoryItem = inventoryService.saveInventoryItem(id, item);
-        log.info("Successfully saved inventory item for {} : {}", inventoryItem.getRestaurant().getName(),
-                inventoryItem);
-        return inventoryItem;
-    }
 }

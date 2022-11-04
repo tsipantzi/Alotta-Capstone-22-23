@@ -1,49 +1,43 @@
 package liberty.capstone.database.coupon;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.coupon.CouponService;
+import liberty.capstone.core.restaurantinventory.RestaurantInventory;
+import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
 import liberty.capstone.database.restaurant.RestaurantEntityDao;
-import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntity;
-import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntityDao;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
 
     private final CouponEntityDao couponDao;
-    private final RestaurantInventoryEntityDao inventoryDao;
+    private final RestaurantInventoryService inventoryService;
     private final RestaurantEntityDao restaurantDao;
 
     @Override
     public List<Coupon> getAllCouponsForRestaurant(final Long restaurantId) {
-        final var restaurant = restaurantDao.findById(restaurantId).orElseThrow();
-        final var inventory = inventoryDao.findAllByRestaurantIs(restaurant);
-        return inventory.stream().map(RestaurantInventoryEntity::getCoupon)
-                .map(this::toCouponObject).collect(Collectors.toList());
+        return inventoryService.getRestaurantInventoryById(restaurantId).stream()
+                .map(RestaurantInventory::getCoupon)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Coupon getCouponForRestaurant(final Long couponId) {
-        final var coupon = couponDao.findById(couponId).orElseThrow();
-        return toCouponObject(coupon);
-    }
-
-    @Override
-    public Coupon saveCoupon(final Long restaurantId, final Coupon coupon, final LocalDate startDate,
-            final LocalDate endDate) {
+    public RestaurantInventory saveCoupon(final Long restaurantId, final Coupon coupon) {
         // need to save the coupon to inventory and coupon
         final var restaurant = restaurantDao.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant Does not exist"));
 
-        final var foundCoupon = couponDao.findById(coupon.getId()).orElse(new CouponEntity());
+        final var foundCoupon = coupon.getId() != null
+                ? couponDao.findById(coupon.getId()).orElse(new CouponEntity())
+                : new CouponEntity();
+
         foundCoupon.setCouponType(coupon.getCouponType());
+        foundCoupon.setTitle(coupon.getTitle());
         foundCoupon.setPercentageOff(coupon.getPercentageOff());
         foundCoupon.setDollarsOff(coupon.getDollarsOff());
         foundCoupon.setCouponInfo(coupon.getCouponInfo());
@@ -53,36 +47,10 @@ public class CouponServiceImpl implements CouponService {
         foundCoupon.setNumberOfCouponsSold(coupon.getNumberOfCouponsSold());
         final var savedCoupon = couponDao.save(foundCoupon);
 
-        final var inventory = inventoryDao.findAllByRestaurantIs(restaurant);
-        final var couponInInventory = inventory.stream()
-                .filter(item -> {
-                    return item.getCoupon() != null && savedCoupon.getId().equals(item.getCoupon().getId());
-                })
-                .findFirst().orElse(new RestaurantInventoryEntity());
-        if (couponInInventory.getId() == null) {
-            couponInInventory.setCoupon(savedCoupon);
-            couponInInventory.setRestaurant(restaurant);
-            couponInInventory.setStartDate(startDate);
-            couponInInventory.setEndDate(endDate);
-        } else {
-            couponInInventory.setStartDate(startDate);
-            couponInInventory.setEndDate(endDate);
-        }
-        final var savedInventoryItem = inventoryDao.save(couponInInventory);
-        return toCouponObject(savedInventoryItem.getCoupon());
-    }
-
-    private Coupon toCouponObject(final CouponEntity couponEntity) {
-        final var coupon = new Coupon();
-        coupon.setId(couponEntity.getId());
-        coupon.setCouponType(couponEntity.getCouponType());
-        coupon.setPercentageOff(couponEntity.getPercentageOff());
-        coupon.setDollarsOff(couponEntity.getDollarsOff());
-        coupon.setCouponInfo(couponEntity.getCouponInfo());
-        coupon.setFoodCategories(couponEntity.getFoodCategories());
-        coupon.setNumberOfCouponsPerCustomer(couponEntity.getNumberOfCouponsPerCustomer());
-        coupon.setTotalNumberOfCoupons(couponEntity.getTotalNumberOfCoupons());
-        coupon.setNumberOfCouponsSold(couponEntity.getNumberOfCouponsSold());
-        return coupon;
+        return inventoryService
+                .saveInventoryItem(restaurant.getId(),
+                        savedCoupon.getId(),
+                        coupon.getStartDate(),
+                        coupon.getEndDate());
     }
 }

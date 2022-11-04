@@ -1,44 +1,55 @@
 package liberty.capstone.database.restaurantinvetory;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
+import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.restaurantinventory.RestaurantInventory;
 import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
+import liberty.capstone.database.coupon.CouponEntity;
+import liberty.capstone.database.coupon.CouponEntityDao;
 import liberty.capstone.database.restaurant.RestaurantEntity;
 import liberty.capstone.database.restaurant.RestaurantEntityDao;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RestaurantInventoryServiceImpl implements RestaurantInventoryService {
     private final RestaurantEntityDao restaurantDao;
+    private final CouponEntityDao couponDao;
     private final RestaurantInventoryEntityDao restaurantInventoryDao;
 
     @Override
-    public List<RestaurantInventory> getRestaurantInventoryById(final Long id) {
-        final var restaurant = restaurantDao.findById(id).orElseThrow();
+    public List<RestaurantInventory> getRestaurantInventoryById(final Long restaurantId) {
+        final var restaurant = restaurantDao.findById(restaurantId).orElseThrow();
         return restaurantInventoryDao.findAllByRestaurantIs(restaurant).stream()
                 .map(this::toRestaurantInventoryObject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public RestaurantInventory saveInventoryItem(final Long id, final RestaurantInventory item) {
-        final var restaurant = restaurantDao.findById(id).orElseThrow();
-        final var restaurantInventoryEntityToSave = new RestaurantInventoryEntity();
+    public RestaurantInventory saveInventoryItem(final Long restaurantId,
+                                                 final Long couponId,
+                                                 final LocalDate startDate,
+                                                 final LocalDate endDate) {
+        final var restaurant = restaurantDao.findById(restaurantId).orElseThrow();
+        final var coupon = couponDao.findById(couponId).orElseThrow();
+        final var restaurantInventoryEntityToSave = restaurantInventoryDao.findAllByRestaurantIsAndCouponIs(restaurant, coupon)
+                .orElse(new RestaurantInventoryEntity());
         restaurantInventoryEntityToSave.setRestaurant(restaurant);
-        restaurantInventoryEntityToSave.setStartDate(item.getStartDate());
-        restaurantInventoryEntityToSave.setEndDate(item.getEndDate());
+        restaurantInventoryEntityToSave.setCoupon(coupon);
+        restaurantInventoryEntityToSave.setStartDate(startDate);
+        restaurantInventoryEntityToSave.setEndDate(endDate);
         return toRestaurantInventoryObject(restaurantInventoryDao.save(restaurantInventoryEntityToSave));
     }
 
     private RestaurantInventory toRestaurantInventoryObject(final RestaurantInventoryEntity entity) {
         final var restaurantInventory = new RestaurantInventory();
         restaurantInventory.setRestaurant(toRestaurantObject(entity.getRestaurant()));
+        restaurantInventory.setCoupon(toCouponObject(entity.getCoupon()));
         restaurantInventory.setStartDate(entity.getStartDate());
         restaurantInventory.setEndDate(entity.getEndDate());
         return restaurantInventory;
@@ -56,5 +67,20 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
         restaurant.setMinimumNotice(entity.getMinimumNotice());
         restaurant.setZipCode(entity.getZipCode());
         return restaurant;
+    }
+
+    private Coupon toCouponObject(final CouponEntity couponEntity) {
+        final var coupon = new Coupon();
+        coupon.setId(couponEntity.getId());
+        coupon.setTitle(couponEntity.getTitle());
+        coupon.setCouponType(couponEntity.getCouponType());
+        coupon.setPercentageOff(couponEntity.getPercentageOff());
+        coupon.setDollarsOff(couponEntity.getDollarsOff());
+        coupon.setCouponInfo(couponEntity.getCouponInfo());
+        coupon.setFoodCategories(couponEntity.getFoodCategories());
+        coupon.setNumberOfCouponsPerCustomer(couponEntity.getNumberOfCouponsPerCustomer());
+        coupon.setTotalNumberOfCoupons(couponEntity.getTotalNumberOfCoupons());
+        coupon.setNumberOfCouponsSold(couponEntity.getNumberOfCouponsSold());
+        return coupon;
     }
 }

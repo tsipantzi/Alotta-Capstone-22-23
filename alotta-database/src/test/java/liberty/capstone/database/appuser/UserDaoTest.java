@@ -15,7 +15,7 @@ class UserDaoTest {
 
     @Test
     void saveUser() {
-        final AppUser entity = new AppUser();
+        final AppUserEntity entity = new AppUserEntity();
         entity.setUsername("TestName");
         entity.setPassword("password");
         entity.setAccountType("Business");

@@ -1,5 +1,6 @@
 package liberty.capstone.database.appuser;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +12,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public final class AppUserServiceImpl implements AppUserService {
-    private final UserDao userDao;
-
-    public AppUserServiceImpl(final UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final AppUserDao appUserDao;
 
     @Override
     public List<AppUser> findExamplesByName(final String name) {
-        return userDao.findAllByUsername(name)
+        return appUserDao.findAllByUsername(name)
                 .stream()
                 .map(this::toUserObject)
                 .collect(Collectors.toList());
@@ -28,7 +26,7 @@ public final class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser save(final AppUser user) {
-        final var savedUserEntity = userDao.save(toUserEntity(user));
+        final var savedUserEntity = appUserDao.saveAndFlush(toUserEntity(user));
         return toUserObject(savedUserEntity);
     }
 

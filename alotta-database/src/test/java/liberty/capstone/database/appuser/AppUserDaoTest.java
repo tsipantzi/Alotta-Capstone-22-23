@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @Sql(scripts = "/user-setup.sql")
-class UserDaoTest {
+class AppUserDaoTest {
     @Autowired
-    private UserDao userDao;
+    private AppUserDao appUserDao;
 
     @Test
     void saveUser() {
@@ -24,9 +24,9 @@ class UserDaoTest {
         entity.setEmail("danatale@liberty.edu");
         entity.setPhoneNumber("5404218636");
         entity.setZipcode("24515");
-        userDao.save(entity);
+        appUserDao.save(entity);
 
-        assertTrue(userDao.findById(entity.getId()).isPresent());
+        assertTrue(appUserDao.findById(entity.getId()).isPresent());
     }
 
 }

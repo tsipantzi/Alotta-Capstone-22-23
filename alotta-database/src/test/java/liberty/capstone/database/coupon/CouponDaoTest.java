@@ -16,6 +16,7 @@ class CouponDaoTest {
     @Test
     void saveExample() {
         final CouponEntity entity = new CouponEntity();
+        entity.setTitle("Test title");
         entity.setCouponType("This is a test of the Type field");
         entity.setPercentageOff((long) 74);
         entity.setDollarsOff((long)10.25);

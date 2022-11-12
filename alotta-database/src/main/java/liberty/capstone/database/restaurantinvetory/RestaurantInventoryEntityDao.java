@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface RestaurantInventoryEntityDao extends JpaRepository<RestaurantInventoryEntity, Long> {
     List<RestaurantInventoryEntity> findAllByRestaurantIs(RestaurantEntity restaurant);
-    Optional<RestaurantInventoryEntity> findAllByRestaurantIsAndCouponIs(RestaurantEntity restaurant, CouponEntity coupon);
+    Optional<RestaurantInventoryEntity> findAllByRestaurantIsAndCouponIs(RestaurantEntity restaurant,
+                                                                         CouponEntity coupon);
 }

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserDao extends JpaRepository<AppUserEntity, Long> {
+public interface AppUserDao extends JpaRepository<AppUserEntity, Long> {
     Optional<AppUserEntity> findByUsername(String username);
     List<AppUserEntity> findAllByUsername(String username);
 }

@@ -4,6 +4,7 @@ import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class CouponEntity {
     private Long numberOfCouponsPerCustomer;
     private Long totalNumberOfCoupons;
     private Long numberOfCouponsSold;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @OneToMany(mappedBy = "coupon")
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();

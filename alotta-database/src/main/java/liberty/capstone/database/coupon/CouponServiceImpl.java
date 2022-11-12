@@ -21,7 +21,8 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<Coupon> getAllCouponsForRestaurant(final Long restaurantId) {
-        return inventoryService.getRestaurantInventoryById(restaurantId).stream()
+        return inventoryService.getRestaurantInventoryById(restaurantId)
+                .stream()
                 .map(RestaurantInventory::getCoupon)
                 .collect(Collectors.toList());
     }
@@ -45,10 +46,11 @@ public class CouponServiceImpl implements CouponService {
         foundCoupon.setNumberOfCouponsPerCustomer(coupon.getNumberOfCouponsPerCustomer());
         foundCoupon.setTotalNumberOfCoupons(coupon.getTotalNumberOfCoupons());
         foundCoupon.setNumberOfCouponsSold(coupon.getNumberOfCouponsSold());
-        final var savedCoupon = couponDao.save(foundCoupon);
+        foundCoupon.setStartDate(coupon.getStartDate());
+        foundCoupon.setEndDate(coupon.getEndDate());
+        final var savedCoupon = couponDao.saveAndFlush(foundCoupon);
 
-        return inventoryService
-                .saveInventoryItem(restaurant.getId(),
+        return inventoryService.saveInventoryItem(restaurant.getId(),
                         savedCoupon.getId(),
                         coupon.getStartDate(),
                         coupon.getEndDate());

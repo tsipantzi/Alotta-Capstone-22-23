@@ -24,7 +24,8 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
 
     @Override
     public List<RestaurantInventory> getRestaurantInventoryById(final Long restaurantId) {
-        final var restaurant = restaurantDao.findById(restaurantId).orElseThrow();
+        final var restaurant = restaurantDao.findById(restaurantId)
+                .orElseThrow();
         return restaurantInventoryDao.findAllByRestaurantIs(restaurant).stream()
                 .map(this::toRestaurantInventoryObject)
                 .collect(Collectors.toList());
@@ -37,13 +38,14 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
                                                  final LocalDate endDate) {
         final var restaurant = restaurantDao.findById(restaurantId).orElseThrow();
         final var coupon = couponDao.findById(couponId).orElseThrow();
-        final var restaurantInventoryEntityToSave = restaurantInventoryDao.findAllByRestaurantIsAndCouponIs(restaurant, coupon)
+        final var restaurantInventoryEntityToSave = restaurantInventoryDao
+                .findAllByRestaurantIsAndCouponIs(restaurant, coupon)
                 .orElse(new RestaurantInventoryEntity());
         restaurantInventoryEntityToSave.setRestaurant(restaurant);
         restaurantInventoryEntityToSave.setCoupon(coupon);
         restaurantInventoryEntityToSave.setStartDate(startDate);
         restaurantInventoryEntityToSave.setEndDate(endDate);
-        return toRestaurantInventoryObject(restaurantInventoryDao.save(restaurantInventoryEntityToSave));
+        return toRestaurantInventoryObject(restaurantInventoryDao.saveAndFlush(restaurantInventoryEntityToSave));
     }
 
     private RestaurantInventory toRestaurantInventoryObject(final RestaurantInventoryEntity entity) {
@@ -81,6 +83,8 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
         coupon.setNumberOfCouponsPerCustomer(couponEntity.getNumberOfCouponsPerCustomer());
         coupon.setTotalNumberOfCoupons(couponEntity.getTotalNumberOfCoupons());
         coupon.setNumberOfCouponsSold(couponEntity.getNumberOfCouponsSold());
+        coupon.setStartDate(couponEntity.getStartDate());
+        coupon.setEndDate(couponEntity.getEndDate());
         return coupon;
     }
 }

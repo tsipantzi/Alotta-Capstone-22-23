@@ -4,6 +4,7 @@ import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
+import 'login_page.dart';
 
 class CouponHomePage extends StatefulWidget {
   const CouponHomePage({super.key});
@@ -71,9 +72,12 @@ class _CouponHomePageState extends State<CouponHomePage> {
       switch (index) {
         case 0:
         //Go to LoginPage
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const LoginPage()));
           break;
         case 1:
         //Go to CouponPage
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CouponHomePage()));
           break;
         case 2:
         //Go to SettingsPage

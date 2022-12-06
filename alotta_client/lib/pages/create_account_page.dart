@@ -1,7 +1,8 @@
+import 'package:alotta_client/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccountPage extends StatefulWidget {
-  const CreateAccountPage({Key? key}) : super(key: key);
+  const CreateAccountPage({super.key});
 
   @override
   State<CreateAccountPage> createState() => _CreateAccountPageState();
@@ -16,7 +17,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Scaffold(
+      body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: <Widget>[
@@ -146,6 +148,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       // Create account ...
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4D9F6B),
@@ -169,6 +172,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             //   mainAxisAlignment: MainAxisAlignment.center,
             // ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

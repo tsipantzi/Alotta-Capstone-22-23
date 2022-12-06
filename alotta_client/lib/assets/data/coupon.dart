@@ -11,11 +11,11 @@ class Coupon {
     required this.image,
   });
 
-  Image getImage() {
+  Image getImage(double height, double width) {
     return Image(
       image: image.image,
-      height: 100,
-      width: 200,
+      height: height,
+      width: width,
     );
   }
 }

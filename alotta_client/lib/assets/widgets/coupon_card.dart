@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../colors/colors.dart';
 import '../colors/colors.dart';
 import '../data/coupon.dart';
 
@@ -36,6 +34,7 @@ class _CouponCardState extends State<CouponCard> {
 
   BoxShadow _cardShadow = _defaultShadow;
   Offset _offset = const Offset(0, 0);
+
   void _pressCardDown() {
     setState(() {
       _cardShadow = _pressedDownShadow;
@@ -60,29 +59,37 @@ class _CouponCardState extends State<CouponCard> {
           vertical: 0,
           horizontal: 0,
         ),
-        title: Text(coupon.title),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         children: [
           Container(
-            width: 500,
-            height: 500,
+            width: 340,
+            height: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(0),
-              color: CupertinoColors.systemGreen.darkColor,
+              color: Colors.transparent,
+              image: const DecorationImage(
+                image: AssetImage('images/pop_up_background.png'),
+              ),
             ),
-            child: Column(children: [
-              Text(coupon.description),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Claim Coupon'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-            ]),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  widget.coupon.getImage(110, 220),
+                  Text(coupon.title,
+                    textDirection: TextDirection.rtl,),
+                  Text(coupon.description),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Claim Coupon'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel'),
+                  ),
+                ]),
           ),
         ],
       ),
@@ -122,7 +129,7 @@ class _CouponCardState extends State<CouponCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  widget.coupon.getImage(),
+                  widget.coupon.getImage(100, 200),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,40 +1,9 @@
-import 'package:alotta_client/assets/widgets/coupon_card.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: primaryOrangeMaterialColor,
-        scaffoldBackgroundColor: primaryCream,
-        fontFamily: 'Lato',
-      ),
-      home: const CouponHomePage(title: 'Testing 123'),
-    );
-  }
-}
+import '../assets/widgets/coupon_card.dart';
 
 class CouponHomePage extends StatefulWidget {
   const CouponHomePage({super.key, required this.title});
@@ -97,19 +66,19 @@ class _CouponHomePageState extends State<CouponHomePage> {
   ];
 
   static final _couponCards =
-      _coupons.map((e) => CouponCard(coupon: e)).toList();
+  _coupons.map((e) => CouponCard(coupon: e)).toList();
 
   void _changePage(int index) {
     setState(() {
       switch (index) {
         case 0:
-          //Go to LoginPage
+        //Go to LoginPage
           break;
         case 1:
-          //Go to CouponPage
+        //Go to CouponPage
           break;
         case 2:
-          //Go to SettingsPage
+        //Go to SettingsPage
           break;
       }
     });
@@ -126,10 +95,10 @@ class _CouponHomePageState extends State<CouponHomePage> {
     return Scaffold(
       appBar: AlottaAppBar(),
       body: Center(
-          child: ListView(
-            children: _couponCards,
-          ),
+        child: ListView(
+          children: _couponCards,
         ),
+      ),
       bottomNavigationBar: AlottaNavigationBar(
         onTap: _changePage,
         selectedItemColor: primaryGreen,

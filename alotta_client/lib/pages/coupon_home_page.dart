@@ -6,7 +6,7 @@ import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
 
 class CouponHomePage extends StatefulWidget {
-  const CouponHomePage({super.key, required this.title});
+  const CouponHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -16,8 +16,6 @@ class CouponHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<CouponHomePage> createState() => _CouponHomePageState();

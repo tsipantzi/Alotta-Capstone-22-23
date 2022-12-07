@@ -8,12 +8,16 @@ class CreateAccountPage extends StatefulWidget {
   State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
+enum CreateUserType { consumer, creator}
+
 class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+
+  CreateUserType? _userType = CreateUserType.consumer;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +27,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         child: ListView(
           children: <Widget>[
             Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Alotta Logo',
-                  style: TextStyle(
-                      color: Color(0xFFEB7450),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                'Alotta Logo',
+                style: TextStyle(
+                  color: Color(0xFFEB7450),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30
+                ),
+              )
+            ),
 
             // Text Fields * * * * * * * * * * * * * * * * * * * *
             Container(
@@ -121,56 +127,70 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             ),
 
             // Radio Buttons * * * * * * * * * * * * * * * * * * * *
-            Column(
-              children: [
-                RadioListTile(
-                  title: const Text("Coupon Creator"),
-                  value: "creator",
-                  groupValue: "creator",
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-                RadioListTile(
-                  title: const Text("Coupon Consumer"),
-                  value: "creator",
-                  groupValue: "consumer",
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
-
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      // Create account ...
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4D9F6B),
-                      // ignore: prefer_const_constructors
-                      textStyle: TextStyle(fontSize: 20),
+              Column(
+                children: <Widget>[
+                  ListTile(
+                    title: const Text('Coupon Consumer'),
+                    leading: Radio<CreateUserType>(
+                      value: CreateUserType.consumer,
+                      groupValue: _userType,
+                      onChanged: (CreateUserType? value) {
+                        setState(() {
+                          _userType = value;
+                        });
+                      },
                     ),
-                    child: const Text('Create Account'))),
-            // Row(
-            //   children: <Widget>[
-            //     const Text('Don\'t have account?'),
-            //     TextButton(
-            //       child: const Text(
-            //         'Sign in',
-            //         style: TextStyle(fontSize: 20),
-            //       ),
-            //       onPressed: () {
-            //         //signup screen
+                  ),
+                  ListTile(
+                    title: const Text('Coupon Creator'),
+                    leading: Radio<CreateUserType>(
+                      value: CreateUserType.creator,
+                      groupValue: _userType,
+                      onChanged: (CreateUserType? value) {
+                        setState(() {
+                          _userType = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            // Column(
+            //   children: [
+            //     RadioListTile(
+            //       title: const Text("Coupon Creator"),
+            //       value: "creator",
+            //       groupValue: "creator",
+            //       onChanged: (value) {
+            //         setState(() {});
             //       },
-            //     )
+            //     ),
+            //     RadioListTile(
+            //       title: const Text("Coupon Consumer"),
+            //       value: "creator",
+            //       groupValue: "consumer",
+            //       onChanged: (value) {
+            //         setState(() {});
+            //       },
+            //     ),
             //   ],
-            //   mainAxisAlignment: MainAxisAlignment.center,
             // ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Create account ...
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4D9F6B),
+                  // ignore: prefer_const_constructors
+                  textStyle: TextStyle(fontSize: 20),
+                ),
+                child: const Text('Create Account')
+              )
+            ),
           ],
         ),
       ),

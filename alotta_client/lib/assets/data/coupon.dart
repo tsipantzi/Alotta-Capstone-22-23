@@ -17,7 +17,9 @@ class Coupon {
   final double dollarsOff;
   final int totalNumberOfCoupons;
   final int numberOfCouponsSold;
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
   final DateTime _startDate;
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
   final DateTime _endDate;
 
   Coupon({
@@ -38,8 +40,12 @@ class Coupon {
 
   int get numberOfCouponsLeft => totalNumberOfCoupons - numberOfCouponsSold;
 
-  String get startDate => DateFormat('MM/dd').format(_startDate);
-  String get endDate => DateFormat('MM/dd').format(_endDate);
+  String get startDateShort => DateFormat('MM/dd').format(_startDate);
+  String get endDateShort => DateFormat('MM/dd').format(_endDate);
+
+  static DateTime _fromJson(int int) =>
+      DateTime.fromMillisecondsSinceEpoch(int);
+  static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
 
   Image getImage(double height, double width) {
     return Image(

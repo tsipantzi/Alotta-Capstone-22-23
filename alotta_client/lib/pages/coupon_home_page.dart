@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
 
@@ -75,12 +77,20 @@ class _CouponHomePageState extends State<CouponHomePage> {
                     ),
                   ),
                   Positioned(
+                    bottom: 5,
+                    right: 0,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryGreen,
                         shape: const CircleBorder(),
                       ),
                       onPressed: _createCoupon,
-                      child: const Text('Add Coupon'),
+                      child: const Text(
+                        '+',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -108,7 +118,52 @@ class _CouponHomePageState extends State<CouponHomePage> {
         });
   }
 
-  void _createCoupon() {}
+  Future<void> _createCoupon() async {
+    final CouponService couponService = CouponService();
+
+    final List<Coupon> couponsToCreate = [
+      Coupon(
+        title: 'Bens Coupon',
+        description: 'Lorem ipsum dolor sit amet, consectetur',
+        discount: 10.0,
+        dollarsOff: 10,
+        totalNumberOfCoupons: 10,
+        numberOfCouponsSold: 10,
+      ),
+      Coupon(
+        title: 'James Coupon',
+        description: 'Lorem ipsum dolor sit amet, consectetur',
+        discount: 20.0,
+        dollarsOff: 20,
+        totalNumberOfCoupons: 20,
+        numberOfCouponsSold: 20,
+      ),
+      Coupon(
+        title: 'Deans Coupon',
+        description: 'Lorem ipsum dolor sit amet, consectetur',
+        discount: 30.0,
+        dollarsOff: 30,
+        totalNumberOfCoupons: 30,
+        numberOfCouponsSold: 30,
+      ),
+      Coupon(
+        title: 'Richard Coupon',
+        description: 'Lorem ipsum dolor sit amet, consectetur',
+        discount: 40.0,
+        dollarsOff: 40,
+        totalNumberOfCoupons: 40,
+        numberOfCouponsSold: 40,
+      ),
+    ];
+
+    final result = couponService.createCoupon(
+        couponsToCreate[Random().nextInt(couponsToCreate.length)], "1");
+
+    if (await result) {
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const CouponHomePage()));
+    }
+  }
 }
 
 class AlottaNavigationBar extends BottomNavigationBar {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/data/app_user.dart';
 import '../assets/services/app_user_service.dart';
+import '../assets/widgets/alotta_app_bar.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -20,26 +21,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  CreateUserType? _userType = CreateUserType.consumer;
+  CreateUserType _userType = CreateUserType.consumer;
+  String userType = 'Consumer';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AlottaTitle(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Alotta Logo',
-                  style: TextStyle(
-                      color: Color(0xFFEB7450),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
-
             // Text Fields * * * * * * * * * * * * * * * * * * * *
             Container(
               padding: const EdgeInsets.all(10),
@@ -137,7 +129,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     groupValue: _userType,
                     onChanged: (CreateUserType? value) {
                       setState(() {
-                        _userType = value;
+                        _userType = value!;
+                        userType = _assertUserType(_userType);
                       });
                     },
                   ),
@@ -149,7 +142,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     groupValue: _userType,
                     onChanged: (CreateUserType? value) {
                       setState(() {
-                        _userType = value;
+                        _userType = value!;
+                        userType = _assertUserType(_userType);
                       });
                     },
                   ),
@@ -188,12 +182,23 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       firstName: firstNameController.value.text,
       lastName: lastNameController.value.text,
       email: emailController.value.text,
-      accountType: 'Customer',
+      accountType: userType,
       phoneNumber: '1111111111',
       zipcode: '12345',
     );
-
+    print('Creating user with type $userToCreate');
     final AppUserService service = AppUserService();
     return await service.createAppUser(userToCreate);
+  }
+
+  String _assertUserType(CreateUserType? type) {
+    switch (type) {
+      case CreateUserType.consumer:
+        return 'Consumer';
+      case CreateUserType.creator:
+        return 'Creator';
+      default:
+        return 'Unknown';
+    }
   }
 }

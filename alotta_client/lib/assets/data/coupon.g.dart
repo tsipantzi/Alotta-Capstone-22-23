@@ -14,12 +14,6 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
     dollarsOff: (json['dollarsOff'] as num).toDouble(),
     totalNumberOfCoupons: json['totalNumberOfCoupons'] as int,
     numberOfCouponsSold: json['numberOfCouponsSold'] as int,
-    startDate: json['startDate'] == null
-        ? null
-        : DateTime.parse(json['startDate'] as String),
-    endDate: json['endDate'] == null
-        ? null
-        : DateTime.parse(json['endDate'] as String),
   );
 }
 
@@ -30,6 +24,4 @@ Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
       'dollarsOff': instance.dollarsOff,
       'totalNumberOfCoupons': instance.totalNumberOfCoupons,
       'numberOfCouponsSold': instance.numberOfCouponsSold,
-      'startDate': instance.startDate,
-      'endDate': instance.endDate,
     };

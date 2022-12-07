@@ -57,7 +57,7 @@ class _CouponCardState extends State<CouponCard> {
     final String numberOfCouponsLeftText =
         "Coupons Left: ${widget.coupon.numberOfCouponsLeft}";
     final String goodThroughText =
-        "Good Through: ${widget.coupon.startDate} - ${widget.coupon.endDate}";
+        "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}";
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(

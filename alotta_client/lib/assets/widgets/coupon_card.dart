@@ -81,155 +81,161 @@ class _CouponCardState extends State<CouponCard> {
                 image: AssetImage('images/pop_up_background.png'),
               ),
             ),
-            child: Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                Positioned(
-                  left: -10,
-                  top: 25,
-                  child: widget.coupon.getImage(110, 220),
-                ),
-                Positioned(
-                  right: 15,
-                  top: 25,
-                  child: Text(
-                    coupon.title,
-                    textDirection: TextDirection.rtl,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: primaryCream,
-                      shadows: <Shadow>[
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 10,
-                          blurRadius: 10,
-                          blurStyle: BlurStyle.solid,
+            child: Expanded(
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  Positioned(
+                    left: -10,
+                    top: 25,
+                    child: widget.coupon.getImage(110, 220),
+                  ),
+                  Positioned(
+                    right: 15,
+                    top: 25,
+                    child: Text(
+                      coupon.title,
+                      textDirection: TextDirection.rtl,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: primaryCream,
+                        shadows: <Shadow>[
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 10,
+                            blurRadius: 10,
+                            blurStyle: BlurStyle.solid,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 75,
+                    width: 150,
+                    child: Text(
+                      coupon.description,
+                      overflow: TextOverflow.clip,
+                      maxLines: 3,
+                      softWrap: true,
+                      style: const TextStyle(
+                        color: primaryCream,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 8,
+                    left: 50,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        'Claim Coupon',
+                        style: TextStyle(
+                          color: primaryCream,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 15,
-                  top: 75,
-                  child: Text(
-                    coupon.description,
-                    style: const TextStyle(
-                      color: primaryCream,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  left: 50,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Claim Coupon',
-                      style: TextStyle(
-                        color: primaryCream,
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  right: 75,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: primaryCream,
+                  Positioned(
+                    bottom: 8,
+                    right: 75,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: primaryCream,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 80,
-                  left: 20,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      percentageOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
+                  Positioned(
+                    bottom: 80,
+                    left: 20,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        percentageOffText,
+                        style: const TextStyle(
+                          color: primaryCream,
+                          shadows: <Shadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              blurStyle: BlurStyle.solid,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 60,
-                  left: 20,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      dollarsOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
+                  Positioned(
+                    bottom: 60,
+                    left: 20,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        dollarsOffText,
+                        style: const TextStyle(
+                          color: primaryCream,
+                          shadows: <Shadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              blurStyle: BlurStyle.solid,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 60,
-                  right: 50,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      numberOfCouponsLeftText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
+                  Positioned(
+                    bottom: 60,
+                    right: 50,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        numberOfCouponsLeftText,
+                        style: const TextStyle(
+                          color: primaryCream,
+                          shadows: <Shadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              blurStyle: BlurStyle.solid,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 80,
-                  right: 15,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      goodThroughText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
+                  Positioned(
+                    bottom: 80,
+                    right: 15,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        goodThroughText,
+                        style: const TextStyle(
+                          color: primaryCream,
+                          shadows: <Shadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              blurStyle: BlurStyle.solid,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -271,44 +277,48 @@ class _CouponCardState extends State<CouponCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   widget.coupon.getImage(100, 200),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: primaryCream,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(-1, -1),
-                                blurRadius: 1,
-                                color: Colors.black12,
-                              ),
-                              Shadow(
-                                offset: Offset(2, 2),
-                                blurRadius: 4,
-                                color: Colors.black12,
-                              )
-                            ],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: primaryCream,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(-1, -1),
+                                  blurRadius: 1,
+                                  color: Colors.black12,
+                                ),
+                                Shadow(
+                                  offset: Offset(2, 2),
+                                  blurRadius: 4,
+                                  color: Colors.black12,
+                                )
+                              ],
+                            ),
+                            widget.coupon.title,
+                            overflow: TextOverflow.visible,
                           ),
-                          widget.coupon.title,
-                          overflow: TextOverflow.visible,
                         ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: primaryCream,
+                        Flexible(
+                          child: Text(
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: primaryCream,
+                            ),
+                            widget.coupon.description,
+                            overflow: TextOverflow.clip,
+                            maxLines: 6,
+                            softWrap: true,
                           ),
-                          widget.coupon.description,
-                          overflow: TextOverflow.visible,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
@@ -25,62 +26,21 @@ class CouponHomePage extends StatefulWidget {
 class _CouponHomePageState extends State<CouponHomePage> {
   static const int _pageIndex = 1;
 
-  static final _coupons = <Coupon>[
-    Coupon(
-      title: 'Placeholder title 1',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-    Coupon(
-      title: 'Placeholder title 2',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-    Coupon(
-      title: 'Placeholder title 2',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-    Coupon(
-      title: 'Placeholder title 2',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-    Coupon(
-      title: 'Placeholder title 2',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-    Coupon(
-      title: 'Placeholder title 2',
-      description: 'Placeholder description 2',
-      image: Image.network(
-          'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png'),
-    ),
-  ];
-
-  static final _couponCards =
-  _coupons.map((e) => CouponCard(coupon: e)).toList();
-
   void _changePage(int index) {
     setState(() {
       switch (index) {
         case 0:
-        //Go to LoginPage
+          //Go to LoginPage
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => const LoginPage()));
           break;
         case 1:
-        //Go to CouponPage
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CouponHomePage()));
+          //Go to CouponPage
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CouponHomePage()));
           break;
         case 2:
-        //Go to SettingsPage
+          //Go to SettingsPage
           break;
       }
     });
@@ -88,26 +48,67 @@ class _CouponHomePageState extends State<CouponHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final CouponService couponService = CouponService();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AlottaAppBar(),
-      body: Center(
-        child: ListView(
-          children: _couponCards,
-        ),
-      ),
-      bottomNavigationBar: AlottaNavigationBar(
-        onTap: _changePage,
-        selectedItemColor: primaryGreen,
-        currentIndex: _pageIndex,
-      ),
-    );
+    return FutureBuilder<List<Coupon>?>(
+        future: couponService.getAllCoupons("1"),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              appBar: AlottaTitle(),
+              body: Stack(
+                children: [
+                  Center(
+                    child: ListView(
+                      children: snapshot.data!
+                          .map(
+                            (coupon) => CouponCard(
+                              coupon: coupon,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  Positioned(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                      ),
+                      onPressed: _createCoupon,
+                      child: const Text('Add Coupon'),
+                    ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: AlottaNavigationBar(
+                onTap: _changePage,
+                selectedItemColor: primaryGreen,
+                currentIndex: _pageIndex,
+              ),
+            );
+          } else {
+            return Scaffold(
+              appBar: AlottaTitle(),
+              body: const Center(
+                child: Text(
+                    'There was an error or there are currently no coupons available'),
+              ),
+              bottomNavigationBar: AlottaNavigationBar(
+                onTap: _changePage,
+                selectedItemColor: primaryGreen,
+                currentIndex: _pageIndex,
+              ),
+            );
+          }
+        });
   }
+
+  void _createCoupon() {}
 }
 
 class AlottaNavigationBar extends BottomNavigationBar {
@@ -122,7 +123,6 @@ class AlottaNavigationBar extends BottomNavigationBar {
     ),
     BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
   ];
-
   AlottaNavigationBar({
     super.key,
     required super.onTap,

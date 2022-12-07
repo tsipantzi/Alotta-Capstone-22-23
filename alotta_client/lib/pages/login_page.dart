@@ -12,7 +12,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10.0)),
                   ),
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => const CouponHomePage()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CouponHomePage()));
                   },
                   child: const Text('Sign In'),
                 )),
@@ -87,8 +86,8 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10.0)),
                   ),
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => const CreateAccountPage()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const CreateAccountPage()));
                   },
                   child: const Text('Create Account'),
                 )),

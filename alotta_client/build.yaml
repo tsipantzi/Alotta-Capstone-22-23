@@ -1,0 +1,17 @@
+targets:
+  $default:
+    builders:
+      auto_route_generator|autoRouteGenerator:
+        enabled: true
+        generate_for:
+          include:
+            - lib/assets/data/coupon.dart
+      # Typically the builder key is just the package name, run `pub run build_runner doctor` to check your config.
+      json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - lib/assets/data/coupon.dart
+        options:
+          explicit_to_json: true
+          include_if_null: false

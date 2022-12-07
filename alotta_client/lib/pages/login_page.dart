@@ -1,6 +1,9 @@
+import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/pages/coupon_home_page.dart';
 import 'package:alotta_client/pages/create_account_page.dart';
 import 'package:flutter/material.dart';
+
+import '../assets/services/app_user_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -39,12 +42,12 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                controller: emailController,
+                controller: usernameController,
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
-                  labelText: 'Email',
+                  labelText: 'Username',
                 ),
               ),
             ),
@@ -70,9 +73,16 @@ class _LoginPageState extends State<LoginPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CouponHomePage()));
+                  onPressed: () async {
+                    if (await _userIsLoggedIn()) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CouponHomePage(),
+                        ),
+                      );
+                    } else {
+                      print('Could not login with User ');
+                    }
                   },
                   child: const Text('Sign In'),
                 )),
@@ -104,5 +114,15 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<bool> _userIsLoggedIn() async {
+    final AppUserService service = AppUserService();
+    final AppUser expectedUserInfo = AppUser(
+      username: usernameController.value.text,
+      password: passwordController.value.text,
+    );
+    final AppUser? user = await service.getAppUser(expectedUserInfo);
+    return user != null && user.password == expectedUserInfo.password;
   }
 }

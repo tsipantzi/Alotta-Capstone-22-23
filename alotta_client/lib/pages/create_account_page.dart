@@ -1,6 +1,9 @@
 import 'package:alotta_client/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
+import '../assets/data/app_user.dart';
+import '../assets/services/app_user_service.dart';
+
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
 
@@ -8,7 +11,7 @@ class CreateAccountPage extends StatefulWidget {
   State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-enum CreateUserType { consumer, creator}
+enum CreateUserType { consumer, creator }
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController usernameController = TextEditingController();
@@ -27,17 +30,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         child: ListView(
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Alotta Logo',
-                style: TextStyle(
-                  color: Color(0xFFEB7450),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30
-                ),
-              )
-            ),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Alotta Logo',
+                  style: TextStyle(
+                      color: Color(0xFFEB7450),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30),
+                )),
 
             // Text Fields * * * * * * * * * * * * * * * * * * * *
             Container(
@@ -127,73 +128,72 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             ),
 
             // Radio Buttons * * * * * * * * * * * * * * * * * * * *
-              Column(
-                children: <Widget>[
-                  ListTile(
-                    title: const Text('Coupon Consumer'),
-                    leading: Radio<CreateUserType>(
-                      value: CreateUserType.consumer,
-                      groupValue: _userType,
-                      onChanged: (CreateUserType? value) {
-                        setState(() {
-                          _userType = value;
-                        });
-                      },
-                    ),
+            Column(
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Coupon Consumer'),
+                  leading: Radio<CreateUserType>(
+                    value: CreateUserType.consumer,
+                    groupValue: _userType,
+                    onChanged: (CreateUserType? value) {
+                      setState(() {
+                        _userType = value;
+                      });
+                    },
                   ),
-                  ListTile(
-                    title: const Text('Coupon Creator'),
-                    leading: Radio<CreateUserType>(
-                      value: CreateUserType.creator,
-                      groupValue: _userType,
-                      onChanged: (CreateUserType? value) {
-                        setState(() {
-                          _userType = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            // Column(
-            //   children: [
-            //     RadioListTile(
-            //       title: const Text("Coupon Creator"),
-            //       value: "creator",
-            //       groupValue: "creator",
-            //       onChanged: (value) {
-            //         setState(() {});
-            //       },
-            //     ),
-            //     RadioListTile(
-            //       title: const Text("Coupon Consumer"),
-            //       value: "creator",
-            //       groupValue: "consumer",
-            //       onChanged: (value) {
-            //         setState(() {});
-            //       },
-            //     ),
-            //   ],
-            // ),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Create account ...
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4D9F6B),
-                  // ignore: prefer_const_constructors
-                  textStyle: TextStyle(fontSize: 20),
                 ),
-                child: const Text('Create Account')
-              )
+                ListTile(
+                  title: const Text('Coupon Creator'),
+                  leading: Radio<CreateUserType>(
+                    value: CreateUserType.creator,
+                    groupValue: _userType,
+                    onChanged: (CreateUserType? value) {
+                      setState(() {
+                        _userType = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
+            Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: ElevatedButton(
+                    onPressed: () async {
+                      // Create account ...
+                      if (await _createUser()) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LoginPage()));
+                      } else {
+                        print('User was not created');
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4D9F6B),
+                      // ignore: prefer_const_constructors
+                      textStyle: TextStyle(fontSize: 20),
+                    ),
+                    child: const Text('Create Account'))),
           ],
         ),
       ),
     );
+  }
+
+  Future<bool> _createUser() async {
+    final AppUser userToCreate = AppUser(
+      username: usernameController.value.text,
+      password: passwordController.value.text,
+      firstName: firstNameController.value.text,
+      lastName: lastNameController.value.text,
+      email: emailController.value.text,
+      accountType: 'Customer',
+      phoneNumber: '1111111111',
+      zipcode: '12345',
+    );
+
+    final AppUserService service = AppUserService();
+    return await service.createAppUser(userToCreate);
   }
 }

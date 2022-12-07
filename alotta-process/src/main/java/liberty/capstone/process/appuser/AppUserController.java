@@ -18,10 +18,10 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping
-    public List<AppUser> getExamplesByName(@RequestParam final String name) {
-        final var objectRecieved = appUserService.findExamplesByName(name);
+    public AppUser getExamplesByName(@RequestParam final String username) {
+        final var objectRecieved = appUserService.findExamplesByName(username);
         log.warn("Got object from database as : {}", objectRecieved);
-        return objectRecieved;
+        return objectRecieved.stream().findFirst().orElseThrow();
     }
 
     @PostMapping

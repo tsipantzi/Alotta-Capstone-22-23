@@ -9,7 +9,7 @@ group = 'liberty.capstone'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
-configure(subprojects.findAll{!it.name.endsWith("-client")}) {
+configure(subprojects.findAll{!it.name.endsWith("_client")}) {
 	project.version = project.rootProject.version
 	project.group = project.rootProject.group
 

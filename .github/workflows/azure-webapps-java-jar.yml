@@ -44,7 +44,6 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.DISTRIBUTION }}
-          cache: 'maven'
 
       - name: Build with Gradle
         run: ./gradlew clean build

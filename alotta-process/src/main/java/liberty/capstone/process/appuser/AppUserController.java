@@ -1,14 +1,10 @@
 package liberty.capstone.process.appuser;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.web.bind.annotation.*;
-
 import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.appuser.AppUserService;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j

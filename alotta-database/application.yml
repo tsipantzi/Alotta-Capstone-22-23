@@ -4,6 +4,7 @@ spring:
     username: alotta-admin
     password: lucapstone2023!
   jpa:
-    spring.jpa-hibernate.ddl-auto: create-drop
-    spring.jpa.show-sql: true
+    hibernate.ddl-auto: create-drop
+    show-sql: true
+    dialect: org.hibernate.dialect.SQLServer2008Dialect
 

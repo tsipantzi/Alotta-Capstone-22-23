@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;user=alotta-admin@alotta-db;password=lucapston2023;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;user=alotta-admin@alotta-db;password=lucapstone2023!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     username: alotta-admin
-    password: lucapstone2023
+    password: lucapstone2023!
   jpa:
     spring.jpa-hibernate.ddl-auto: create-drop
     spring.jpa.show-sql: true

@@ -3,6 +3,8 @@ spring:
     url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;user=alotta-admin@alotta-db;password=lucapstone2023!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     username: alotta-admin
     password: lucapstone2023!
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
-    spring.jpa-hibernate.ddl-auto: create-drop
-    spring.jpa.show-sql: true
+    hibernate.ddl-auto: create-drop
+    show-sql: true
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect

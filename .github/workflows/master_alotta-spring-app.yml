@@ -27,7 +27,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: java-app
+          name: alotta
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
@@ -41,7 +41,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: java-app
+          name: alotta
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -50,4 +50,4 @@ jobs:
           app-name: 'alotta-spring-app'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_46E0D2AE74E74305A613F34CDE95EDAE }}
-          package: '${{ github.workspace }}/build/libs/*.jar'
+          package: '${{ github.workspace }}/target/*.jar'

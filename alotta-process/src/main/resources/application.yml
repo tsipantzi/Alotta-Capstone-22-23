@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb;MODE=Oracle;
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;user=alotta-admin@alotta-db;password=lucapstone2023!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: alotta-admin
+    password: lucapstone2023!
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    spring.jpa-hibernate.ddl-auto: create-drop
+    spring.jpa.show-sql: true

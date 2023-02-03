@@ -66,5 +66,3 @@ dependencies {
 	implementation project(":alotta-database")
 	implementation project(":alotta-process")
 }
-
-java.targetCompatibility = JavaVersion.VERSION_1_8

@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = "http://10.0.0.245:8080";
+  static const String baseUrl = "http://alotta-spring-app.azurewebsites.net";
   static const String _restaurantParam = "/restaurant";
   static const String _couponParam = "/coupon";
   static const String _appUserParam = "/appuser";

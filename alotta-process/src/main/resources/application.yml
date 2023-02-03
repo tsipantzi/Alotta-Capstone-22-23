@@ -7,4 +7,5 @@ spring:
   jpa:
     hibernate.ddl-auto: create-drop
     show-sql: true
-    dialect: org.hibernate.dialect.SQLServer2008Dialect
+    properties.hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+    database: mysql

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;createDatabaseIfNotExist=true;
     username: alotta-admin@alotta-db
     password: lucapston2023!
     database: alotta-db

@@ -44,17 +44,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurant;
     }
 
-    private RestaurantEntity toRestaurantEntity(final Restaurant object) {
-        final var entity = new RestaurantEntity();
-        entity.setId(object.getId());
-        entity.setName(object.getName());
-        entity.setPhoneNumber(object.getPhoneNumber());
-        entity.setAboutMe(object.getAboutMe());
-        entity.setFoodCategories(object.getFoodCategories());
-        entity.setEmail(object.getEmail());
-        entity.setMaxCateringSizePerPerson(object.getMaxCateringSizePerPerson());
-        entity.setMinimumNotice(object.getMinimumNotice());
-        entity.setZipCode(object.getZipCode());
-        return entity;
+    private RestaurantEntity toRestaurantEntity(final Restaurant restaurant) {
+        return new RestaurantEntity(restaurant);
     }
 }

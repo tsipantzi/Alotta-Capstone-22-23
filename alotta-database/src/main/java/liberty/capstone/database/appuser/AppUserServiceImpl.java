@@ -20,39 +20,13 @@ public final class AppUserServiceImpl implements AppUserService {
     public List<AppUser> findExamplesByName(final String name) {
         return appUserDao.findAllByUsername(name)
                 .stream()
-                .map(this::toUserObject)
+                .map(AppUserEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
     public AppUser save(final AppUser user) {
-        final var savedUserEntity = appUserDao.saveAndFlush(toUserEntity(user));
-        return toUserObject(savedUserEntity);
-    }
-
-    private AppUser toUserObject(final AppUserEntity entity) {
-        final var newUserObject = new AppUser();
-        newUserObject.setUsername(entity.getUsername());
-        newUserObject.setPassword(entity.getPassword());
-        newUserObject.setAccountType(entity.getAccountType());
-        newUserObject.setFirstName(entity.getFirstName());
-        newUserObject.setLastName(entity.getLastName());
-        newUserObject.setEmail(entity.getEmail());
-        newUserObject.setPhoneNumber(entity.getPhoneNumber());
-        newUserObject.setZipcode(entity.getZipcode());
-        return newUserObject;
-    }
-
-    private AppUserEntity toUserEntity(final AppUser user) {
-        final var newUserEntity = new AppUserEntity();
-        newUserEntity.setUsername(user.getUsername());
-        newUserEntity.setPassword(user.getPassword());
-        newUserEntity.setAccountType(user.getAccountType());
-        newUserEntity.setFirstName(user.getFirstName());
-        newUserEntity.setLastName(user.getLastName());
-        newUserEntity.setEmail(user.getEmail());
-        newUserEntity.setPhoneNumber(user.getPhoneNumber());
-        newUserEntity.setZipcode(user.getZipcode());
-        return newUserEntity;
+        final var savedUserEntity = appUserDao.saveAndFlush(new AppUserEntity(user));
+        return savedUserEntity.toDomainObject();
     }
 }

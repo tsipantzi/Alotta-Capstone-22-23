@@ -1,8 +1,11 @@
 package liberty.capstone.database.appuser;
 
 import lombok.Data;
+import lombok.var;
 
 import javax.persistence.*;
+
+import liberty.capstone.core.appuser.AppUser;
 
 @Entity
 @Data
@@ -19,4 +22,17 @@ public class AppUserEntity {
     private String email;
     private String phoneNumber;
     private String zipcode;
+
+    public AppUser toDomainObject() {
+        final var domainUser = new AppUser();
+        domainUser.setUsername(username);
+        domainUser.setPassword(password);
+        domainUser.setAccountType(accountType);
+        domainUser.setFirstName(firstName);
+        domainUser.setLastName(lastName);
+        domainUser.setEmail(email);
+        domainUser.setPhoneNumber(phoneNumber);
+        domainUser.setZipcode(zipcode);
+        return domainUser;
+    }
 }

@@ -15,7 +15,7 @@ public class UserRestaurantEntity {
     private Long id;
     @JoinColumn(referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private AppUserEntity appuser;
+    private AppUserEntity appUser;
     @JoinColumn(referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
     private RestaurantEntity restaurant;

@@ -1,15 +1,15 @@
 package liberty.capstone.database.appuser;
 
+import liberty.capstone.core.appuser.AppUser;
 import lombok.Data;
-import lombok.var;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import liberty.capstone.core.appuser.AppUser;
-
 @Entity
 @Data
-@Table(name = "appuser")
+@Table(name = "AppUser")
+@NoArgsConstructor
 public class AppUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,19 @@ public class AppUserEntity {
     private String phoneNumber;
     private String zipcode;
 
+    public AppUserEntity(final AppUser domainObject) {
+        this.username = domainObject.getUsername();
+        this.password = domainObject.getPassword();
+        this.accountType = domainObject.getAccountType();
+        this.firstName = domainObject.getFirstName();
+        this.lastName = domainObject.getLastName();
+        this.email = domainObject.getEmail();
+        this.phoneNumber = domainObject.getPhoneNumber();
+        this.zipcode = domainObject.getZipcode();
+    }
+
     public AppUser toDomainObject() {
-        final var domainUser = new AppUser();
+        final AppUser domainUser = new AppUser();
         domainUser.setUsername(username);
         domainUser.setPassword(password);
         domainUser.setAccountType(accountType);

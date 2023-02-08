@@ -3,7 +3,7 @@ package liberty.capstone.database.restaurant;
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntity;
 import lombok.Data;
-import lombok.var;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Blob;
@@ -12,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "restaurant")
+@Table(name = "Restaurant")
+@NoArgsConstructor
 public class RestaurantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,18 +43,8 @@ public class RestaurantEntity {
         this.zipCode = restaurant.getZipCode();
     }
 
-    public void addInventory(final RestaurantInventoryEntity inventoryItem) {
-        inventory.add(inventoryItem);
-        inventoryItem.setRestaurant(this);
-    }
-
-    public void removeInventory(final RestaurantInventoryEntity inventoryItem) {
-        inventory.remove(inventoryItem);
-        inventoryItem.setRestaurant(null);
-    }
-
     public Restaurant toDomainObject() {
-        final var domainRestaurant = new Restaurant();
+        final Restaurant domainRestaurant = new Restaurant();
         domainRestaurant.setName(name);
         domainRestaurant.setPhoneNumber(phoneNumber);
         domainRestaurant.setAboutMe(aboutMe);

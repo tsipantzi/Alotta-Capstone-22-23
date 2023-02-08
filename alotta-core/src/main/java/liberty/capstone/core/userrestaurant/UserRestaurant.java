@@ -4,7 +4,6 @@ import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.restaurant.Restaurant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,12 @@ import '../assets/widgets/coupon_card.dart';
 import 'login_page.dart';
 
 class CouponHomePage extends StatefulWidget {
-  const CouponHomePage({super.key});
+  final AppUser currentUser;
+  const CouponHomePage({super.key, required this.currentUser});
+
+  AppUser getCurrentUser() {
+    return currentUser;
+  }
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -28,18 +34,16 @@ class CouponHomePage extends StatefulWidget {
 class _CouponHomePageState extends State<CouponHomePage> {
   static const int _pageIndex = 1;
 
-  void _changePage(int index) {
+  void _changePage(int index, AppUser currentUser) {
     setState(() {
       switch (index) {
         case 0:
           //Go to LoginPage
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const LoginPage()));
+          Navigator.of(context).pushNamed('login');
           break;
         case 1:
           //Go to CouponPage
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const CouponHomePage()));
+          Navigator.of(context).pushNamed('home', arguments: currentUser);
           break;
         case 2:
           //Go to SettingsPage
@@ -96,7 +100,7 @@ class _CouponHomePageState extends State<CouponHomePage> {
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: _changePage,
+                onTap: (val) => _changePage(val, widget.getCurrentUser()),
                 selectedItemColor: primaryGreen,
                 currentIndex: _pageIndex,
               ),
@@ -109,7 +113,7 @@ class _CouponHomePageState extends State<CouponHomePage> {
                     'There was an error or there are currently no coupons available'),
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: _changePage,
+                onTap: (val) => _changePage(val, widget.getCurrentUser()),
                 selectedItemColor: primaryGreen,
                 currentIndex: _pageIndex,
               ),
@@ -160,28 +164,8 @@ class _CouponHomePageState extends State<CouponHomePage> {
         couponsToCreate[Random().nextInt(couponsToCreate.length)], "1");
 
     if (await result) {
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const CouponHomePage()));
+      Navigator.of(context)
+          .pushNamed('home', arguments: widget.getCurrentUser());
     }
   }
-}
-
-class AlottaNavigationBar extends BottomNavigationBar {
-  static const List<BottomNavigationBarItem> _items = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.logout),
-      label: 'Logout',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
-  ];
-  AlottaNavigationBar({
-    super.key,
-    required super.onTap,
-    required super.selectedItemColor,
-    required super.currentIndex,
-  }) : super(items: _items);
 }

@@ -66,14 +66,12 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10.0)),
                   ),
                   onPressed: () async {
-                    if (await _userIsLoggedIn()) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const CouponHomePage(),
-                        ),
-                      );
+                    final AppUser user =
+                        await _verifyUserIsLoggedInAndGetUser();
+                    if (AppUserAccountType.UNKNOWN == user.accountType) {
+                      Navigator.of(context).pushNamed('error');
                     } else {
-                      print('Could not login with User ');
+                      Navigator.of(context).pushNamed('home', arguments: user);
                     }
                   },
                   child: const Text('Sign In'),
@@ -108,13 +106,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<bool> _userIsLoggedIn() async {
+  Future<AppUser> _verifyUserIsLoggedInAndGetUser() async {
     final AppUserService service = AppUserService();
     final AppUser expectedUserInfo = AppUser(
       username: usernameController.value.text,
       password: passwordController.value.text,
     );
     final AppUser? user = await service.getAppUser(expectedUserInfo);
-    return user != null && user.password == expectedUserInfo.password;
+    if (user != null && user.password == expectedUserInfo.password) {
+      return user;
+    }
+    return const AppUser();
   }
 }

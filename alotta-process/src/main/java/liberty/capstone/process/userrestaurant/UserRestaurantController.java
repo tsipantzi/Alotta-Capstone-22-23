@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/restaurants")
-
 public class UserRestaurantController {
     private final UserRestaurantService userRestaurantService;
     @GetMapping
@@ -37,6 +36,4 @@ public class UserRestaurantController {
         return Stream.of(userRestaurantService.saveRestaurant(userRestaurant))
         .map(UserRestaurant::getRestaurant).collect(Collectors.toList()).get(0);
     }
-    
-    
 }

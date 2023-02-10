@@ -3,6 +3,7 @@ class ApiConstants {
   static const String _restaurantParam = "/restaurant";
   static const String _couponParam = "/coupon";
   static const String _appUserParam = "/appuser";
+  static const String _userRestaurantsParam = "/user/restaurants";
 
   static String restaurantById(final String restaurantId) {
     return '$baseUrl$_restaurantParam/$restaurantId';
@@ -23,5 +24,9 @@ class ApiConstants {
 
   static String createAppUserUrl() {
     return '$baseUrl$_appUserParam';
+  }
+
+  static String restaurantsForUser(final String username) {
+    return '$baseUrl$_userRestaurantsParam?userName=$username';
   }
 }

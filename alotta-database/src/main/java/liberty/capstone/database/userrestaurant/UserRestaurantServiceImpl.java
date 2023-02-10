@@ -40,12 +40,14 @@ public class UserRestaurantServiceImpl implements UserRestaurantService {
             throw new IllegalArgumentException(String.format(COULD_NOT_FIND_USER,
                     userRestaurant.getAppUser().getUsername()));
         }
-        final var user = users.get(0).toDomainObject();
-        
-        final var restaurant = restaurantDao.save(new RestaurantEntity(userRestaurant.getRestaurant()))
-                .toDomainObject();
 
-        return new UserRestaurant(user, restaurant);
+        final var user = users.get(0);
+        
+        final var restaurant = restaurantDao.saveAndFlush(new RestaurantEntity(userRestaurant.getRestaurant()));
+
+        final var savedUserRestaurant = userRestaurantDao.saveAndFlush(new UserRestaurantEntity(user, restaurant));
+
+        return savedUserRestaurant.toDomainObject();
     }
 
     private UserRestaurant toUserRestaurantObject(final UserRestaurantEntity entity) {

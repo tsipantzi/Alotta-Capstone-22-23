@@ -12,8 +12,6 @@ class CreateAccountPage extends StatefulWidget {
   State<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-enum CreateUserType { consumer, creator }
-
 class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -21,8 +19,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  CreateUserType _userType = CreateUserType.consumer;
-  String userType = 'Consumer';
+  AppUserAccountType currentSelectedAccountType = AppUserAccountType.UNKNOWN;
 
   @override
   Widget build(BuildContext context) {
@@ -124,26 +121,25 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               children: <Widget>[
                 ListTile(
                   title: const Text('Coupon Consumer'),
-                  leading: Radio<CreateUserType>(
-                    value: CreateUserType.consumer,
-                    groupValue: _userType,
-                    onChanged: (CreateUserType? value) {
+                  leading: Radio<AppUserAccountType>(
+                    value: AppUserAccountType.CONSUMER,
+                    groupValue: currentSelectedAccountType,
+                    onChanged: (AppUserAccountType? value) {
                       setState(() {
-                        _userType = value!;
-                        userType = _assertUserType(_userType);
+                        currentSelectedAccountType =
+                            AppUserAccountType.CONSUMER;
                       });
                     },
                   ),
                 ),
                 ListTile(
                   title: const Text('Coupon Creator'),
-                  leading: Radio<CreateUserType>(
-                    value: CreateUserType.creator,
-                    groupValue: _userType,
-                    onChanged: (CreateUserType? value) {
+                  leading: Radio<AppUserAccountType>(
+                    value: AppUserAccountType.CREATOR,
+                    groupValue: currentSelectedAccountType,
+                    onChanged: (AppUserAccountType? value) {
                       setState(() {
-                        _userType = value!;
-                        userType = _assertUserType(_userType);
+                        currentSelectedAccountType = AppUserAccountType.CREATOR;
                       });
                     },
                   ),
@@ -182,23 +178,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       firstName: firstNameController.value.text,
       lastName: lastNameController.value.text,
       email: emailController.value.text,
-      accountType: userType,
+      accountType: currentSelectedAccountType,
       phoneNumber: '1111111111',
       zipcode: '12345',
     );
     print('Creating user with type $userToCreate');
     final AppUserService service = AppUserService();
     return await service.createAppUser(userToCreate);
-  }
-
-  String _assertUserType(CreateUserType? type) {
-    switch (type) {
-      case CreateUserType.consumer:
-        return 'Consumer';
-      case CreateUserType.creator:
-        return 'Creator';
-      default:
-        return 'Unknown';
-    }
   }
 }

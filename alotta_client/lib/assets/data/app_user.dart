@@ -9,7 +9,7 @@ class AppUser {
   final String firstName;
   final String lastName;
   final String email;
-  final String accountType;
+  final AppUserAccountType accountType;
   final String phoneNumber;
   final String zipcode;
 
@@ -19,7 +19,7 @@ class AppUser {
     this.firstName = '',
     this.lastName = '',
     this.email = '',
-    this.accountType = '',
+    this.accountType = AppUserAccountType.UNKNOWN,
     this.phoneNumber = '',
     this.zipcode = '',
   });
@@ -28,4 +28,14 @@ class AppUser {
       _$AppUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppUserToJson(this);
+}
+
+enum AppUserAccountType {
+  @JsonValue("consumer")
+  CONSUMER,
+  @JsonValue("creator")
+  CREATOR,
+  @JsonValue("admin")
+  ADMIN,
+  UNKNOWN
 }

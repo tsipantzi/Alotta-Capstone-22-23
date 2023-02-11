@@ -47,6 +47,7 @@ class _CouponHomePageState extends State<CouponHomePage> {
           break;
         case 2:
           //Go to SettingsPage
+          Navigator.of(context).pushNamed('settings', arguments: currentUser);
           break;
       }
     });

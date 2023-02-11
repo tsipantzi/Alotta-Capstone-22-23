@@ -15,15 +15,23 @@ public class AppUserController {
 
     @GetMapping
     public AppUser getExamplesByName(@RequestParam final String username) {
-        final var objectRecieved = appUserService.findExamplesByName(username);
-        log.warn("Got object from database as : {}", objectRecieved);
-        return objectRecieved.stream().findFirst().orElseThrow();
+        final var objectReceived = appUserService.findExamplesByName(username);
+        log.warn("Got object from database as : {}", objectReceived);
+        return objectReceived.stream().findFirst().orElseThrow();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public AppUser saveAppUser(@RequestBody final AppUser user) {
         final var objectSaved = appUserService.save(user);
         log.warn("Saved object into database as : {}", objectSaved);
         return objectSaved;
     }
+
+    @PostMapping("/update")
+    public AppUser updateAppUser(@RequestBody final AppUser user) {
+        final var objectSaved = appUserService.updateUser(user);
+        log.warn("Updated object into database as : {}", objectSaved);
+        return objectSaved;
+    }
+
 }

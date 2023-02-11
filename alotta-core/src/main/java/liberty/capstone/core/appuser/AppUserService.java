@@ -6,4 +6,6 @@ public interface AppUserService {
     List<AppUser> findExamplesByName(String username);
 
     AppUser save(AppUser user);
+
+    AppUser updateUser(AppUser user);
 }

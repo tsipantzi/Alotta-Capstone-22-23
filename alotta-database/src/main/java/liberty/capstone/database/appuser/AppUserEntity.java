@@ -34,6 +34,12 @@ public class AppUserEntity {
         this.zipcode = domainObject.getZipcode();
     }
 
+    public static AppUserEntity from(final Long id, final AppUser domainObject) {
+        final var entityToSave = new AppUserEntity(domainObject);
+        entityToSave.setId(id);
+        return entityToSave;
+    }
+
     public AppUser toDomainObject() {
         final AppUser domainUser = new AppUser();
         domainUser.setUsername(username);

@@ -29,4 +29,13 @@ public final class AppUserServiceImpl implements AppUserService {
         final var savedUserEntity = appUserDao.saveAndFlush(new AppUserEntity(user));
         return savedUserEntity.toDomainObject();
     }
+
+    @Override
+    public AppUser updateUser(final AppUser user) {
+        final var existingUserEntity = appUserDao.findByUsername(user.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException(String.format(
+                        "Could not find the User %s in the database", user.getUsername())));
+
+        return appUserDao.saveAndFlush(AppUserEntity.from(existingUserEntity.getId(), user)).toDomainObject();
+    }
 }

@@ -31,6 +31,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
           break;
         case 2:
           //Go to SettingsPage
+          Navigator.of(context).pushNamed('settings', arguments: currentUser);
           break;
       }
     });

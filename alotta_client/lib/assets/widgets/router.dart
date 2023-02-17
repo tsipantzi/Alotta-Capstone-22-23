@@ -51,7 +51,8 @@ class RouteGenerator {
           return _errorRoute();
         }
 
-      case 'newRestaurant':
+
+        case 'newRestaurantPage':
         {
           if (args is AppUser) {
             return MaterialPageRoute(

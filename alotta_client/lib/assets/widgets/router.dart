@@ -51,7 +51,7 @@ class RouteGenerator {
           return _errorRoute();
         }
 
-      case 'newRestaurant':
+        case 'newRestaurantPage':
         {
           if (args is AppUser) {
             return MaterialPageRoute(
@@ -59,6 +59,7 @@ class RouteGenerator {
           }
           return _errorRoute();
         }
+
       default:
         return MaterialPageRoute(builder: (context) => const LoginPage());
     }

@@ -44,7 +44,8 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                       alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
                           onPressed: () {
-                            () => _changePage(3, widget.currentUser);
+                            Navigator.of(context).pushNamed('newRestaurantPage',
+                                arguments: widget.currentUser);
                           },
                           child: const Text('Create Restaurant')))
                 ],
@@ -65,7 +66,8 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
                         onPressed: () {
-                          () => _changePage(3, widget.currentUser);
+                          Navigator.of(context).pushNamed('newRestaurantPage',
+                              arguments: widget.currentUser);
                         },
                         child: const Text('Create Restaurant')))
               ]),
@@ -94,9 +96,6 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
           //Go to SettingsPage
           Navigator.of(context).pushNamed('settings', arguments: currentUser);
           break;
-        case 3:
-          //Go to new restaurant page
-          Navigator.of(context).pushNamed('newRestaurant', arguments: currentUser);
       }
     });
   }

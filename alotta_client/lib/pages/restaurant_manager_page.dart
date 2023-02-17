@@ -1,5 +1,4 @@
 import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
@@ -17,25 +16,6 @@ class RestaurantManagerPage extends StatefulWidget {
 
 class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
   static const int _pageIndex = 1;
-
-  void _changePage(int index, AppUser currentUser) {
-    setState(() {
-      switch (index) {
-        case 0:
-          //Go to LoginPage
-          Navigator.of(context).pushNamed('login');
-          break;
-        case 1:
-          //Go to CouponPage
-          Navigator.of(context).pushNamed('home', arguments: currentUser);
-          break;
-        case 2:
-          //Go to SettingsPage
-          Navigator.of(context).pushNamed('settings', arguments: currentUser);
-          break;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +40,13 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                           .toList(),
                     ),
                   ),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            () => _changePage(3, widget.currentUser);
+                          },
+                          child: const Text('Create Restaurant')))
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
@@ -71,10 +58,17 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
           } else {
             return Scaffold(
               appBar: AlottaTitle(),
-              body: const Center(
-                child: Text(
+              body: ListView(children: <Widget>[
+                const Text(
                     'There was an error or there are currently no restaurants available'),
-              ),
+                Container(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          () => _changePage(3, widget.currentUser);
+                        },
+                        child: const Text('Create Restaurant')))
+              ]),
               bottomNavigationBar: AlottaNavigationBar(
                 onTap: (val) => _changePage(val, widget.currentUser),
                 selectedItemColor: primaryGreen,
@@ -83,5 +77,27 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
             );
           }
         });
+  }
+
+  void _changePage(int index, AppUser currentUser) {
+    setState(() {
+      switch (index) {
+        case 0:
+          //Go to LoginPage
+          Navigator.of(context).pushNamed('login');
+          break;
+        case 1:
+          //Go to CouponPage
+          Navigator.of(context).pushNamed('home', arguments: currentUser);
+          break;
+        case 2:
+          //Go to SettingsPage
+          Navigator.of(context).pushNamed('settings', arguments: currentUser);
+          break;
+        case 3:
+          //Go to new restaurant page
+          Navigator.of(context).pushNamed('newRestaurant', arguments: currentUser);
+      }
+    });
   }
 }

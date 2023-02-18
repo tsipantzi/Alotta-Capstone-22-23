@@ -37,5 +37,5 @@ enum AppUserAccountType {
   CREATOR,
   @JsonValue("admin")
   ADMIN,
-  UNKNOWN
+  UNKNOWN;
 }

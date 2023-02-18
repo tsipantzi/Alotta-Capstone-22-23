@@ -26,13 +26,13 @@ class AppUserService {
 
   Future<bool> createAppUser(final AppUser user) async {
     var url = Uri.parse(ApiConstants.createAppUserUrl());
-    log('Trying to create AppUser by username $user.username');
+    log('Trying to create AppUser by username ${user.username}');
     var response = await http.post(
       url,
       headers: header,
       body: jsonEncode(user.toJson()),
     );
-
+    log('Response was: ${response.body}');
     return response.statusCode == 200;
   }
 

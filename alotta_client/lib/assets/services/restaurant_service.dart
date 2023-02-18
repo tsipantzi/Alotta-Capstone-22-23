@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../data/restaurant.dart';
 import 'api_constants.dart';
@@ -8,7 +9,7 @@ import 'api_constants.dart';
 class RestaurantService {
   RestaurantService();
 
-  Future<List<Restaurant>?> getRestaurantsForUser(final String username) async {
+  Future<List<Restaurant>> getRestaurantsForUser(final String username) async {
     try {
       var url = Uri.parse(ApiConstants.restaurantsForUser(username));
       log('Trying to find restaurants by username $username');
@@ -21,7 +22,8 @@ class RestaurantService {
       log(e.toString());
     }
 
-    return null;
+    return Future.error(
+        ErrorDescription("Could not find restaurants for user"));
   }
 
   List<Restaurant> restuarantsFromJson(String body) {

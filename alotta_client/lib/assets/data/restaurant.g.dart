@@ -12,9 +12,8 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       aboutMe: json['aboutMe'] as String? ?? '',
       foodCategories: json['foodCategories'] as String? ?? '',
       email: json['email'] as String? ?? '',
-      maxCateringSizePerPerson:
-          json['maxCateringSizePerPerson'] as String? ?? '',
-      minimumNotice: json['minimumNotice'] as String? ?? '',
+      maxCateringSizePerPerson: json['maxCateringSizePerPerson'] as int? ?? 0,
+      minimumNotice: json['minimumNotice'] as int? ?? 0,
       zipCode: json['zipCode'] as String? ?? '',
     );
 

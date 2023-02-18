@@ -2,6 +2,7 @@ import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/pages/coupon_home_page.dart';
 import 'package:alotta_client/pages/create_account_page.dart';
 import 'package:alotta_client/pages/login_page.dart';
+import 'package:alotta_client/pages/new_restaurant_page.dart';
 import 'package:alotta_client/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +47,16 @@ class RouteGenerator {
           if (args is AppUser) {
             return MaterialPageRoute(
                 builder: (context) => SettingsPage(currentUser: args));
+          }
+          return _errorRoute();
+        }
+
+
+        case 'newRestaurantPage':
+        {
+          if (args is AppUser) {
+            return MaterialPageRoute(
+                builder: (context) => NewRestaurantPage(currentUser: args));
           }
           return _errorRoute();
         }

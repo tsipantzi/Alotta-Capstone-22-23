@@ -41,6 +41,11 @@ class MyApp extends StatelessWidget {
             ],
           ),
         ),
+        elevatedButtonTheme: const ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(primaryGreen),
+          ),
+        ),
       ),
     );
   }

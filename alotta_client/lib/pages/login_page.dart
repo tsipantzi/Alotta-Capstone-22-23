@@ -21,16 +21,9 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AlottaTitle(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.fromLTRB(10, 100, 10, 0),
         child: ListView(
           children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.fromLTRB(10, 30, 10, 40),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 25),
-                )),
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -87,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const CreateAccountPage()));
+                        builder: (context) => CreateAccountPage()));
                   },
                   child: const Text('Create Account'),
                 )),

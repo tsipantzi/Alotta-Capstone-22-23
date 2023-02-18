@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:alotta_client/assets/services/app_user_service.dart';
 import 'package:flutter/material.dart';
 
+import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 
 class SettingsPage extends StatefulWidget {
   final AppUser currentUser;
   const SettingsPage({super.key, required this.currentUser});
+  static const int pageIndex = 2;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -115,7 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Navigator.of(context)
                             .pushNamed('home', arguments: widget.currentUser);
                       } else {
-                        log('User was not created');
+                        log('User was not updated');
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -126,6 +128,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: const Text('Update Account'))),
           ],
         ),
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        selectedItemColor: primaryOrangeMaterialColor,
+        currentUser: widget.currentUser,
+        context: context,
+        currentIndex: SettingsPage.pageIndex,
       ),
     );
   }

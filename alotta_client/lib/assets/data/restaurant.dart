@@ -9,9 +9,10 @@ class Restaurant {
   final String aboutMe;
   final String foodCategories;
   final String email;
-  final String maxCateringSizePerPerson;
-  final String minimumNotice;
+  final int maxCateringSizePerPerson;
+  final int minimumNotice;
   final String zipCode;
+  final int numberOfActiveCoupons;
 
   Restaurant({
     this.name = '',
@@ -19,9 +20,10 @@ class Restaurant {
     this.aboutMe = '',
     this.foodCategories = '',
     this.email = '',
-    this.maxCateringSizePerPerson = '',
-    this.minimumNotice = '',
+    this.maxCateringSizePerPerson = 0,
+    this.minimumNotice = 0,
     this.zipCode = '',
+    this.numberOfActiveCoupons = 0,
   });
 
   factory Restaurant.fromJson(Map<String, dynamic> json) =>

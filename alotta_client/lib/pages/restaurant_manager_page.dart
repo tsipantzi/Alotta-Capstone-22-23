@@ -5,18 +5,18 @@ import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
 import '../assets/data/restaurant.dart';
 import '../assets/services/restaurant_service.dart';
+import '../assets/widgets/restaurant_card.dart';
 
 class RestaurantManagerPage extends StatefulWidget {
   final AppUser currentUser;
   const RestaurantManagerPage({super.key, required this.currentUser});
+  static const int pageIndex = 1;
 
   @override
   State<RestaurantManagerPage> createState() => _RestaurantManagerPageState();
 }
 
 class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
-  static const int _pageIndex = 1;
-
   @override
   Widget build(BuildContext context) {
     final RestaurantService restaurantService = RestaurantService();
@@ -35,70 +35,58 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                       children: snapshot.data!
                           .map(
                             (restaurant) =>
-                                Text('Found this restaurant $restaurant'),
+                                RestaurantCard(restaurant: restaurant),
                           )
                           .toList(),
                     ),
                   ),
                   Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed('newRestaurantPage',
-                                arguments: widget.currentUser);
-                          },
-                          child: const Text('Create Restaurant')))
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      style: Theme.of(context).elevatedButtonTheme.style,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('newRestaurantPage',
+                            arguments: widget.currentUser);
+                      },
+                      child: const Text('Create Restaurant'),
+                    ),
+                  ),
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: (val) => _changePage(val, widget.currentUser),
-                selectedItemColor: primaryGreen,
-                currentIndex: _pageIndex,
+                selectedItemColor: primaryOrangeMaterialColor,
+                currentUser: widget.currentUser,
+                context: context,
+                currentIndex: RestaurantManagerPage.pageIndex,
               ),
             );
           } else {
             return Scaffold(
               appBar: AlottaTitle(),
-              body: ListView(children: <Widget>[
-                const Text(
-                    'There was an error or there are currently no restaurants available'),
-                Container(
+              body: Stack(
+                children: [
+                  const Text("You currently have no restaurants attached to "
+                      "this account. Please add a restaurant."),
+                  Align(
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
-                        onPressed: () {
-
-                          Navigator.of(context).pushNamed('newRestaurantPage',
-                              arguments: widget.currentUser);
-                        },
-                        child: const Text('Create Restaurant')))
-              ]),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('newRestaurantPage',
+                            arguments: widget.currentUser);
+                      },
+                      child: const Text('Create Restaurant'),
+                    ),
+                  ),
+                ],
+              ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: (val) => _changePage(val, widget.currentUser),
-                selectedItemColor: primaryGreen,
-                currentIndex: _pageIndex,
+                selectedItemColor: primaryOrangeMaterialColor,
+                currentUser: widget.currentUser,
+                context: context,
+                currentIndex: RestaurantManagerPage.pageIndex,
               ),
             );
           }
         });
-  }
-
-  void _changePage(int index, AppUser currentUser) {
-    setState(() {
-      switch (index) {
-        case 0:
-          //Go to LoginPage
-          Navigator.of(context).pushNamed('login');
-          break;
-        case 1:
-          //Go to CouponPage
-          Navigator.of(context).pushNamed('home', arguments: currentUser);
-          break;
-        case 2:
-          //Go to SettingsPage
-          Navigator.of(context).pushNamed('settings', arguments: currentUser);
-          break;
-
-      }
-    });
   }
 }

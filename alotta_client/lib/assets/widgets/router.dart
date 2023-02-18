@@ -16,8 +16,7 @@ class RouteGenerator {
       case 'login':
         return MaterialPageRoute(builder: (context) => const LoginPage());
       case 'createAccount':
-        return MaterialPageRoute(
-            builder: (context) => const CreateAccountPage());
+        return MaterialPageRoute(builder: (context) => CreateAccountPage());
       case 'home':
         {
           if (args is AppUser) {

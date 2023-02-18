@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:alotta_client/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +8,8 @@ import '../assets/services/app_user_service.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 
 class CreateAccountPage extends StatefulWidget {
-  const CreateAccountPage({super.key});
+  final AppUserService service = AppUserService();
+  CreateAccountPage({super.key});
 
   @override
   State<CreateAccountPage> createState() => _CreateAccountPageState();
@@ -19,7 +22,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  AppUserAccountType currentSelectedAccountType = AppUserAccountType.UNKNOWN;
+  AppUserAccountType currentSelectedAccountType = AppUserAccountType.CONSUMER;
 
   @override
   Widget build(BuildContext context) {
@@ -153,10 +156,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     onPressed: () async {
                       // Create account ...
                       if (await _createUser()) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                        Navigator.of(context).pushNamed('login');
                       } else {
-                        print('User was not created');
+                        log('User was not created');
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -182,8 +184,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       phoneNumber: '1111111111',
       zipcode: '12345',
     );
-    print('Creating user with type $userToCreate');
-    final AppUserService service = AppUserService();
-    return await service.createAppUser(userToCreate);
+    log('Creating user with type $userToCreate');
+    return await widget.service.createAppUser(userToCreate);
   }
 }

@@ -15,6 +15,7 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController pwTestController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -63,7 +64,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
+                controller: pwTestController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
@@ -152,11 +153,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: ElevatedButton(
                     onPressed: () async {
                       // Create account ...
-                      if (await _createUser()) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                      if (passwordController.value.text ==
+                          pwTestController.value.text) {
+                        if (await _createUser()) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
+                        } else {
+                          print('User was not created');
+                        }
                       } else {
-                        print('User was not created');
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Passwords do not match"),
+                          behavior: SnackBarBehavior.floating,
+                        ));
                       }
                     },
                     style: ElevatedButton.styleFrom(

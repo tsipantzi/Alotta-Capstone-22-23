@@ -16,6 +16,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController passwordController = TextEditingController();
+  TextEditingController pwTestController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -24,6 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     passwordController.text = widget.currentUser.password;
+    pwTestController.text = widget.currentUser.password;
     firstNameController.text = widget.currentUser.firstName;
     lastNameController.text = widget.currentUser.lastName;
     emailController.text = widget.currentUser.email;
@@ -55,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
+                controller: pwTestController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
@@ -111,11 +113,20 @@ class _SettingsPageState extends State<SettingsPage> {
                     onPressed: () async {
                       var updatedAppUser = await _updateUser();
                       // Create account ...
-                      if (updatedAppUser != null) {
-                        Navigator.of(context)
-                            .pushNamed('home', arguments: widget.currentUser);
+                      if (passwordController.value.text ==
+                          pwTestController.value.text) {
+                        if (updatedAppUser != null) {
+                          Navigator.of(context)
+                              .pushNamed('home', arguments: widget.currentUser);
+                        } else {
+                          log('User was not created');
+                        }
                       } else {
-                        log('User was not created');
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Passwords do not match"),
+                          behavior: SnackBarBehavior.floating,
+                        ));
                       }
                     },
                     style: ElevatedButton.styleFrom(

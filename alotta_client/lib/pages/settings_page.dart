@@ -119,7 +119,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Navigator.of(context)
                               .pushNamed('home', arguments: widget.currentUser);
                         } else {
-                          log('User was not created');
+                          log('User was not updated');
                         }
                       } else {
                         ScaffoldMessenger.of(context)

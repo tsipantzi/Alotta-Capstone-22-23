@@ -33,4 +33,13 @@ class RestaurantService {
     return List.from(
         restaurantIterable.map((json) => Restaurant.fromJson(json)));
   }
+
+  Future<Restaurant?> updateRestaurant(Restaurant restaurantToUpdate) async {
+    try {
+      log('Updating the Restaurant for the user is not yet implemented');
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 }

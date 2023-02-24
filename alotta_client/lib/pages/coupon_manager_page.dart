@@ -39,9 +39,16 @@ class CouponManagerPage extends StatelessWidget {
             Text("Minimum Notice: ${currentRestaurant.minimumNotice}"),
             Text(
                 "Number of Active Coupons: ${currentRestaurant.numberOfActiveCoupons}"),
+                        //Need to add arguments once users is working
+                      ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('newCouponPage');
+                      },
+                      child: const Text('Create Coupon'),
+                    ),
           ],
         ),
-      ),
+),
       bottomNavigationBar: AlottaNavigationBar(
         selectedItemColor: primaryOrangeMaterialColor,
         currentUser: const AppUser(),

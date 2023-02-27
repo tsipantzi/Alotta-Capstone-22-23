@@ -28,17 +28,29 @@ class CouponManagerPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text(currentRestaurant.name),
-            Text(currentRestaurant.phoneNumber),
-            Text(currentRestaurant.email),
-            Text(currentRestaurant.aboutMe),
-            Text("Zip Code: ${currentRestaurant.zipCode}"),
-            Text("Categoies: ${currentRestaurant.foodCategories}"),
-            Text(
-                "Max Catering Size: ${currentRestaurant.maxCateringSizePerPerson}"),
-            Text("Minimum Notice: ${currentRestaurant.minimumNotice}"),
-            Text(
-                "Number of Active Coupons: ${currentRestaurant.numberOfActiveCoupons}"),
+            Container(
+                padding: const EdgeInsets.all(15),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(currentRestaurant.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Text(currentRestaurant.phoneNumber),
+                    Text(currentRestaurant.email),
+                    Text("Zip Code: ${currentRestaurant.zipCode}"),
+                    Text("Categories: ${currentRestaurant.foodCategories}"),
+                    Text(
+                        "Max Catering Size: ${currentRestaurant.maxCateringSizePerPerson}"),
+                    Text("Minimum Notice: ${currentRestaurant.minimumNotice}"),
+                    Text(
+                        "Number of Active Coupons: ${currentRestaurant.numberOfActiveCoupons}"),
+                    Text(currentRestaurant.aboutMe),
+                  ],
+                ))
           ],
         ),
       ),

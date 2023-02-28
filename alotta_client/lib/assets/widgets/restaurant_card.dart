@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:alotta_client/assets/data/restaurant.dart';
 import 'package:flutter/material.dart';
 
+import '../colors/colors.dart';
+
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
 
@@ -41,10 +43,50 @@ class RestaurantCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
+                        flex: 2,
+                        child: Align(
+                          alignment: const Alignment(.9, -.7),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromRGBO(
+                                      215, 84, 47, 0.9019607843137255),
+                                  spreadRadius: 2,
+                                  blurRadius: 1,
+                                  offset: Offset(0, 0),
+                                  blurStyle: BlurStyle.inner,
+                                ),
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                    'editRestaurantPage',
+                                    arguments: restaurant);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(5.0),
+                                backgroundColor: primaryCream,
+                              ),
+                              child: const Icon(
+                                Icons.settings,
+                                color: primaryOrangeMaterialColor,
+                                size: 32.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 0,
                         child: Text(
                           style: Theme.of(context).primaryTextTheme.bodyText1,
                           restaurant.name,

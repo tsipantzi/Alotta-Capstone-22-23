@@ -22,6 +22,8 @@ class RestaurantCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           onTap: () {
             log("Was tapped");
+            Navigator.of(context)
+                .pushNamed('couponManagerPage', arguments: restaurant);
           },
           child: SizedBox(
             height: 250,

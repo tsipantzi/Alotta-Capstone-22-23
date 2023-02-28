@@ -1,0 +1,65 @@
+import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:flutter/material.dart';
+
+import '../assets/colors/colors.dart';
+import '../assets/data/app_user.dart';
+import '../assets/data/restaurant.dart';
+
+class CouponManagerPage extends StatelessWidget {
+  // final AppUser currentUser;
+  final Restaurant currentRestaurant;
+  const CouponManagerPage({super.key, required this.currentRestaurant});
+  static const int pageIndex = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              height: 250,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/restaurant_placeholder.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Container(
+                padding: const EdgeInsets.all(15),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(currentRestaurant.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Text(currentRestaurant.phoneNumber),
+                    Text(currentRestaurant.email),
+                    Text("Zip Code: ${currentRestaurant.zipCode}"),
+                    Text("Categories: ${currentRestaurant.foodCategories}"),
+                    Text(
+                        "Max Catering Size: ${currentRestaurant.maxCateringSizePerPerson}"),
+                    Text("Minimum Notice: ${currentRestaurant.minimumNotice}"),
+                    Text(
+                        "Number of Active Coupons: ${currentRestaurant.numberOfActiveCoupons}"),
+                    Text(currentRestaurant.aboutMe),
+                  ],
+                ))
+          ],
+        ),
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        selectedItemColor: primaryOrangeMaterialColor,
+        currentUser: const AppUser(),
+        context: context,
+        currentIndex: CouponManagerPage.pageIndex,
+      ),
+    );
+  }
+}

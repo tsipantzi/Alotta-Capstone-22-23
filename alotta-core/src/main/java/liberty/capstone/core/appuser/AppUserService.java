@@ -3,9 +3,8 @@ package liberty.capstone.core.appuser;
 import java.util.List;
 
 public interface AppUserService {
-    List<AppUser> findExamplesByName(String username);
+    AppUser findAppUserByUsernameAndPassword(String username, String password);
 
-    AppUser save(AppUser user);
-
-    AppUser updateUser(AppUser user);
+    AppUser createAppUser(AppUser user);
+    AppUser updateAppUser(AppUser user);
 }

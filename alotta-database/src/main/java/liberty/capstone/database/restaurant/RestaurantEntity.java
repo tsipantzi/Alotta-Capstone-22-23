@@ -9,12 +9,14 @@ import javax.persistence.*;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Data
 @Table(name = "Restaurant")
 @NoArgsConstructor
 public class RestaurantEntity {
+    private final static Long MIN_VALUE = 10000000L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +35,10 @@ public class RestaurantEntity {
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
 
     public RestaurantEntity(final Restaurant restaurant) {
+        this.id = restaurant.getId() != null
+                ? restaurant.getId()
+                : new Random().nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+
         this.name = restaurant.getName();
         this.phoneNumber = restaurant.getPhoneNumber();
         this.aboutMe = restaurant.getAboutMe();
@@ -45,6 +51,7 @@ public class RestaurantEntity {
 
     public Restaurant toDomainObject() {
         final Restaurant domainRestaurant = new Restaurant();
+        domainRestaurant.setId(id);
         domainRestaurant.setName(name);
         domainRestaurant.setPhoneNumber(phoneNumber);
         domainRestaurant.setAboutMe(aboutMe);

@@ -1,16 +1,16 @@
 import 'dart:developer';
 
-import 'package:alotta_client/assets/data/restaurant.dart';
+import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:flutter/material.dart';
 
 import '../colors/colors.dart';
 
 class RestaurantCard extends StatelessWidget {
-  final Restaurant restaurant;
+  final UserRestaurant userRestaurant;
 
   const RestaurantCard({
     super.key,
-    required this.restaurant,
+    required this.userRestaurant,
   });
 
   @override
@@ -23,7 +23,7 @@ class RestaurantCard extends StatelessWidget {
           onTap: () {
             log("Was tapped");
             Navigator.of(context)
-                .pushNamed('couponManagerPage', arguments: restaurant);
+                .pushNamed('couponManagerPage', arguments: userRestaurant);
           },
           child: SizedBox(
             height: 250,
@@ -70,7 +70,7 @@ class RestaurantCard extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pushNamed(
                                     'editRestaurantPage',
-                                    arguments: restaurant);
+                                    arguments: userRestaurant);
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
@@ -91,28 +91,28 @@ class RestaurantCard extends StatelessWidget {
                         flex: 0,
                         child: Text(
                           style: Theme.of(context).primaryTextTheme.bodyText1,
-                          restaurant.name,
+                          userRestaurant.restaurant.name,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
                           style: Theme.of(context).primaryTextTheme.bodyText1,
-                          restaurant.zipCode,
+                          userRestaurant.restaurant.zipCode,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
                           style: Theme.of(context).primaryTextTheme.bodyText1,
-                          restaurant.email,
+                          userRestaurant.restaurant.email,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
                           style: Theme.of(context).primaryTextTheme.bodyText1,
-                          "Active coupons: ${restaurant.numberOfActiveCoupons}",
+                          "Active coupons: ${userRestaurant.restaurant.numberOfActiveCoupons}",
                           overflow: TextOverflow.visible,
                         ),
                       ),

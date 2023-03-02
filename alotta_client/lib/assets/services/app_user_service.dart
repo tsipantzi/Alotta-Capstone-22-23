@@ -12,7 +12,8 @@ class AppUserService {
 
   Future<AppUser?> getAppUser(final AppUser user) async {
     try {
-      var url = Uri.parse(ApiConstants.appUserUrl(user.username));
+      var url =
+          Uri.parse(ApiConstants.getAppUserUrl(user.username, user.password));
       log('Trying to find AppUser by username $user.username');
       var response = await http.get(url);
       if (response.statusCode == 200) {
@@ -54,7 +55,7 @@ class AppUserService {
   }
 
   Future<AppUser?> appUserFromJson(String body) async {
-    print('Got JSON Body $body');
+    log('Got JSON Body $body');
     var json = jsonDecode(body);
     return AppUser.fromJson(json);
   }

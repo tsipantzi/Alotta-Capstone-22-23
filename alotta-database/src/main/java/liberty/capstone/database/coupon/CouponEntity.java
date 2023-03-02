@@ -9,12 +9,14 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Data
 @Table(name = "Coupon")
 @NoArgsConstructor
 public class CouponEntity {
+    private final static Long MIN_VALUE = 10000000L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,6 +36,10 @@ public class CouponEntity {
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
 
     public CouponEntity(final Coupon domainObject) {
+        this.id = domainObject.getId() != null
+                ? domainObject.getId()
+                : new Random().nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+
         this.title = domainObject.getTitle();
         this.couponType = domainObject.getCouponType();
         this.percentageOff = domainObject.getPercentageOff();
@@ -49,6 +55,7 @@ public class CouponEntity {
 
     public Coupon toDomainObject() {
         final Coupon domainObject = new Coupon();
+        domainObject.setId(domainObject.getId());
         domainObject.setTitle(domainObject.getTitle());
         domainObject.setCouponType(domainObject.getCouponType());
         domainObject.setPercentageOff(domainObject.getPercentageOff());

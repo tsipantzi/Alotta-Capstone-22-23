@@ -1,6 +1,5 @@
 package liberty.capstone.process.userrestaurant;
 
-import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.userrestaurant.UserRestaurant;
 import liberty.capstone.core.userrestaurant.UserRestaurantService;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Slf4j
@@ -20,20 +18,18 @@ import java.util.stream.Stream;
 public class UserRestaurantController {
     private final UserRestaurantService userRestaurantService;
     @GetMapping
-    public List<Restaurant> getRestaurantsForUser(@RequestParam final String userName) {
-        return userRestaurantService.getRestaurantsByUsername(userName).stream()
+    public List<Restaurant> getRestaurantsForUser(@RequestParam final Long userId) {
+        return userRestaurantService.getRestaurantsForUserByUserId(userId).stream()
             .map(UserRestaurant::getRestaurant).collect(Collectors.toList());
     }
     
     @PostMapping
-    public Restaurant saveRestaurantForUser(@RequestParam final String userName,
-                                            @RequestBody final Restaurant restaurant) {
-        final AppUser appUser = new AppUser();
-        appUser.setUsername(userName);
+    public UserRestaurant saveRestaurantForUser(@RequestBody final UserRestaurant userRestaurant) {
+        return userRestaurantService.saveRestaurant(userRestaurant);
+    }
 
-        final UserRestaurant userRestaurant = new UserRestaurant(appUser, restaurant);
-
-        return Stream.of(userRestaurantService.saveRestaurant(userRestaurant))
-        .map(UserRestaurant::getRestaurant).collect(Collectors.toList()).get(0);
+    @PutMapping
+    public UserRestaurant updateRestaurantForUser(@RequestBody final UserRestaurant userRestaurant) {
+        return userRestaurantService.updateRestaurant(userRestaurant);
     }
 }

@@ -5,15 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Random;
+import java.util.UUID;
+import java.util.random.RandomGenerator;
 
 @Entity
 @Data
 @Table(name = "AppUser")
 @NoArgsConstructor
 public class AppUserEntity {
+    private final static Long MIN_VALUE = 10000000L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String accountType;
@@ -24,6 +29,10 @@ public class AppUserEntity {
     private String zipcode;
 
     public AppUserEntity(final AppUser domainObject) {
+        this.id = domainObject.getId() != null
+                ? domainObject.getId()
+                : new Random().nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+
         this.username = domainObject.getUsername();
         this.password = domainObject.getPassword();
         this.accountType = domainObject.getAccountType();
@@ -34,14 +43,9 @@ public class AppUserEntity {
         this.zipcode = domainObject.getZipcode();
     }
 
-    public static AppUserEntity from(final Long id, final AppUser domainObject) {
-        final var entityToSave = new AppUserEntity(domainObject);
-        entityToSave.setId(id);
-        return entityToSave;
-    }
-
     public AppUser toDomainObject() {
         final AppUser domainUser = new AppUser();
+        domainUser.setId(id);
         domainUser.setUsername(username);
         domainUser.setPassword(password);
         domainUser.setAccountType(accountType);

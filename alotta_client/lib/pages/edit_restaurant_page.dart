@@ -1,16 +1,16 @@
 import 'dart:developer';
 
+import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../assets/colors/colors.dart';
 import '../assets/data/restaurant.dart';
 import '../assets/services/restaurant_service.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 
 class EditRestaurantPage extends StatefulWidget {
-  final Restaurant restaurant;
-  const EditRestaurantPage({super.key, required this.restaurant});
+  final UserRestaurant userRestaurant;
+  const EditRestaurantPage({super.key, required this.userRestaurant});
 
   @override
   State<EditRestaurantPage> createState() => _EditRestaurantPage();
@@ -29,16 +29,16 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
   @override
   void initState() {
     super.initState();
-    restaurantName.text = widget.restaurant.name;
-    phoneNumber.text = widget.restaurant.phoneNumber;
-    aboutMe.text = widget.restaurant.aboutMe;
-    foodCategories.text = widget.restaurant.foodCategories;
-    email.text = widget.restaurant.email;
+    restaurantName.text = widget.userRestaurant.restaurant.name;
+    phoneNumber.text = widget.userRestaurant.restaurant.phoneNumber;
+    aboutMe.text = widget.userRestaurant.restaurant.aboutMe;
+    foodCategories.text = widget.userRestaurant.restaurant.foodCategories;
+    email.text = widget.userRestaurant.restaurant.email;
     maxCateringSizePerPerson.text =
-        widget.restaurant.maxCateringSizePerPerson.toString();
+        widget.userRestaurant.restaurant.maxCateringSizePerPerson.toString();
     minimumDayNoticeForCatering.text =
-        widget.restaurant.minimumNotice.toString();
-    zipCode.text = widget.restaurant.zipCode;
+        widget.userRestaurant.restaurant.minimumNotice.toString();
+    zipCode.text = widget.userRestaurant.restaurant.zipCode;
   }
 
   @override
@@ -158,7 +158,7 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      _updateRestaurant();
+                      _updateRestaurant(widget.userRestaurant);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4D9F6B),
@@ -172,8 +172,10 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
     );
   }
 
-  Future<Restaurant?> _updateRestaurant() async {
+  Future<UserRestaurant?> _updateRestaurant(
+      UserRestaurant userRestaurant) async {
     final Restaurant restaurantToUpdate = Restaurant(
+      id: userRestaurant.restaurant.id,
       name: restaurantName.value.text,
       phoneNumber: phoneNumber.value.text,
       aboutMe: aboutMe.value.text,
@@ -183,8 +185,13 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
       minimumNotice: int.parse(minimumDayNoticeForCatering.value.text),
       zipCode: zipCode.value.text,
     );
+
     log('Updating restaurant ${restaurantToUpdate.name}');
     final RestaurantService service = RestaurantService();
-    return await service.updateRestaurant(restaurantToUpdate);
+
+    UserRestaurant userRestaurantRequest = UserRestaurant(
+        restaurant: restaurantToUpdate, user: userRestaurant.user);
+
+    return await service.updateRestaurant(userRestaurantRequest);
   }
 }

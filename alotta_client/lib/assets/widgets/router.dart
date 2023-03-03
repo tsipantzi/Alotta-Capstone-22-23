@@ -2,14 +2,14 @@ import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:alotta_client/pages/coupon_home_page.dart';
 import 'package:alotta_client/pages/create_account_page.dart';
+import 'package:alotta_client/pages/create_coupon_page.dart';
+import 'package:alotta_client/pages/create_restaurant_page.dart';
 import 'package:alotta_client/pages/login_page.dart';
-import 'package:alotta_client/pages/new_restaurant_page.dart';
 import 'package:alotta_client/pages/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:alotta_client/pages/new_coupon_page.dart';
 
-import '../../pages/edit_restaurant_page.dart';
 import '../../pages/coupon_manager_page.dart';
+import '../../pages/edit_restaurant_page.dart';
 import '../../pages/restaurant_manager_page.dart';
 import '../data/restaurant.dart';
 
@@ -55,11 +55,11 @@ class RouteGenerator {
           return _errorRoute();
         }
 
-      case 'newRestaurantPage':
+      case 'createRestaurantPage':
         {
           if (args is AppUser) {
             return MaterialPageRoute(
-                builder: (context) => NewRestaurantPage(currentUser: args));
+                builder: (context) => CreateRestaurantPage(currentUser: args));
           }
           return _errorRoute();
         }
@@ -85,7 +85,8 @@ class RouteGenerator {
 
       case 'newCouponPage':
         {
-          return MaterialPageRoute(builder: (context) => const NewCouponPage());
+          return MaterialPageRoute(
+              builder: (context) => const CreateCouponPage());
         }
 
       default:

@@ -40,7 +40,7 @@ public class CouponEntity {
 
     @SuppressWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     public CouponEntity(final Coupon domainObject) {
-        this.id = domainObject.getId() != null
+        this.id = domainObject.getId() != null && domainObject.getId() != 0
                 ? domainObject.getId()
                 : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 

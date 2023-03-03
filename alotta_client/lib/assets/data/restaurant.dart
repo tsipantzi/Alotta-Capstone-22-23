@@ -4,7 +4,7 @@ part 'restaurant.g.dart';
 
 @JsonSerializable()
 class Restaurant {
-  final double id;
+  final int id;
   final String name;
   final String phoneNumber;
   final String aboutMe;

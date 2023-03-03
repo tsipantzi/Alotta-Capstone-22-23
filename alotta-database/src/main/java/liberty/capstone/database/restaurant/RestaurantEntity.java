@@ -6,17 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 @Data
 @Table(name = "Restaurant")
 @NoArgsConstructor
 public class RestaurantEntity {
-    private final static Long MIN_VALUE = 10000000L;
+    @org.springframework.data.annotation.Transient
+    private static final Long MIN_VALUE = 10000000L;
+    @org.springframework.data.annotation.Transient
+    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,7 +40,7 @@ public class RestaurantEntity {
     public RestaurantEntity(final Restaurant restaurant) {
         this.id = restaurant.getId() != null
                 ? restaurant.getId()
-                : new Random().nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 
         this.name = restaurant.getName();
         this.phoneNumber = restaurant.getPhoneNumber();

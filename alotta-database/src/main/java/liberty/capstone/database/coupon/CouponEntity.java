@@ -6,17 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 @Data
 @Table(name = "Coupon")
 @NoArgsConstructor
 public class CouponEntity {
-    private final static Long MIN_VALUE = 10000000L;
+    @org.springframework.data.annotation.Transient
+    private static final Long MIN_VALUE = 10000000L;
+    @org.springframework.data.annotation.Transient
+    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,10 +38,11 @@ public class CouponEntity {
     @OneToMany(mappedBy = "coupon")
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
 
+    @SuppressWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     public CouponEntity(final Coupon domainObject) {
         this.id = domainObject.getId() != null
                 ? domainObject.getId()
-                : new Random().nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 
         this.title = domainObject.getTitle();
         this.couponType = domainObject.getCouponType();

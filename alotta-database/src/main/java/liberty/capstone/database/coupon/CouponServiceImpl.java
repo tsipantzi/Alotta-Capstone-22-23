@@ -33,7 +33,10 @@ public class CouponServiceImpl implements CouponService {
         final var restaurant = restaurantDao.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant Does not exist"));
 
-        final var foundCoupon = couponDao.findById(coupon.getId()).orElse(new CouponEntity(coupon));
+
+        final var foundCoupon = coupon.getId() != null
+                ? couponDao.findById(coupon.getId()).orElse(new CouponEntity(coupon))
+                : new CouponEntity(coupon);
 
         final var savedCoupon = couponDao.saveAndFlush(foundCoupon);
 

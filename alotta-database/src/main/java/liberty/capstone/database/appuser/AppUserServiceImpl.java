@@ -1,14 +1,10 @@
 package liberty.capstone.database.appuser;
 
+import liberty.capstone.core.appuser.AppUser;
+import liberty.capstone.core.appuser.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import liberty.capstone.core.appuser.AppUser;
-import liberty.capstone.core.appuser.AppUserService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,7 +26,7 @@ public final class AppUserServiceImpl implements AppUserService {
             throw new IllegalArgumentException("Found an existing user that username so a new user cannot be created");
         }
 
-        AppUserEntity entityToSave = generateUniqueUserId(user);
+        final AppUserEntity entityToSave = generateUniqueUserId(user);
 
         return appUserDao.saveAndFlush(entityToSave).toDomainObject();
     }
@@ -44,11 +40,11 @@ public final class AppUserServiceImpl implements AppUserService {
     }
 
 
-
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private AppUserEntity generateUniqueUserId(final AppUser user) {
         AppUserEntity desiredEntityWithGeneratedId = new AppUserEntity(user);
 
-        while(appUserDao.findById(desiredEntityWithGeneratedId.getId()).isPresent()) {
+        while (appUserDao.findById(desiredEntityWithGeneratedId.getId()).isPresent()) {
             desiredEntityWithGeneratedId = new AppUserEntity(user);
         }
 

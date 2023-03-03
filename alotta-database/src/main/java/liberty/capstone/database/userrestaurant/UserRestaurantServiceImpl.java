@@ -7,7 +7,6 @@ import liberty.capstone.database.appuser.AppUserEntity;
 import liberty.capstone.database.restaurant.RestaurantEntity;
 import liberty.capstone.database.restaurant.RestaurantEntityDao;
 import lombok.RequiredArgsConstructor;
-import org.h2.engine.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

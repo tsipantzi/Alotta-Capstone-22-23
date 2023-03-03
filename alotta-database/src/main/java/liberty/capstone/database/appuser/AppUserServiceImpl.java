@@ -1,14 +1,10 @@
 package liberty.capstone.database.appuser;
 
+import liberty.capstone.core.appuser.AppUser;
+import liberty.capstone.core.appuser.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import liberty.capstone.core.appuser.AppUser;
-import liberty.capstone.core.appuser.AppUserService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -17,25 +13,41 @@ public final class AppUserServiceImpl implements AppUserService {
     private final AppUserDao appUserDao;
 
     @Override
-    public List<AppUser> findExamplesByName(final String name) {
-        return appUserDao.findAllByUsername(name)
-                .stream()
-                .map(AppUserEntity::toDomainObject)
-                .collect(Collectors.toList());
+    public AppUser findAppUserByUsernameAndPassword(final String username, final String password) {
+        return appUserDao.findByUsernameAndPassword(username, password)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Could not find a user with the username and password specified"))
+                .toDomainObject();
     }
 
     @Override
-    public AppUser save(final AppUser user) {
-        final var savedUserEntity = appUserDao.saveAndFlush(new AppUserEntity(user));
-        return savedUserEntity.toDomainObject();
+    public AppUser createAppUser(final AppUser user) {
+        if (appUserDao.findByUsername(user.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Found an existing user that username so a new user cannot be created");
+        }
+
+        final AppUserEntity entityToSave = generateUniqueUserId(user);
+
+        return appUserDao.saveAndFlush(entityToSave).toDomainObject();
     }
 
     @Override
-    public AppUser updateUser(final AppUser user) {
-        final var existingUserEntity = appUserDao.findByUsername(user.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException(String.format(
-                        "Could not find the User %s in the database", user.getUsername())));
+    public AppUser updateAppUser(final AppUser user) {
+        appUserDao.findById(user.getId()).orElseThrow(() ->
+                new IllegalArgumentException("Could not find a user with the specified Id"));
 
-        return appUserDao.saveAndFlush(AppUserEntity.from(existingUserEntity.getId(), user)).toDomainObject();
+        return appUserDao.saveAndFlush(new AppUserEntity(user)).toDomainObject();
+    }
+
+
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    private AppUserEntity generateUniqueUserId(final AppUser user) {
+        AppUserEntity desiredEntityWithGeneratedId = new AppUserEntity(user);
+
+        while (appUserDao.findById(desiredEntityWithGeneratedId.getId()).isPresent()) {
+            desiredEntityWithGeneratedId = new AppUserEntity(user);
+        }
+
+        return desiredEntityWithGeneratedId;
     }
 }

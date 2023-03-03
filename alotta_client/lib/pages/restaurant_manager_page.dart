@@ -1,11 +1,12 @@
+import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:alotta_client/assets/widgets/restaurant_card.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
 import '../assets/data/restaurant.dart';
 import '../assets/services/restaurant_service.dart';
-import '../assets/widgets/restaurant_card.dart';
 
 class RestaurantManagerPage extends StatefulWidget {
   final AppUser currentUser;
@@ -23,7 +24,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
 
     return FutureBuilder<List<Restaurant>?>(
         future: restaurantService
-            .getRestaurantsForUser(widget.currentUser.username),
+            .getRestaurantsForUserByUserId(widget.currentUser.id),
         builder: (context, AsyncSnapshot<List<Restaurant>?> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -34,8 +35,11 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                     child: ListView(
                       children: snapshot.data!
                           .map(
-                            (restaurant) =>
-                                RestaurantCard(restaurant: restaurant),
+                            (restaurant) => RestaurantCard(
+                              userRestaurant: UserRestaurant(
+                                  user: widget.currentUser,
+                                  restaurant: restaurant),
+                            ),
                           )
                           .toList(),
                     ),

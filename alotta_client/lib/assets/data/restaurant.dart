@@ -4,6 +4,7 @@ part 'restaurant.g.dart';
 
 @JsonSerializable()
 class Restaurant {
+  final double id;
   final String name;
   final String phoneNumber;
   final String aboutMe;
@@ -14,7 +15,8 @@ class Restaurant {
   final String zipCode;
   final int numberOfActiveCoupons;
 
-  Restaurant({
+  const Restaurant({
+    this.id = 0,
     this.name = '',
     this.phoneNumber = '',
     this.aboutMe = '',

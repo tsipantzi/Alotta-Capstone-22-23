@@ -7,6 +7,7 @@ part of 'coupon.dart';
 // **************************************************************************
 
 Coupon _$CouponFromJson(Map<String, dynamic> json) => Coupon(
+      id: (json['id'] as num?)?.toDouble() ?? 0,
       title: json['title'] as String? ?? '',
       description: json['couponInfo'] as String? ?? '',
       discount: (json['percentageOff'] as num?)?.toDouble() ?? 0,
@@ -16,6 +17,7 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) => Coupon(
     );
 
 Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'couponInfo': instance.description,
       'percentageOff': instance.discount,

@@ -1,4 +1,5 @@
 import 'package:alotta_client/assets/data/app_user.dart';
+import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:alotta_client/pages/coupon_home_page.dart';
 import 'package:alotta_client/pages/create_account_page.dart';
 import 'package:alotta_client/pages/login_page.dart';
@@ -65,9 +66,9 @@ class RouteGenerator {
 
       case 'editRestaurantPage':
         {
-          if (args is Restaurant) {
+          if (args is UserRestaurant) {
             return MaterialPageRoute(
-                builder: (context) => EditRestaurantPage(restaurant: args));
+                builder: (context) => EditRestaurantPage(userRestaurant: args));
           }
           return _errorRoute();
         }
@@ -76,9 +77,8 @@ class RouteGenerator {
         {
           if (args is Restaurant) {
             return MaterialPageRoute(
-                builder: (context) => CouponManagerPage(
-                      currentRestaurant: args,
-                    ));
+                builder: (context) =>
+                    CouponManagerPage(currentRestaurant: args));
           }
           return _errorRoute();
         }

@@ -158,7 +158,13 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      _updateRestaurant(widget.userRestaurant);
+                      final UserRestaurant? updatedUserRestaurant =
+                          await _updateRestaurant(widget.userRestaurant);
+
+                      if (updatedUserRestaurant != null) {
+                        Navigator.of(context).pushNamed('home',
+                            arguments: widget.userRestaurant.appUser);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4D9F6B),

@@ -13,7 +13,7 @@ class RestaurantService {
   static Map<String, String> header = {"Content-Type": "application/json"};
 
   Future<List<Restaurant>> getRestaurantsForUserByUserId(
-      final double userId) async {
+      final int userId) async {
     try {
       var url = Uri.parse(ApiConstants.getRestaurantsForUserUrl(userId));
       log('Trying to find restaurants for user');

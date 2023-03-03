@@ -7,7 +7,7 @@ part 'coupon.g.dart';
 @JsonSerializable()
 class Coupon {
   static final _defaultDate = DateTime(0);
-  final double id;
+  final int id;
   final String title;
   @JsonKey(name: 'couponInfo')
   final String description;

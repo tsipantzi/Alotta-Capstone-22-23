@@ -37,7 +37,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                           .map(
                             (restaurant) => RestaurantCard(
                               userRestaurant: UserRestaurant(
-                                  user: widget.currentUser,
+                                  appUser: widget.currentUser,
                                   restaurant: restaurant),
                             ),
                           )

@@ -1,6 +1,5 @@
 package liberty.capstone.database.appuser;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import liberty.capstone.core.appuser.AppUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -38,7 +38,6 @@ public class CouponEntity {
     @OneToMany(mappedBy = "coupon")
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
 
-    @SuppressWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     public CouponEntity(final Coupon domainObject) {
         this.id = domainObject.getId() != null && domainObject.getId() != 0
                 ? domainObject.getId()

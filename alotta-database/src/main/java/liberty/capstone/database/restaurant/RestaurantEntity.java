@@ -38,7 +38,7 @@ public class RestaurantEntity {
     private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
 
     public RestaurantEntity(final Restaurant restaurant) {
-        this.id = restaurant.getId() != null
+        this.id = restaurant.getId() != null && restaurant.getId() != 0
                 ? restaurant.getId()
                 : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 

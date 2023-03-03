@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import '../assets/colors/colors.dart';
 import 'coupon_home_page.dart';
 
-class NewRestaurantPage extends StatelessWidget {
-  const NewRestaurantPage({super.key, required AppUser currentUser});
+//Need to fix appuser when new Restaurant is fixed
+class CreateCouponPage extends StatelessWidget {
+  const CreateCouponPage({super.key //, required AppUser currentUser
+      });
 
   @override
   Widget build(BuildContext context) {

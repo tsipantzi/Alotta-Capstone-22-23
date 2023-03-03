@@ -49,7 +49,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                     child: ElevatedButton(
                       style: Theme.of(context).elevatedButtonTheme.style,
                       onPressed: () {
-                        Navigator.of(context).pushNamed('newRestaurantPage',
+                        Navigator.of(context).pushNamed('createRestaurantPage',
                             arguments: widget.currentUser);
                       },
                       child: const Text('Create Restaurant'),
@@ -75,7 +75,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('newRestaurantPage',
+                        Navigator.of(context).pushNamed('createRestaurantPage',
                             arguments: widget.currentUser);
                       },
                       child: const Text('Create Restaurant'),

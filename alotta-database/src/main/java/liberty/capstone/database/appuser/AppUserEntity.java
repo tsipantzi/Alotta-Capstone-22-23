@@ -30,9 +30,8 @@ public class AppUserEntity {
     private String phoneNumber;
     private String zipcode;
 
-    @SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     public AppUserEntity(final AppUser domainObject) {
-        this.id = domainObject.getId() != null
+        this.id = domainObject.getId() != null && domainObject.getId() != 0
                 ? domainObject.getId()
                 : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
 

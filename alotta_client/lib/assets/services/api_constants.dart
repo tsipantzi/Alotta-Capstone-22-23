@@ -32,7 +32,7 @@ class ApiConstants {
     return '$baseUrl$_appUserParam$_update';
   }
 
-  static String getRestaurantsForUserUrl(final double userId) {
+  static String getRestaurantsForUserUrl(final int userId) {
     return '$baseUrl$_userRestaurantsParam?userId=$userId';
   }
 }

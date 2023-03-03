@@ -7,7 +7,7 @@ part of 'app_user.dart';
 // **************************************************************************
 
 AppUser _$AppUserFromJson(Map<String, dynamic> json) => AppUser(
-      id: (json['id'] as num?)?.toDouble() ?? 0,
+      id: json['id'] as int? ?? 0,
       username: json['username'] as String? ?? '',
       password: json['password'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',

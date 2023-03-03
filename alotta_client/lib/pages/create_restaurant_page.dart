@@ -175,7 +175,7 @@ class _CreateRestaurantPage extends State<CreateRestaurantPage> {
     final RestaurantService service = RestaurantService();
 
     UserRestaurant userRestaurantRequest =
-        UserRestaurant(restaurant: restaurantToCreate, user: currentUser);
+        UserRestaurant(restaurant: restaurantToCreate, appUser: currentUser);
 
     return await service.createUserRestaurant(userRestaurantRequest);
   }

@@ -7,11 +7,11 @@ part 'user_restaurant.g.dart';
 @JsonSerializable()
 class UserRestaurant {
   final Restaurant restaurant;
-  final AppUser user;
+  final AppUser appUser;
 
   const UserRestaurant({
     this.restaurant = const Restaurant(),
-    this.user = const AppUser(),
+    this.appUser = const AppUser(),
   });
 
   factory UserRestaurant.fromJson(Map<String, dynamic> json) =>

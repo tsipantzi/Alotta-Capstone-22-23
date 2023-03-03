@@ -11,7 +11,7 @@ UserRestaurant _$UserRestaurantFromJson(Map<String, dynamic> json) =>
       restaurant: json['restaurant'] == null
           ? const Restaurant()
           : Restaurant.fromJson(json['restaurant'] as Map<String, dynamic>),
-      user: json['user'] == null
+      appUser: json['user'] == null
           ? const AppUser()
           : AppUser.fromJson(json['user'] as Map<String, dynamic>),
     );
@@ -19,5 +19,5 @@ UserRestaurant _$UserRestaurantFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UserRestaurantToJson(UserRestaurant instance) =>
     <String, dynamic>{
       'restaurant': instance.restaurant.toJson(),
-      'user': instance.user.toJson(),
+      'appUser': instance.appUser.toJson(),
     };

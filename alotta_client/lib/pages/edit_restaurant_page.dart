@@ -190,7 +190,7 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
     final RestaurantService service = RestaurantService();
 
     UserRestaurant userRestaurantRequest = UserRestaurant(
-        restaurant: restaurantToUpdate, user: userRestaurant.user);
+        restaurant: restaurantToUpdate, appUser: userRestaurant.appUser);
 
     return await service.updateRestaurant(userRestaurantRequest);
   }

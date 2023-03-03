@@ -7,19 +7,21 @@ part of 'restaurant.dart';
 // **************************************************************************
 
 Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
+      id: (json['id'] as num?)?.toDouble() ?? 0,
       name: json['name'] as String? ?? '',
       phoneNumber: json['phoneNumber'] as String? ?? '',
       aboutMe: json['aboutMe'] as String? ?? '',
       foodCategories: json['foodCategories'] as String? ?? '',
       email: json['email'] as String? ?? '',
-      maxCateringSizePerPerson:
-          json['maxCateringSizePerPerson'] as String? ?? '',
-      minimumNotice: json['minimumNotice'] as String? ?? '',
+      maxCateringSizePerPerson: json['maxCateringSizePerPerson'] as int? ?? 0,
+      minimumNotice: json['minimumNotice'] as int? ?? 0,
       zipCode: json['zipCode'] as String? ?? '',
+      numberOfActiveCoupons: json['numberOfActiveCoupons'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'phoneNumber': instance.phoneNumber,
       'aboutMe': instance.aboutMe,
@@ -28,4 +30,5 @@ Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
       'maxCateringSizePerPerson': instance.maxCateringSizePerPerson,
       'minimumNotice': instance.minimumNotice,
       'zipCode': instance.zipCode,
+      'numberOfActiveCoupons': instance.numberOfActiveCoupons,
     };

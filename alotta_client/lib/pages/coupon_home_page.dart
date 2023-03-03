@@ -8,11 +8,11 @@ import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
-import 'login_page.dart';
 
 class CouponHomePage extends StatefulWidget {
   final AppUser currentUser;
   const CouponHomePage({super.key, required this.currentUser});
+  static const pageIndex = 1;
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -32,26 +32,6 @@ class CouponHomePage extends StatefulWidget {
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
-  static const int _pageIndex = 1;
-
-  void _changePage(int index, AppUser currentUser) {
-    setState(() {
-      switch (index) {
-        case 0:
-          //Go to LoginPage
-          Navigator.of(context).pushNamed('login');
-          break;
-        case 1:
-          //Go to CouponPage
-          Navigator.of(context).pushNamed('home', arguments: currentUser);
-          break;
-        case 2:
-          //Go to SettingsPage
-          break;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final CouponService couponService = CouponService();
@@ -100,9 +80,10 @@ class _CouponHomePageState extends State<CouponHomePage> {
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: (val) => _changePage(val, widget.getCurrentUser()),
-                selectedItemColor: primaryGreen,
-                currentIndex: _pageIndex,
+                selectedItemColor: primaryOrangeMaterialColor,
+                currentUser: widget.currentUser,
+                context: context,
+                currentIndex: CouponHomePage.pageIndex,
               ),
             );
           } else {
@@ -113,9 +94,10 @@ class _CouponHomePageState extends State<CouponHomePage> {
                     'There was an error or there are currently no coupons available'),
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                onTap: (val) => _changePage(val, widget.getCurrentUser()),
-                selectedItemColor: primaryGreen,
-                currentIndex: _pageIndex,
+                selectedItemColor: primaryOrangeMaterialColor,
+                currentUser: widget.currentUser,
+                context: context,
+                currentIndex: CouponHomePage.pageIndex,
               ),
             );
           }

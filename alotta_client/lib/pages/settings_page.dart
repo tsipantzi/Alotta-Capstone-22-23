@@ -1,29 +1,37 @@
 import 'dart:developer';
 
-import 'package:alotta_client/pages/login_page.dart';
+import 'package:alotta_client/assets/services/app_user_service.dart';
 import 'package:flutter/material.dart';
 
+import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
-import '../assets/services/app_user_service.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 
-class CreateAccountPage extends StatefulWidget {
-  final AppUserService service = AppUserService();
-  CreateAccountPage({super.key});
+class SettingsPage extends StatefulWidget {
+  final AppUser currentUser;
+  const SettingsPage({super.key, required this.currentUser});
+  static const int pageIndex = 2;
 
   @override
-  State<CreateAccountPage> createState() => _CreateAccountPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _CreateAccountPageState extends State<CreateAccountPage> {
-  TextEditingController usernameController = TextEditingController();
+class _SettingsPageState extends State<SettingsPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController pwTestController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  AppUserAccountType currentSelectedAccountType = AppUserAccountType.CONSUMER;
+  @override
+  void initState() {
+    super.initState();
+    passwordController.text = widget.currentUser.password;
+    pwTestController.text = widget.currentUser.password;
+    firstNameController.text = widget.currentUser.firstName;
+    lastNameController.text = widget.currentUser.lastName;
+    emailController.text = widget.currentUser.email;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +41,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: <Widget>[
-            // Text Fields * * * * * * * * * * * * * * * * * * * *
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Username',
-                ),
-              ),
-            ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
@@ -62,7 +55,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -77,7 +69,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
@@ -91,7 +82,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -105,7 +95,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
               child: TextField(
@@ -119,49 +108,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
-            // Radio Buttons * * * * * * * * * * * * * * * * * * * *
-            Column(
-              children: <Widget>[
-                ListTile(
-                  title: const Text('Coupon Consumer'),
-                  leading: Radio<AppUserAccountType>(
-                    value: AppUserAccountType.CONSUMER,
-                    groupValue: currentSelectedAccountType,
-                    onChanged: (AppUserAccountType? value) {
-                      setState(() {
-                        currentSelectedAccountType =
-                            AppUserAccountType.CONSUMER;
-                      });
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: const Text('Coupon Creator'),
-                  leading: Radio<AppUserAccountType>(
-                    value: AppUserAccountType.CREATOR,
-                    groupValue: currentSelectedAccountType,
-                    onChanged: (AppUserAccountType? value) {
-                      setState(() {
-                        currentSelectedAccountType = AppUserAccountType.CREATOR;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
+                      var updatedAppUser = await _updateUser();
                       // Create account ...
                       if (passwordController.value.text ==
                           pwTestController.value.text) {
-                        if (await _createUser()) {
-                          Navigator.of(context).pushNamed('login');
+                        if (updatedAppUser != null) {
+                          Navigator.of(context)
+                              .pushNamed('home', arguments: widget.currentUser);
                         } else {
-                          log('User was not created');
+                          log('User was not updated');
                         }
                       } else {
                         ScaffoldMessenger.of(context)
@@ -176,25 +136,32 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       // ignore: prefer_const_constructors
                       textStyle: TextStyle(fontSize: 20),
                     ),
-                    child: const Text('Create Account'))),
+                    child: const Text('Update Account'))),
           ],
         ),
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        selectedItemColor: primaryOrangeMaterialColor,
+        currentUser: widget.currentUser,
+        context: context,
+        currentIndex: SettingsPage.pageIndex,
       ),
     );
   }
 
-  Future<bool> _createUser() async {
+  Future<AppUser?> _updateUser() async {
     final AppUser userToCreate = AppUser(
-      username: usernameController.value.text,
+      username: widget.currentUser.username,
       password: passwordController.value.text,
       firstName: firstNameController.value.text,
       lastName: lastNameController.value.text,
       email: emailController.value.text,
-      accountType: currentSelectedAccountType,
+      accountType: widget.currentUser.accountType,
       phoneNumber: '1111111111',
       zipcode: '12345',
     );
     log('Creating user with type $userToCreate');
-    return await widget.service.createAppUser(userToCreate);
+    final AppUserService service = AppUserService();
+    return await service.updateAppUser(userToCreate);
   }
 }

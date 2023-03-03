@@ -4,6 +4,7 @@ part 'app_user.g.dart';
 
 @JsonSerializable()
 class AppUser {
+  final double id;
   final String username;
   final String password;
   final String firstName;
@@ -14,6 +15,7 @@ class AppUser {
   final String zipcode;
 
   const AppUser({
+    this.id = 0,
     this.username = '',
     this.password = '',
     this.firstName = '',
@@ -37,5 +39,5 @@ enum AppUserAccountType {
   CREATOR,
   @JsonValue("admin")
   ADMIN,
-  UNKNOWN
+  UNKNOWN;
 }

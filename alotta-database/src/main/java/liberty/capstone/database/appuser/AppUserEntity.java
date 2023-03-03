@@ -1,19 +1,26 @@
 package liberty.capstone.database.appuser;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import liberty.capstone.core.appuser.AppUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 
 @Entity
 @Data
 @Table(name = "AppUser")
 @NoArgsConstructor
 public class AppUserEntity {
+    @org.springframework.data.annotation.Transient
+    private static final Long MIN_VALUE = 10000000L;
+    @org.springframework.data.annotation.Transient
+    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String accountType;
@@ -23,7 +30,12 @@ public class AppUserEntity {
     private String phoneNumber;
     private String zipcode;
 
+    @SuppressFBWarnings("DMI_RANDOM_USED_ONLY_ONCE")
     public AppUserEntity(final AppUser domainObject) {
+        this.id = domainObject.getId() != null
+                ? domainObject.getId()
+                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+
         this.username = domainObject.getUsername();
         this.password = domainObject.getPassword();
         this.accountType = domainObject.getAccountType();
@@ -36,6 +48,7 @@ public class AppUserEntity {
 
     public AppUser toDomainObject() {
         final AppUser domainUser = new AppUser();
+        domainUser.setId(id);
         domainUser.setUsername(username);
         domainUser.setPassword(password);
         domainUser.setAccountType(accountType);

@@ -13,7 +13,7 @@ const primaryOrangeSwatch = {
   800: Color.fromRGBO(235, 116, 80, .9),
   900: Color.fromRGBO(235, 116, 80, 1),
 };
-MaterialColor primaryOrangeMaterialColor =
-    const MaterialColor(0xffeb7450, primaryOrangeSwatch);
+const MaterialColor primaryOrangeMaterialColor =
+    MaterialColor(0xffeb7450, primaryOrangeSwatch);
 
 const primaryGreen = Color(0xff4d9f6b);

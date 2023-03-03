@@ -4,10 +4,8 @@ class ApiConstants {
   static const String _couponParam = "/coupon";
   static const String _appUserParam = "/appuser";
   static const String _userRestaurantsParam = "/user/restaurants";
-
-  static String restaurantById(final String restaurantId) {
-    return '$baseUrl$_restaurantParam/$restaurantId';
-  }
+  static const String _update = '/update';
+  static const String _create = '/create';
 
   static String couponsForRestaurantId(final String restaurantId) {
     return '$baseUrl$_restaurantParam/$restaurantId$_couponParam';
@@ -18,15 +16,23 @@ class ApiConstants {
     return '$baseUrl$_restaurantParam/$restaurantId$_couponParam/$couponId';
   }
 
-  static String appUserUrl(final String username) {
-    return '$baseUrl$_appUserParam?username=$username';
+  static String getAppUserUrl(final String username, final String password) {
+    return '$baseUrl$_appUserParam?username=$username&password=$password';
   }
 
   static String createAppUserUrl() {
-    return '$baseUrl$_appUserParam';
+    return '$baseUrl$_appUserParam$_create';
   }
 
-  static String restaurantsForUser(final String username) {
-    return '$baseUrl$_userRestaurantsParam?userName=$username';
+  static String userRestaurantsUrl() {
+    return '$baseUrl$_userRestaurantsParam';
+  }
+
+  static String updateAppUserUrl() {
+    return '$baseUrl$_appUserParam$_update';
+  }
+
+  static String getRestaurantsForUserUrl(final double userId) {
+    return '$baseUrl$_userRestaurantsParam?userId=$userId';
   }
 }

@@ -16,8 +16,7 @@ class CouponManagerPage extends StatelessWidget {
   final RestaurantCoupons restaurantCoupons;
   final CouponService couponService = CouponService();
   CouponManagerPage({super.key, required this.currentRestaurant})
-    :restaurantCoupons=RestaurantCoupons(restaurant: currentRestaurant);
-
+      : restaurantCoupons = RestaurantCoupons(restaurant: currentRestaurant);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class CouponManagerPage extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              height: 250,
+              height: 200,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/restaurant_placeholder.png'),
@@ -60,40 +59,41 @@ class CouponManagerPage extends StatelessWidget {
                 ],
               ),
             ),
-            FutureBuilder<List<Coupon>?>(
-                future: couponService.getAllCoupons(currentRestaurant.id.toString()),
-                builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-                  if (snapshot.hasData) {
-                    return Scaffold(
-                      body: Stack(
-                        children: [
-                          Center(
-                            child: ListView(
-                              children: snapshot.data!
-                                  .map((coupon) => 
-                                         CouponCard(
-                                          coupon: coupon,
-                                        )
-                                      )
-                                  .toList(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: FutureBuilder<List<Coupon>?>(
+                  future: couponService
+                      .getAllCoupons(currentRestaurant.id.toString()),
+                  builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+                    if (snapshot.hasData) {
+                      return Scaffold(
+                        body: Stack(
+                          children: [
+                            Center(
+                              child: ListView(
+                                children: snapshot.data!
+                                    .map((coupon) => CouponCard(coupon: coupon))
+                                    .toList(),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return const Scaffold(
-                      body: Center(
-                        child: Text(
-                            'There was an error or there are currently no coupons available'),
-                      ),
-                    );
-                  }
-                }),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Scaffold(
+                        body: Center(
+                          child: Text(
+                              'There was an error or there are currently no coupons available'),
+                        ),
+                      );
+                    }
+                  }),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('newCouponPage');
-                  },
+              },
               child: const Text('Create Coupon'),
             ),
           ],

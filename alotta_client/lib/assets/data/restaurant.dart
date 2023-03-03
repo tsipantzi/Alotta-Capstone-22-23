@@ -14,7 +14,7 @@ class Restaurant {
   final String zipCode;
   final int numberOfActiveCoupons;
 
-  Restaurant({
+  const Restaurant({
     this.name = '',
     this.phoneNumber = '',
     this.aboutMe = '',

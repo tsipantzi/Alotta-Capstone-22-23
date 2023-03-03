@@ -15,6 +15,7 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) => Restaurant(
       maxCateringSizePerPerson: json['maxCateringSizePerPerson'] as int? ?? 0,
       minimumNotice: json['minimumNotice'] as int? ?? 0,
       zipCode: json['zipCode'] as String? ?? '',
+      numberOfActiveCoupons: json['numberOfActiveCoupons'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
@@ -27,4 +28,5 @@ Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
       'maxCateringSizePerPerson': instance.maxCateringSizePerPerson,
       'minimumNotice': instance.minimumNotice,
       'zipCode': instance.zipCode,
+      'numberOfActiveCoupons': instance.numberOfActiveCoupons,
     };

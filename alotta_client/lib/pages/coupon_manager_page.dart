@@ -1,9 +1,6 @@
 import 'package:alotta_client/assets/data/restaurant_coupons.dart';
-import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../assets/colors/colors.dart';
-import '../assets/data/app_user.dart';
 import '../assets/data/coupon.dart';
 import '../assets/data/restaurant.dart';
 import '../assets/services/coupon_service.dart';
@@ -60,13 +57,13 @@ class CouponManagerPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height * .4,
               width: MediaQuery.of(context).size.width,
               child: FutureBuilder<List<Coupon>?>(
                   future: couponService
                       .getAllCoupons(currentRestaurant.id.toString()),
                   builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData && snapshot.data != null) {
                       return Scaffold(
                         body: Stack(
                           children: [
@@ -98,12 +95,6 @@ class CouponManagerPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AlottaNavigationBar(
-        selectedItemColor: primaryOrangeMaterialColor,
-        currentUser: const AppUser(),
-        context: context,
-        currentIndex: CouponManagerPage.pageIndex,
       ),
     );
   }

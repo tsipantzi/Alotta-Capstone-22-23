@@ -1,20 +1,17 @@
-import 'package:alotta_client/assets/data/app_user.dart';
-import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
-import 'package:flutter/material.dart';
-
-import '../assets/colors/colors.dart';
-import '../assets/data/coupon.dart';
-import 'coupon_home_page.dart';
-
 import 'dart:developer';
 
+import 'package:alotta_client/assets/data/user_restaurant.dart';
+import 'package:alotta_client/assets/services/coupon_service.dart';
+import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../assets/data/coupon.dart';
 import '../assets/data/restaurant.dart';
-import '../assets/data/user_restaurant.dart';
-import '../assets/services/coupon_service.dart';
 
 class CreateCouponPage extends StatefulWidget {
-  final Restaurant currentRestaurant;
-  const CreateCouponPage({super.key, required this.currentRestaurant});
+  final UserRestaurant userRestaurant;
+  const CreateCouponPage({super.key, required this.userRestaurant});
 
   @override
   State<CreateCouponPage> createState() => _CreateCouponPage();
@@ -105,27 +102,36 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
-                controller: startDate,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
+                  controller: startDate,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFEB7450)),
+                    ),
+                    labelText: 'Coupon Starting Date',
                   ),
-                  labelText: 'Coupon Starting Date',
-                ),
-              ),
+                  readOnly: true,
+                  onTap: () async {
+                    await _openDatePicker(context, startDate);
+                  }),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 controller: endDate,
                 decoration: const InputDecoration(
+                  icon: Icon(Icons.calendar_today),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
                   ),
                   labelText: 'Coupon Expiration Date',
                 ),
+                readOnly: true,
+                onTap: () async {
+                  await _openDatePicker(context, endDate);
+                },
               ),
             ),
             Container(
@@ -133,12 +139,10 @@ class _CreateCouponPage extends State<CreateCouponPage> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      final Coupon? createdCoupon =
-                          await _createCoupon(widget.currentRestaurant);
-
-                      if (createdCoupon != null) {
-                        Navigator.of(context).pushNamed('couponManagementPage',
-                            arguments: widget.currentRestaurant);
+                      if (await _createCoupon(
+                          widget.userRestaurant.restaurant)) {
+                        Navigator.of(context).pushNamed('couponManagerPage',
+                            arguments: widget.userRestaurant);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -153,7 +157,27 @@ class _CreateCouponPage extends State<CreateCouponPage> {
     );
   }
 
-  Future<Coupon?> _createCoupon(Restaurant currentRestaurant) async {
+  Future<void> _openDatePicker(
+      BuildContext context, TextEditingController textController) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      log(pickedDate.toIso8601String());
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      log(formattedDate);
+      setState(() {
+        textController.text =
+            formattedDate; //set output date to TextField value.
+      });
+    } else {}
+  }
+
+  Future<bool> _createCoupon(Restaurant currentRestaurant) async {
     final Coupon couponToCreate = Coupon(
       title: title.value.text,
       description: description.value.text,
@@ -165,11 +189,9 @@ class _CreateCouponPage extends State<CreateCouponPage> {
     );
 
     log('Creating coupon ${couponToCreate.title}');
-    final Coupon service = Coupon();
+    final CouponService service = CouponService();
 
-    Coupon couponRequest =
-        Coupon(restaurant: couponToCreate, restaurant: currentRestaurant);
-
-    return await service.createCoupon(couponRequest);
+    return await service.createCoupon(
+        couponToCreate, currentRestaurant.id.toString());
   }
 }

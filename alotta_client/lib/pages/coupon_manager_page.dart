@@ -1,19 +1,19 @@
 import 'package:alotta_client/assets/data/restaurant_coupons.dart';
+import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/data/coupon.dart';
-import '../assets/data/restaurant.dart';
 import '../assets/services/coupon_service.dart';
 import '../assets/widgets/coupon_card.dart';
 
 class CouponManagerPage extends StatelessWidget {
   static const int pageIndex = 1;
-  // final AppUser currentUser;
-  final Restaurant currentRestaurant;
+  final UserRestaurant userRestaurant;
   final RestaurantCoupons restaurantCoupons;
   final CouponService couponService = CouponService();
-  CouponManagerPage({super.key, required this.currentRestaurant})
-      : restaurantCoupons = RestaurantCoupons(restaurant: currentRestaurant);
+  CouponManagerPage({super.key, required this.userRestaurant})
+      : restaurantCoupons =
+            RestaurantCoupons(restaurant: userRestaurant.restaurant);
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +38,25 @@ class CouponManagerPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(currentRestaurant.name,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text(currentRestaurant.phoneNumber),
-                  Text(currentRestaurant.email),
-                  Text("Zip Code: ${currentRestaurant.zipCode}"),
-                  Text("Categories: ${currentRestaurant.foodCategories}"),
                   Text(
-                      "Max Catering Size: ${currentRestaurant.maxCateringSizePerPerson}"),
-                  Text("Minimum Notice: ${currentRestaurant.minimumNotice}"),
+                    restaurantCoupons.restaurant.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(restaurantCoupons.restaurant.phoneNumber),
+                  Text(restaurantCoupons.restaurant.email),
+                  Text("Zip Code: ${restaurantCoupons.restaurant.zipCode}"),
                   Text(
-                      "Number of Active Coupons: ${currentRestaurant.numberOfActiveCoupons}"),
-                  Text(currentRestaurant.aboutMe),
+                      "Categories: ${restaurantCoupons.restaurant.foodCategories}"),
+                  Text(
+                      "Max Catering Size: ${restaurantCoupons.restaurant.maxCateringSizePerPerson}"),
+                  Text(
+                      "Minimum Notice: ${restaurantCoupons.restaurant.minimumNotice}"),
+                  Text(
+                      "Number of Active Coupons: ${restaurantCoupons.restaurant.numberOfActiveCoupons}"),
+                  Text(restaurantCoupons.restaurant.aboutMe),
                 ],
               ),
             ),
@@ -60,8 +64,8 @@ class CouponManagerPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .4,
               width: MediaQuery.of(context).size.width,
               child: FutureBuilder<List<Coupon>?>(
-                  future: couponService
-                      .getAllCoupons(currentRestaurant.id.toString()),
+                  future: couponService.getAllCoupons(
+                      restaurantCoupons.restaurant.id.toString()),
                   builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
                       return Scaffold(
@@ -89,7 +93,8 @@ class CouponManagerPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('newCouponPage');
+                Navigator.of(context)
+                    .pushNamed('createCouponPage', arguments: userRestaurant);
               },
               child: const Text('Create Coupon'),
             ),

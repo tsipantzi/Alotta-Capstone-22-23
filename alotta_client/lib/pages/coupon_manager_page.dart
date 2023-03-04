@@ -1,15 +1,19 @@
-import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:alotta_client/assets/data/restaurant_coupons.dart';
 import 'package:flutter/material.dart';
 
-import '../assets/colors/colors.dart';
-import '../assets/data/app_user.dart';
+import '../assets/data/coupon.dart';
 import '../assets/data/restaurant.dart';
+import '../assets/services/coupon_service.dart';
+import '../assets/widgets/coupon_card.dart';
 
 class CouponManagerPage extends StatelessWidget {
+  static const int pageIndex = 1;
   // final AppUser currentUser;
   final Restaurant currentRestaurant;
-  const CouponManagerPage({super.key, required this.currentRestaurant});
-  static const int pageIndex = 1;
+  final RestaurantCoupons restaurantCoupons;
+  final CouponService couponService = CouponService();
+  CouponManagerPage({super.key, required this.currentRestaurant})
+      : restaurantCoupons = RestaurantCoupons(restaurant: currentRestaurant);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class CouponManagerPage extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              height: 250,
+              height: 200,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/restaurant_placeholder.png'),
@@ -52,6 +56,37 @@ class CouponManagerPage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+              width: MediaQuery.of(context).size.width,
+              child: FutureBuilder<List<Coupon>?>(
+                  future: couponService
+                      .getAllCoupons(currentRestaurant.id.toString()),
+                  builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return Scaffold(
+                        body: Stack(
+                          children: [
+                            Center(
+                              child: ListView(
+                                children: snapshot.data!
+                                    .map((coupon) => CouponCard(coupon: coupon))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Scaffold(
+                        body: Center(
+                          child: Text(
+                              'There was an error or there are currently no coupons available'),
+                        ),
+                      );
+                    }
+                  }),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed('newCouponPage');
@@ -60,12 +95,6 @@ class CouponManagerPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AlottaNavigationBar(
-        selectedItemColor: primaryOrangeMaterialColor,
-        currentUser: const AppUser(),
-        context: context,
-        currentIndex: CouponManagerPage.pageIndex,
       ),
     );
   }

@@ -13,7 +13,7 @@ class CouponService {
       var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
       print('Trying to find coupons by url $url');
       var response = await http.get(url);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.body != '[]') {
         return couponsFromJson(response.body);
       }
     } catch (e) {
@@ -23,16 +23,16 @@ class CouponService {
   }
 
   List<Coupon> couponsFromJson(String body) {
-    print('Got JSON Body $body');
+    log('Got JSON Body $body');
     Iterable couponIterable = jsonDecode(body);
-    print('Got Iterable $couponIterable');
+    log('Got Iterable $couponIterable');
     return List.from(couponIterable.map((json) => Coupon.fromJson(json)));
   }
 
   Future<bool> createCoupon(
       final Coupon coupon, final String restaurantId) async {
     var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
-    print('Creating Coupon $coupon');
+    log('Creating Coupon $coupon');
 
     var body = json.encode(coupon.toJson());
 

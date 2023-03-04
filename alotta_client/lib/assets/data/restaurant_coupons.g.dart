@@ -1,23 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_restaurant.dart';
+part of 'restaurant_coupons.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserRestaurant _$UserRestaurantFromJson(Map<String, dynamic> json) =>
-    UserRestaurant(
+RestaurantCoupons _$RestaurantCouponsFromJson(Map<String, dynamic> json) =>
+    RestaurantCoupons(
       restaurant: json['restaurant'] == null
           ? const Restaurant()
           : Restaurant.fromJson(json['restaurant'] as Map<String, dynamic>),
-      appUser: json['appUser'] == null
-          ? const AppUser()
-          : AppUser.fromJson(json['appUser'] as Map<String, dynamic>),
+      coupons: (json['coupons'] as List<dynamic>?)
+              ?.map((e) => Coupon.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
-Map<String, dynamic> _$UserRestaurantToJson(UserRestaurant instance) =>
+Map<String, dynamic> _$RestaurantCouponsToJson(RestaurantCoupons instance) =>
     <String, dynamic>{
       'restaurant': instance.restaurant.toJson(),
-      'appUser': instance.appUser.toJson(),
+      'coupons': instance.coupons.map((e) => e.toJson()).toList(),
     };

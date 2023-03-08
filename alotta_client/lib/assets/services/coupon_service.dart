@@ -44,4 +44,8 @@ class CouponService {
 
     return response.statusCode == 200;
   }
+
+  List<Coupon> getAllCouponsBySearchTerm(String value) {
+    return List.empty();
+  }
 }

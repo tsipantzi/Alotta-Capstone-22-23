@@ -26,7 +26,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
         future: restaurantService
             .getRestaurantsForUserByUserId(widget.currentUser.id),
         builder: (context, AsyncSnapshot<List<Restaurant>?> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data!.length > 0) {
             return Scaffold(
               appBar: AlottaTitle(),
               body: Stack(
@@ -37,7 +37,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                           .map(
                             (restaurant) => RestaurantCard(
                               userRestaurant: UserRestaurant(
-                                  user: widget.currentUser,
+                                  appUser: widget.currentUser,
                                   restaurant: restaurant),
                             ),
                           )
@@ -69,8 +69,10 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
               appBar: AlottaTitle(),
               body: Stack(
                 children: [
-                  const Text("You currently have no restaurants attached to "
-                      "this account. Please add a restaurant."),
+                  const Center(
+                    child: Text("You currently have no restaurants attached to "
+                        "this account. Please add a restaurant."),
+                  ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(

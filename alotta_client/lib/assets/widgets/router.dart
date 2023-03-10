@@ -75,18 +75,20 @@ class RouteGenerator {
 
       case 'couponManagerPage':
         {
-          if (args is Restaurant) {
+          if (args is UserRestaurant) {
             return MaterialPageRoute(
-                builder: (context) =>
-                    CouponManagerPage(currentRestaurant: args));
+                builder: (context) => CouponManagerPage(userRestaurant: args));
           }
           return _errorRoute();
         }
 
-      case 'newCouponPage':
+      case 'createCouponPage':
         {
-          return MaterialPageRoute(
-              builder: (context) => const CreateCouponPage());
+          if (args is UserRestaurant) {
+            return MaterialPageRoute(
+                builder: (context) => CreateCouponPage(userRestaurant: args));
+          }
+          return _errorRoute();
         }
 
       default:

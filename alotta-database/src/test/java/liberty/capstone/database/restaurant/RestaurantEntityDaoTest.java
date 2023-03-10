@@ -20,7 +20,7 @@ class RestaurantEntityDaoTest {
         entity.setPhoneNumber("123-456-7890");
 
         var entityToSave = restaurantDao.findByName(entity.getName()).orElse(entity);
-        restaurantDao.save(entityToSave);
+        restaurantDao.saveAndFlush(entityToSave);
         assertTrue(restaurantDao.findByName(entity.getName()).isPresent());
     }
 }

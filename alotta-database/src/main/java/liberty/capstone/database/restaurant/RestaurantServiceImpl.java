@@ -18,33 +18,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> findRestaurantsByName(final String name) {
         return restaurantDao.findAllByName(name)
                 .stream()
-                .map(this::toRestaurantObject)
+                .map(RestaurantEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Restaurant saveRestaurant(final Restaurant restaurant) {
-        final var entityToSave = toRestaurantEntity(restaurant);
-        final var savedRestaurant = toRestaurantObject(restaurantDao.saveAndFlush(entityToSave));
+        final var entityToSave = new RestaurantEntity(restaurant);
+        final var savedRestaurant = restaurantDao.saveAndFlush(entityToSave);
         log.info("Saved Restaurant to the database {}", savedRestaurant);
-        return savedRestaurant;
-    }
-
-    private Restaurant toRestaurantObject(final RestaurantEntity entity) {
-        final var restaurant = new Restaurant();
-        restaurant.setId(entity.getId());
-        restaurant.setName(entity.getName());
-        restaurant.setPhoneNumber(entity.getPhoneNumber());
-        restaurant.setAboutMe(entity.getAboutMe());
-        restaurant.setFoodCategories(entity.getFoodCategories());
-        restaurant.setEmail(entity.getEmail());
-        restaurant.setMaxCateringSizePerPerson(entity.getMaxCateringSizePerPerson());
-        restaurant.setMinimumNotice(entity.getMinimumNotice());
-        restaurant.setZipCode(entity.getZipCode());
-        return restaurant;
-    }
-
-    private RestaurantEntity toRestaurantEntity(final Restaurant restaurant) {
-        return new RestaurantEntity(restaurant);
+        return savedRestaurant.toDomainObject();
     }
 }

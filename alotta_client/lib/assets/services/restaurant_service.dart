@@ -34,8 +34,8 @@ class RestaurantService {
       UserRestaurant userRestaurant) async {
     try {
       var url = Uri.parse(ApiConstants.userRestaurantsUrl());
-      log('Attempting to create Restaurant ${userRestaurant.restaurant} under '
-          'User ${userRestaurant.user.username}');
+      log('Attempting to create Restaurant ${userRestaurant.restaurant.name} under '
+          'User ${userRestaurant.appUser.username}');
 
       var response = await http.post(
         url,
@@ -55,7 +55,7 @@ class RestaurantService {
     try {
       var url = Uri.parse(ApiConstants.userRestaurantsUrl());
       log('Attempting to update Restaurant ${userRestaurant.restaurant} under '
-          'User ${userRestaurant.user.username}');
+          'User ${userRestaurant.appUser.username}');
 
       var response = await http.put(
         url,

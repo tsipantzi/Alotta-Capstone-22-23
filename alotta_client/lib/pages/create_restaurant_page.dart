@@ -145,7 +145,13 @@ class _CreateRestaurantPage extends State<CreateRestaurantPage> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
-                      _createRestaurant(widget.currentUser);
+                      final UserRestaurant? createdUserRestaurant =
+                          await _createRestaurant(widget.currentUser);
+
+                      if (createdUserRestaurant != null) {
+                        Navigator.of(context)
+                            .pushNamed('home', arguments: widget.currentUser);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4D9F6B),
@@ -175,7 +181,7 @@ class _CreateRestaurantPage extends State<CreateRestaurantPage> {
     final RestaurantService service = RestaurantService();
 
     UserRestaurant userRestaurantRequest =
-        UserRestaurant(restaurant: restaurantToCreate, user: currentUser);
+        UserRestaurant(restaurant: restaurantToCreate, appUser: currentUser);
 
     return await service.createUserRestaurant(userRestaurantRequest);
   }

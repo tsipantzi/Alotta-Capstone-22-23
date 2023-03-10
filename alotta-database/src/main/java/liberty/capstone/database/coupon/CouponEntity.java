@@ -4,22 +4,19 @@ import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
 @Table(name = "Coupon")
 @NoArgsConstructor
+@Slf4j
+@ToString
 public class CouponEntity {
-    @org.springframework.data.annotation.Transient
-    private static final Long MIN_VALUE = 10000000L;
-    @org.springframework.data.annotation.Transient
-    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,14 +32,12 @@ public class CouponEntity {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "coupon")
-    private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
+    @OneToOne(mappedBy = "coupon")
+    @ToString.Exclude
+    private RestaurantInventoryEntity inventory;
 
     public CouponEntity(final Coupon domainObject) {
-        this.id = domainObject.getId() != null && domainObject.getId() != 0
-                ? domainObject.getId()
-                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-
+        this.id = domainObject.getId();
         this.title = domainObject.getTitle();
         this.couponType = domainObject.getCouponType();
         this.percentageOff = domainObject.getPercentageOff();
@@ -58,18 +53,19 @@ public class CouponEntity {
 
     public Coupon toDomainObject() {
         final Coupon domainObject = new Coupon();
-        domainObject.setId(domainObject.getId());
-        domainObject.setTitle(domainObject.getTitle());
-        domainObject.setCouponType(domainObject.getCouponType());
-        domainObject.setPercentageOff(domainObject.getPercentageOff());
-        domainObject.setDollarsOff(domainObject.getDollarsOff());
-        domainObject.setCouponInfo(domainObject.getCouponInfo());
-        domainObject.setFoodCategories(domainObject.getFoodCategories());
-        domainObject.setNumberOfCouponsPerCustomer(domainObject.getNumberOfCouponsPerCustomer());
-        domainObject.setTotalNumberOfCoupons(domainObject.getTotalNumberOfCoupons());
-        domainObject.setNumberOfCouponsSold(domainObject.getNumberOfCouponsSold());
-        domainObject.setStartDate(domainObject.getStartDate());
-        domainObject.setEndDate(domainObject.getEndDate());
+        domainObject.setId(id);
+        domainObject.setTitle(title);
+        domainObject.setCouponType(couponType);
+        domainObject.setPercentageOff(percentageOff);
+        domainObject.setDollarsOff(dollarsOff);
+        domainObject.setCouponInfo(couponInfo);
+        domainObject.setFoodCategories(foodCategories);
+        domainObject.setNumberOfCouponsPerCustomer(numberOfCouponsPerCustomer);
+        domainObject.setTotalNumberOfCoupons(totalNumberOfCoupons);
+        domainObject.setNumberOfCouponsSold(numberOfCouponsSold);
+        domainObject.setStartDate(startDate);
+        domainObject.setEndDate(endDate);
+        log.info("Converted CouponEntity to domain object : {}", domainObject);
         return domainObject;
     }
 }

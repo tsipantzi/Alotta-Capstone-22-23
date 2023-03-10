@@ -2,9 +2,6 @@ package liberty.capstone.database.coupon;
 
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.coupon.CouponService;
-import liberty.capstone.core.restaurantinventory.RestaurantInventory;
-import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
-import liberty.capstone.database.restaurant.RestaurantEntityDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,34 +13,27 @@ import java.util.stream.Collectors;
 public class CouponServiceImpl implements CouponService {
 
     private final CouponEntityDao couponDao;
-    private final RestaurantInventoryService inventoryService;
-    private final RestaurantEntityDao restaurantDao;
 
     @Override
-    public List<Coupon> getAllCouponsForRestaurant(final Long restaurantId) {
-        return inventoryService.getRestaurantInventoryById(restaurantId)
+    public Coupon findCouponById(final Long couponId) {
+        return couponDao.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("Could not find a coupon with Id: " + couponId))
+                .toDomainObject();
+    }
+
+    @Override
+    public List<Coupon> findAllCoupons() {
+        return couponDao.findAll()
                 .stream()
-                .map(RestaurantInventory::getCoupon)
+                .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public RestaurantInventory saveCoupon(final Long restaurantId, final Coupon coupon) {
-        // need to save the coupon to inventory and coupon
-        final var restaurant = restaurantDao.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Restaurant Does not exist"));
-
-
-        final var foundCoupon = coupon.getId() != null
-                ? couponDao.findById(coupon.getId()).orElse(new CouponEntity(coupon))
-                : new CouponEntity(coupon);
-
-        final var savedCoupon = couponDao.saveAndFlush(foundCoupon);
-
-
-        return inventoryService.saveInventoryItem(restaurant.getId(),
-                        savedCoupon.getId(),
-                        coupon.getStartDate(),
-                        coupon.getEndDate());
+    public List<Coupon> findAllCouponsBySearchTerm(final String searchTerm) {
+        return couponDao.findAllByTerm(searchTerm)
+                .stream()
+                .map(CouponEntity::toDomainObject)
+                .collect(Collectors.toList());
     }
 }

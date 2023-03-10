@@ -49,6 +49,6 @@ class RestaurantInventoryEntityDaoTest {
             assertEquals(savedCoupon.getCouponInfo(), result.getCoupon().getCouponInfo());
         });
 
-        log.info("Successfully created RestaurantInventory item : {}", String.valueOf(result));
+        log.info("Successfully created RestaurantInventory item : {}", result);
     }
 }

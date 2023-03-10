@@ -15,6 +15,7 @@ class CouponHomePage extends StatefulWidget {
   static const pageIndex = 1;
   List<Coupon> coupons = List.empty();
   final CouponService couponService = CouponService();
+  String searchTerm = '';
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -34,8 +35,67 @@ class CouponHomePage extends StatefulWidget {
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
-  void searchForCouponsByTerm(value) {
-    widget.coupons = widget.couponService.getAllCouponsBySearchTerm(value);
+  void searchForCouponsByTerm(value) async {
+    widget.coupons =
+        await widget.couponService.getAllCouponsBySearchTerm(value);
+  }
+
+  Widget getAllCoupons() {
+    return FutureBuilder<List<Coupon>?>(
+        future: widget.couponService.getAllCoupons(),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  Center(
+                    child: ListView(
+                      children: snapshot.data!
+                          .map((coupon) => CouponCard(coupon: coupon))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text(
+                    'There was an error or there are currently no coupons available'),
+              ),
+            );
+          }
+        });
+  }
+
+  Widget getAllCouponsBySearchTerm(final String searchTerm) {
+    return FutureBuilder<List<Coupon>?>(
+        future: widget.couponService.getAllCouponsBySearchTerm(searchTerm),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  Center(
+                    child: ListView(
+                      children: snapshot.data!
+                          .map((coupon) => CouponCard(coupon: coupon))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text(
+                    'There was an error or there are currently no coupons available'),
+              ),
+            );
+          }
+        });
   }
 
   @override
@@ -51,7 +111,7 @@ class _CouponHomePageState extends State<CouponHomePage> {
       body: ListView(
         children: <Widget>[
           TextField(
-            onChanged: (value) => setState(() => searchForCouponsByTerm(value)),
+            onChanged: (value) => setState(() => widget.searchTerm = value),
             style: TextStyle(
               color: Colors.black,
             ),
@@ -68,34 +128,11 @@ class _CouponHomePageState extends State<CouponHomePage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * .4,
+            height: MediaQuery.of(context).size.height * .68,
             width: MediaQuery.of(context).size.width,
-            child: FutureBuilder<List<Coupon>?>(
-                future: widget.couponService.getAllCoupons("1"),
-                builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Scaffold(
-                      body: Stack(
-                        children: [
-                          Center(
-                            child: ListView(
-                              children: snapshot.data!
-                                  .map((coupon) => CouponCard(coupon: coupon))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return const Scaffold(
-                      body: Center(
-                        child: Text(
-                            'There was an error or there are currently no coupons available'),
-                      ),
-                    );
-                  }
-                }),
+            child: widget.searchTerm == ''
+                ? getAllCoupons()
+                : getAllCouponsBySearchTerm(widget.searchTerm),
           ),
         ],
       ),

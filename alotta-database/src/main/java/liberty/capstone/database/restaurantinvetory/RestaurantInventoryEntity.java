@@ -1,5 +1,6 @@
 package liberty.capstone.database.restaurantinvetory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import liberty.capstone.core.restaurantinventory.RestaurantInventory;
 import liberty.capstone.database.coupon.CouponEntity;
 import liberty.capstone.database.restaurant.RestaurantEntity;
@@ -38,6 +39,8 @@ public class RestaurantInventoryEntity {
         return restaurantInventory;
     }
 
+    @Override
+    @SuppressFBWarnings("VA_FORMAT_STRING_USES_NEWLINE")
     public String toString() {
         return String.format("""
                 RestaurantInventoryEntity[
@@ -46,8 +49,7 @@ public class RestaurantInventoryEntity {
                     coupon: %s,
                     startDate: %s,
                     endDate: %s
-                ]
-                """, id, coupon, restaurant, startDate, endDate);
+                ]""", id, coupon, restaurant, startDate, endDate);
 
     }
 }

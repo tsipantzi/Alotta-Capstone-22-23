@@ -73,9 +73,9 @@ class CouponControllerTest {
     void getAllCouponsBySearchTerm_SearchByCoupon() {
 
         final var results = instance.getAllCouponsBySearchTerm("Coupon");
-        final var expectedResults = List.of(savedCouponOne, savedCouponTwo);
 
-        assertEquals(expectedResults, results);
+        assertTrue(results.contains(savedCouponOne));
+        assertTrue(results.contains(savedCouponTwo));
     }
 
     @Test

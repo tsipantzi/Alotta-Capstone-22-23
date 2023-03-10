@@ -13,8 +13,7 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
     c.TITLE LIKE %:term%
     OR c.COUPON_TYPE LIKE %:term%
     OR c.COUPON_INFO LIKE %:term%
-    OR c.FOOD_CATEGORIES LIKE %:term%
-    """, nativeQuery = true)
+    OR c.FOOD_CATEGORIES LIKE %:term%""", nativeQuery = true)
     List<CouponEntity> findAllByTerm(@Param("term") String term);
     
 }

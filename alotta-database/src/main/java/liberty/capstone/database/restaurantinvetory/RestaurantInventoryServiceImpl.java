@@ -1,7 +1,6 @@
 package liberty.capstone.database.restaurantinvetory;
 
 import liberty.capstone.core.coupon.Coupon;
-import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.restaurantinventory.RestaurantInventory;
 import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
 import liberty.capstone.database.coupon.CouponEntity;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

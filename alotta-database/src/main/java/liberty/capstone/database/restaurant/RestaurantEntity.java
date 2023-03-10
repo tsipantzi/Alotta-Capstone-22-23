@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

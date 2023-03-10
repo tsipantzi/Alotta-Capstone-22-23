@@ -1,13 +1,10 @@
 package liberty.capstone.core.restaurantinventory;
 
-import java.time.LocalDate;
+import liberty.capstone.core.coupon.Coupon;
+
 import java.util.List;
 
 public interface RestaurantInventoryService {
-    List<RestaurantInventory> getRestaurantInventoryById(Long restaurantId);
-
-    RestaurantInventory saveInventoryItem(Long restaurantId,
-                                          Long couponId,
-                                          LocalDate startDate,
-                                          LocalDate endDate);
+    List<Coupon> findAllCouponsByRestaurantId(Long restaurantId);
+    Coupon saveCoupon(Long restaurantId, Coupon coupon);
 }

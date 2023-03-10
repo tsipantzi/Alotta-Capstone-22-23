@@ -2,50 +2,51 @@ package liberty.capstone.process.coupon;
 
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.coupon.CouponService;
-import liberty.capstone.core.restaurantinventory.RestaurantInventory;
-import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/restaurant/{restaurantId}/coupon")
-
+@RequestMapping("/coupons")
 public class CouponController {
     private final CouponService couponService;
-    private final RestaurantInventoryService inventoryService;
 
     @GetMapping
-    public List<Coupon> getAllCouponsForRestaurant(@PathVariable final Long restaurantId) {
-        final var coupons = couponService.getAllCouponsForRestaurant(restaurantId);
-        log.info("Found Coupons {}", coupons);
+    public List<Coupon> getAllCoupons() {
+        final List<Coupon> coupons = couponService.findAllCoupons();
+        log.info(allCouponsInfoString(coupons.size()));
         return coupons;
     }
 
-    @GetMapping("/{couponId}")
-    public RestaurantInventory getCouponForRestaurant(@PathVariable final Long restaurantId,
-                                                      @PathVariable final Long couponId) {
-        final var inventoryItem = inventoryService.getRestaurantInventoryById(restaurantId)
-                .stream()
-                .filter(Objects::nonNull)
-                .filter(item -> item.getCoupon() != null && couponId.equals(item.getCoupon().getId()))
-                .findFirst()
-                .orElse(new RestaurantInventory());
-        log.info("Found Restaurant Inventory Item {}", inventoryItem);
-        return inventoryItem;
+    @GetMapping("/{id}")
+    public Coupon getCouponById(@PathVariable final Long id) {
+        final Coupon coupon = couponService.findCouponById(id);
+        log.info(couponByIdString(coupon));
+        return coupon;
     }
 
-    @PostMapping
-    public RestaurantInventory saveCoupon(@PathVariable final Long restaurantId,
-            @RequestBody final Coupon coupon) {
-        final var saveCoupon = couponService.saveCoupon(restaurantId, coupon);
-        log.info("Saved Coupon into the database as : {}", coupon);
-        return saveCoupon;
+    @GetMapping("/search")
+    public List<Coupon> getAllCouponsBySearchTerm(@RequestParam final String searchTerm) {
+        final List<Coupon> coupons = couponService.findAllCouponsBySearchTerm(searchTerm);
+        log.info(searchTermInfoString(coupons.size(), searchTerm));
+        return coupons;
     }
 
+
+    private static String couponByIdString(final Coupon coupon) {
+        return String.format("Got Coupon: %s by Id", coupon);
+    }
+
+    private static String allCouponsInfoString(final int numberOfCoupons) {
+        return String.format("Got %s results for coupons. Sending it to the front end", numberOfCoupons);
+    }
+
+    private static String searchTermInfoString(final int numberOfCoupons, final String searchTerm) {
+        return String.format("Got %s results for coupons by searchTerm: %s. Sending it to the front end",
+                numberOfCoupons, searchTerm);
+    }
 }

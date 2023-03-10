@@ -4,22 +4,18 @@ import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.database.restaurantinvetory.RestaurantInventoryEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "Restaurant")
 @NoArgsConstructor
+@ToString
 public class RestaurantEntity {
-    @org.springframework.data.annotation.Transient
-    private static final Long MIN_VALUE = 10000000L;
-    @org.springframework.data.annotation.Transient
-    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,13 +31,11 @@ public class RestaurantEntity {
     private String zipCode;
 
     @OneToMany(mappedBy = "restaurant")
-    private List<RestaurantInventoryEntity> inventory = new ArrayList<>();
+    @ToString.Exclude
+    private List<RestaurantInventoryEntity> inventory;
 
     public RestaurantEntity(final Restaurant restaurant) {
-        this.id = restaurant.getId() != null && restaurant.getId() != 0
-                ? restaurant.getId()
-                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-
+        this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.phoneNumber = restaurant.getPhoneNumber();
         this.aboutMe = restaurant.getAboutMe();

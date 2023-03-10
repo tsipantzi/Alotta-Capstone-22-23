@@ -31,7 +31,7 @@ class CouponDaoTest {
         entity.setTotalNumberOfCoupons((long)12);
         entity.setNumberOfCouponsSold((long)11.0);
     
-        couponDao.save(entity);
+        couponDao.saveAndFlush(entity);
     }
 
     @Test

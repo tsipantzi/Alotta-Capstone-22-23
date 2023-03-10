@@ -8,10 +8,10 @@ import 'api_constants.dart';
 class CouponService {
   CouponService();
 
-  Future<List<Coupon>?> getAllCoupons(final String restaurantId) async {
+  Future<List<Coupon>> getAllCoupons() async {
     try {
-      var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
-      print('Trying to find coupons by url $url');
+      var url = Uri.parse(ApiConstants.getAllCoupons());
+      log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
         return couponsFromJson(response.body);
@@ -19,7 +19,22 @@ class CouponService {
     } catch (e) {
       log(e.toString());
     }
-    return null;
+    return List.empty();
+  }
+
+  Future<List<Coupon>> getAllCouponsByRestaurantId(
+      final String restaurantId) async {
+    try {
+      var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        return couponsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
   }
 
   List<Coupon> couponsFromJson(String body) {
@@ -43,5 +58,19 @@ class CouponService {
     );
 
     return response.statusCode == 200;
+  }
+
+  Future<List<Coupon>> getAllCouponsBySearchTerm(String value) async {
+    try {
+      var url = Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        return couponsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
   }
 }

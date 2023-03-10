@@ -64,7 +64,7 @@ class CouponManagerPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .4,
               width: MediaQuery.of(context).size.width,
               child: FutureBuilder<List<Coupon>?>(
-                  future: couponService.getAllCoupons(
+                  future: couponService.getAllCouponsByRestaurantId(
                       restaurantCoupons.restaurant.id.toString()),
                   builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {

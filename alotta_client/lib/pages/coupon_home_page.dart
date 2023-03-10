@@ -11,8 +11,11 @@ import '../assets/widgets/coupon_card.dart';
 
 class CouponHomePage extends StatefulWidget {
   final AppUser currentUser;
-  const CouponHomePage({super.key, required this.currentUser});
+  CouponHomePage({super.key, required this.currentUser});
   static const pageIndex = 1;
+  List<Coupon> coupons = List.empty();
+  final CouponService couponService = CouponService();
+  String searchTerm = '';
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -32,122 +35,113 @@ class CouponHomePage extends StatefulWidget {
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    final CouponService couponService = CouponService();
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+  void searchForCouponsByTerm(value) async {
+    widget.coupons =
+        await widget.couponService.getAllCouponsBySearchTerm(value);
+  }
+
+  Widget getAllCoupons() {
     return FutureBuilder<List<Coupon>?>(
-        future: couponService.getAllCoupons("1"),
+        future: widget.couponService.getAllCoupons(),
         builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data != null) {
             return Scaffold(
-              appBar: AlottaTitle(),
               body: Stack(
                 children: [
                   Center(
                     child: ListView(
                       children: snapshot.data!
-                          .map(
-                            (coupon) => CouponCard(
-                              coupon: coupon,
-                            ),
-                          )
+                          .map((coupon) => CouponCard(coupon: coupon))
                           .toList(),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 5,
-                    right: 0,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryGreen,
-                        shape: const CircleBorder(),
-                      ),
-                      onPressed: _createCoupon,
-                      child: const Text(
-                        '+',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
                     ),
                   ),
                 ],
               ),
-              bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
-                currentUser: widget.currentUser,
-                context: context,
-                currentIndex: CouponHomePage.pageIndex,
-              ),
             );
           } else {
-            return Scaffold(
-              appBar: AlottaTitle(),
-              body: const Center(
+            return const Scaffold(
+              body: Center(
                 child: Text(
                     'There was an error or there are currently no coupons available'),
-              ),
-              bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
-                currentUser: widget.currentUser,
-                context: context,
-                currentIndex: CouponHomePage.pageIndex,
               ),
             );
           }
         });
   }
 
-  Future<void> _createCoupon() async {
-    final CouponService couponService = CouponService();
+  Widget getAllCouponsBySearchTerm(final String searchTerm) {
+    return FutureBuilder<List<Coupon>?>(
+        future: widget.couponService.getAllCouponsBySearchTerm(searchTerm),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  Center(
+                    child: ListView(
+                      children: snapshot.data!
+                          .map((coupon) => CouponCard(coupon: coupon))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: Text(
+                    'There was an error or there are currently no coupons available'),
+              ),
+            );
+          }
+        });
+  }
 
-    final List<Coupon> couponsToCreate = [
-      Coupon(
-        title: 'Bens Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 10.0,
-        dollarsOff: 10,
-        totalNumberOfCoupons: 10,
-        numberOfCouponsSold: 10,
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: AlottaTitle(),
+      body: ListView(
+        children: <Widget>[
+          TextField(
+            onChanged: (value) => setState(() => widget.searchTerm = value),
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
+              hintText: "Search Coupons...",
+              prefixIcon: Icon(Icons.search),
+              prefixIconColor: Colors.black,
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * .68,
+            width: MediaQuery.of(context).size.width,
+            child: widget.searchTerm == ''
+                ? getAllCoupons()
+                : getAllCouponsBySearchTerm(widget.searchTerm),
+          ),
+        ],
       ),
-      Coupon(
-        title: 'James Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 20.0,
-        dollarsOff: 20,
-        totalNumberOfCoupons: 20,
-        numberOfCouponsSold: 20,
+      bottomNavigationBar: AlottaNavigationBar(
+        selectedItemColor: primaryOrangeMaterialColor,
+        currentUser: widget.currentUser,
+        context: context,
+        currentIndex: CouponHomePage.pageIndex,
       ),
-      Coupon(
-        title: 'Deans Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 30.0,
-        dollarsOff: 30,
-        totalNumberOfCoupons: 30,
-        numberOfCouponsSold: 30,
-      ),
-      Coupon(
-        title: 'Richard Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 40.0,
-        dollarsOff: 40,
-        totalNumberOfCoupons: 40,
-        numberOfCouponsSold: 40,
-      ),
-    ];
-
-    final result = couponService.createCoupon(
-        couponsToCreate[Random().nextInt(couponsToCreate.length)], "1");
-
-    if (await result) {
-      Navigator.of(context)
-          .pushNamed('home', arguments: widget.getCurrentUser());
-    }
+    );
   }
 }

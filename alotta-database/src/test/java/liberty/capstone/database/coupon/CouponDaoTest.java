@@ -17,7 +17,7 @@ class CouponDaoTest {
     @Autowired
     private CouponEntityDao couponDao;
 
-    CouponEntity entity;
+    CouponEntity expectedEntity;
     @BeforeEach
     void BeforeEach(){
         final CouponEntity entity = new CouponEntity();
@@ -30,13 +30,13 @@ class CouponDaoTest {
         entity.setNumberOfCouponsPerCustomer((long)11);
         entity.setTotalNumberOfCoupons((long)12);
         entity.setNumberOfCouponsSold((long)11.0);
-    
-        couponDao.save(entity);
+
+        expectedEntity = couponDao.saveAndFlush(entity);
     }
 
     @Test
     void saveExample() {
-        assertTrue(couponDao.findById(entity.getId()).isPresent());
+        assertTrue(couponDao.findById(expectedEntity.getId()).isPresent());
     }
 
     @Test

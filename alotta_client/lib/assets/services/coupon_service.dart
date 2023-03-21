@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:alotta_client/assets/data/coupon.dart';
+import 'package:alotta_client/assets/data/coupon_search_options.dart';
 import 'package:http/http.dart' as http;
 
 import 'api_constants.dart';
@@ -63,6 +64,21 @@ class CouponService {
   Future<List<Coupon>> getAllCouponsBySearchTerm(String value) async {
     try {
       var url = Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        return couponsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
+  }
+
+  Future<List<Coupon>> getAllCouponsByOptions(
+      CouponSearchOptions options) async {
+    try {
+      var url = Uri.parse(ApiConstants.getAllCouponsForOptions(options));
       log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {

@@ -49,11 +49,4 @@ class ApiConstants {
   static String getRestaurantsForUserUrl(final int userId) {
     return '$baseUrl$_userRestaurantsParam?userId=$userId';
   }
-
-  static CouponSearchOptions getAllCouponsForOptions(
-      final CouponSearchOptions options) {
-    //I'm not sure how to get this to work with the filter options
-    //    -Dean
-    return '$baseUrl$_couponParam$_search?searchTerm=$options';
-  }
 }

@@ -78,9 +78,16 @@ class CouponService {
   Future<List<Coupon>> getAllCouponsByOptions(
       CouponSearchOptions options) async {
     try {
-      var url = Uri.parse(ApiConstants.getAllCouponsForOptions(options));
+      var url = Uri.parse(ApiConstants.getAllCoupons());
       log('Trying to find coupons by url $url');
-      var response = await http.get(url);
+
+      var body = json.encode(options.toJson());
+      var response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: body,
+      );
+
       if (response.statusCode == 200 && response.body != '[]') {
         return couponsFromJson(response.body);
       }

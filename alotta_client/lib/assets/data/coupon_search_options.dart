@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+part 'coupon_search_options.g.dart';
+
 @JsonSerializable()
 class CouponSearchOptions {
   static final _defaultDate = DateTime(0);
@@ -15,4 +17,6 @@ class CouponSearchOptions {
   static DateTime _fromJson(int int) =>
       DateTime.fromMillisecondsSinceEpoch(int);
   static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
+
+  Map<String, dynamic> toJson() => _$CouponSearchOptionsToJson(this);
 }

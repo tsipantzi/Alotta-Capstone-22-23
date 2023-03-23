@@ -16,4 +16,9 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
     OR c.FOOD_CATEGORIES LIKE %:term%""", nativeQuery = true)
     List<CouponEntity> findAllByTerm(@Param("term") String term);
     
+    @Query(value = """
+        SELECT * from Coupon c WHERE
+        sysdate BETWEEN c.start_date AND c.end_date""", nativeQuery = true)
+    List<CouponEntity> findAllByCurrentlyActive();
+
 }

@@ -1,6 +1,7 @@
 package liberty.capstone.process.coupon;
 
 import liberty.capstone.core.coupon.Coupon;
+import liberty.capstone.core.coupon.CouponSearchOptions;
 import liberty.capstone.core.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,15 @@ public class CouponController {
         log.info(searchTermInfoString(coupons.size(), searchTerm));
         return coupons;
     }
+
+
+    //I think this is right? I added line 42 to what I wsa given to match the others
+    @PostMapping
+    public List<Coupon> getAllCouponsForOptions(@RequestBody CouponSearchOptions options) {
+        final List<Coupon> coupons = couponService.getAllCouponsByOptions(options);
+        log.info(allCouponsInfoString(coupons.size()));
+        return coupons;
+      }
 
 
     private static String couponByIdString(final Coupon coupon) {

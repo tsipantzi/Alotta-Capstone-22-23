@@ -36,3 +36,11 @@ out/
 ### VS Code ###
 .vscode/
 alotta_client/pubspec.lock
+
+### Flutter build folders ###
+alotta_client/ios/
+alotta_client/macos/
+alotta_client/linux/
+alotta_client/windows/
+alotta_client/android/
+alotta_client/web/

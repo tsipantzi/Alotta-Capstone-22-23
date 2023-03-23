@@ -40,7 +40,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> getAllCouponsByOptions(CouponSearchOptions options) {
+    public List<Coupon> getAllCouponsByOptions(final CouponSearchOptions options) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllCouponsByOptions'");
     }

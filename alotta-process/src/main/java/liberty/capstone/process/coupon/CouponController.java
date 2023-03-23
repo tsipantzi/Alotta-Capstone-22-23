@@ -40,11 +40,11 @@ public class CouponController {
 
     //I think this is right? I added line 42 to what I wsa given to match the others
     @PostMapping
-    public List<Coupon> getAllCouponsForOptions(@RequestBody CouponSearchOptions options) {
+    public List<Coupon> getAllCouponsForOptions(@RequestBody final CouponSearchOptions options) {
         final List<Coupon> coupons = couponService.getAllCouponsByOptions(options);
         log.info(allCouponsInfoString(coupons.size()));
         return coupons;
-      }
+    }
 
 
     private static String couponByIdString(final Coupon coupon) {

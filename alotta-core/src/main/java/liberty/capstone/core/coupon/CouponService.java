@@ -8,5 +8,5 @@ public interface CouponService {
 
     List<Coupon> findAllCouponsBySearchTerm(String searchTerm);
 
-    List<Coupon> getAllCouponsByOptions(final CouponSearchOptions options);
+    List<Coupon> getAllCouponsByOptions(CouponSearchOptions options);
 }

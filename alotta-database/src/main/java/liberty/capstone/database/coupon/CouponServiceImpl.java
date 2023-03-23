@@ -1,6 +1,7 @@
 package liberty.capstone.database.coupon;
 
 import liberty.capstone.core.coupon.Coupon;
+import liberty.capstone.core.coupon.CouponSearchOptions;
 import liberty.capstone.core.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,11 @@ public class CouponServiceImpl implements CouponService {
                 .stream()
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsByOptions(CouponSearchOptions options) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllCouponsByOptions'");
     }
 }

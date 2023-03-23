@@ -1,11 +1,10 @@
 package liberty.capstone.database.coupon;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-
-import lombok.var;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 
 @DataJpaTest
+@Slf4j
 @Sql(scripts = "/coupon-setup.sql")
 class CouponDaoTest {
     static final LocalDate TODAY = LocalDate.now(); 
@@ -49,13 +49,13 @@ class CouponDaoTest {
     @Test
     void findAllByTerm(){
         //tests CouponType
-        assertFalse(couponDao.findAllByTerm("Type").isEmpty());
+        assertFalse(couponDao.findAllByTerm("Type", TODAY.toString()).isEmpty());
         //tests CouponTitle
-        assertFalse(couponDao.findAllByTerm("title").isEmpty());
+        assertFalse(couponDao.findAllByTerm("title", TODAY.toString()).isEmpty());
         //tests food Categories
-        assertFalse(couponDao.findAllByTerm("American").isEmpty());
+        assertFalse(couponDao.findAllByTerm("American", TODAY.toString()).isEmpty());
         //tests Coupon Info
-        assertFalse(couponDao.findAllByTerm("info").isEmpty());
+        assertFalse(couponDao.findAllByTerm("info", TODAY.toString()).isEmpty());
     }
 
     @Test
@@ -75,12 +75,13 @@ class CouponDaoTest {
 
         final var excludedEntity = couponDao.saveAndFlush(entity);
 
-        final var results = couponDao.findAllByCurrentlyActive();
+        final var results = couponDao.findAllByCurrentlyActive(TODAY.toString());
+
+        log.warn("Got results : {}", results);
 
         assertAll(
             () -> assertTrue(results.contains(expectedEntity)),
-            () -> assertFalse(results.contains(excludedEntity))
-            );
+            () -> assertFalse(results.contains(excludedEntity)));
     }
 
 }

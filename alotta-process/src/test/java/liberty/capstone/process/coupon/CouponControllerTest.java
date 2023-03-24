@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CouponControllerTest {
+    static final LocalDate TODAY = LocalDate.now();
     @Autowired
     CouponController instance;
     @Autowired
@@ -36,8 +38,12 @@ class CouponControllerTest {
     void setUp() {
         final var couponOne = new Coupon();
         couponOne.setTitle("Coupon Title One");
+        couponOne.setStartDate(TODAY.minusDays(3));
+        couponOne.setEndDate(TODAY.plusDays(3));
         final var couponTwo = new Coupon();
         couponTwo.setTitle("Coupon Title Two");
+        couponTwo.setStartDate(TODAY.minusDays(3));
+        couponTwo.setEndDate(TODAY.plusDays(3));
 
         final var restaurantOne = new Restaurant();
         restaurantOne.setName("Restaurant One");

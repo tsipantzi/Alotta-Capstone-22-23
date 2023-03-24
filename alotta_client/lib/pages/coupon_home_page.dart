@@ -35,6 +35,36 @@ class CouponHomePage extends StatefulWidget {
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
+  String? filterValue;
+  final categories = [
+    "Fast Food",
+    "Dine-In",
+    "Carry-Out",
+    "Mexican",
+    "Japanese",
+    "Chinese",
+    "Italian",
+    "Mediterranean",
+    "Subs/Sandwiches",
+    "Pizza",
+    "Burgers",
+    "Dessert",
+  ];
+  final Map<String, bool?> categoryMap = {
+    "Fast Food": false,
+    "Dine-In": false,
+    "Carry-Out": false,
+    "Mexican": false,
+    "Japanese": false,
+    "Chinese": false,
+    "Italian": false,
+    "Mediterranean": false,
+    "Subs/Sandwiches": false,
+    "Pizza": false,
+    "Burgers": false,
+    "Dessert": false,
+  };
+
   void searchForCouponsByTerm(value) async {
     widget.coupons =
         await widget.couponService.getAllCouponsBySearchTerm(value);
@@ -109,23 +139,45 @@ class _CouponHomePageState extends State<CouponHomePage> {
     return Scaffold(
       appBar: AlottaTitle(),
       body: ListView(
+        padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           TextField(
             onChanged: (value) => setState(() => widget.searchTerm = value),
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
             ),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(width: 4.0),
               ),
               hintText: "Search Coupons...",
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               prefixIconColor: Colors.black,
             ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
+              ),
+            ),
+            child: DropdownButton<String>(
+                value: filterValue,
+                hint: const Text("Filter By Category..."),
+                isExpanded: true,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+                onChanged: (value) => valueChanged(value),
+                items: categories.map(buildMenuItem).toList()),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * .68,
@@ -144,4 +196,36 @@ class _CouponHomePageState extends State<CouponHomePage> {
       ),
     );
   }
+
+  void valueChanged(value) {
+    setState(() {
+      filterValue = value;
+    });
+  }
+
+  DropdownMenuItem<String> buildMenuItem(String category) => DropdownMenuItem(
+        value: category,
+        child: Row(children: <Widget>[
+          Text(category),
+          Checkbox(
+            //tristate: true,
+            value: categoryMap[category],
+            onChanged: (newBool) {
+              setState(() {
+                categoryMap[category] = newBool;
+              });
+            },
+          ),
+        ]),
+      );
+
+  // List<Coupon> filterCoupons(List<Coupon> coupons) {}
+
+  // void flipMapValue(String category) {
+  //   categoryMap.entries.forEach((entry) => {
+  //     if (entry.key == category) {
+  //       entry.value =
+  //     }
+  //   });
+  // }
 }

@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
+import 'package:multiselect/multiselect.dart';
 
 import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
@@ -16,41 +15,8 @@ class CouponHomePage extends StatefulWidget {
   List<Coupon> coupons = List.empty();
   final CouponService couponService = CouponService();
   String searchTerm = '';
-
-  AppUser getCurrentUser() {
-    return currentUser;
-  }
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  @override
-  State<CouponHomePage> createState() => _CouponHomePageState();
-}
-
-class _CouponHomePageState extends State<CouponHomePage> {
-  String? filterValue;
-  final categories = [
-    "Fast Food",
-    "Dine-In",
-    "Carry-Out",
-    "Mexican",
-    "Japanese",
-    "Chinese",
-    "Italian",
-    "Mediterranean",
-    "Subs/Sandwiches",
-    "Pizza",
-    "Burgers",
-    "Dessert",
-  ];
-  final Map<String, bool?> categoryMap = {
+  List<String> selectedCategories = [];
+  final Map<String, bool> categoryMap = {
     "Fast Food": false,
     "Dine-In": false,
     "Carry-Out": false,
@@ -65,14 +31,23 @@ class _CouponHomePageState extends State<CouponHomePage> {
     "Dessert": false,
   };
 
+  AppUser getCurrentUser() {
+    return currentUser;
+  }
+
+  @override
+  State<CouponHomePage> createState() => _CouponHomePageState();
+}
+
+class _CouponHomePageState extends State<CouponHomePage> {
   void searchForCouponsByTerm(value) async {
-    widget.coupons =
-        await widget.couponService.getAllCouponsBySearchTerm(value);
+    widget.coupons = await widget.couponService
+        .getAllCouponsBySearchTerm(value, widget.currentUser.zipcode);
   }
 
   Widget getAllCoupons() {
     return FutureBuilder<List<Coupon>?>(
-        future: widget.couponService.getAllCoupons(),
+        future: widget.couponService.getAllCoupons(widget.currentUser.zipcode),
         builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             return Scaffold(
@@ -101,7 +76,8 @@ class _CouponHomePageState extends State<CouponHomePage> {
 
   Widget getAllCouponsBySearchTerm(final String searchTerm) {
     return FutureBuilder<List<Coupon>?>(
-        future: widget.couponService.getAllCouponsBySearchTerm(searchTerm),
+        future: widget.couponService
+            .getAllCouponsBySearchTerm(searchTerm, widget.currentUser.zipcode),
         builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             return Scaffold(
@@ -159,26 +135,32 @@ class _CouponHomePageState extends State<CouponHomePage> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.grey,
-                width: 2,
-              ),
-            ),
-            child: DropdownButton<String>(
-                value: filterValue,
-                hint: const Text("Filter By Category..."),
-                isExpanded: true,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
                 ),
-                onChanged: (value) => valueChanged(value),
-                items: categories.map(buildMenuItem).toList()),
-          ),
+              ),
+              child: DropDownMultiSelect(
+                hint: const Text("Select food categories..."),
+                options: widget.categoryMap.keys.toList(),
+                selectedValues: widget.selectedCategories,
+                onChanged: (values) {
+                  setState(() {
+                    widget.selectedCategories = values;
+                    values.forEach((value) => {
+                          widget.categoryMap[value] =
+                              !widget.categoryMap[value]!
+                        });
+                    widget.coupons =
+                        widget.coupons.where((element) => false).toList();
+                    print("Updated the map ${widget.categoryMap}");
+                  });
+                },
+              )),
           SizedBox(
             height: MediaQuery.of(context).size.height * .68,
             width: MediaQuery.of(context).size.width,
@@ -196,28 +178,6 @@ class _CouponHomePageState extends State<CouponHomePage> {
       ),
     );
   }
-
-  void valueChanged(value) {
-    setState(() {
-      filterValue = value;
-    });
-  }
-
-  DropdownMenuItem<String> buildMenuItem(String category) => DropdownMenuItem(
-        value: category,
-        child: Row(children: <Widget>[
-          Text(category),
-          Checkbox(
-            //tristate: true,
-            value: categoryMap[category],
-            onChanged: (newBool) {
-              setState(() {
-                categoryMap[category] = newBool;
-              });
-            },
-          ),
-        ]),
-      );
 
   // List<Coupon> filterCoupons(List<Coupon> coupons) {}
 

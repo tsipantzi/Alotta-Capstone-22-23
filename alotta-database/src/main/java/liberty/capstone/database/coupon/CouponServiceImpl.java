@@ -1,7 +1,6 @@
 package liberty.capstone.database.coupon;
 
 import liberty.capstone.core.coupon.Coupon;
-import liberty.capstone.core.coupon.CouponSearchOptions;
 import liberty.capstone.core.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,16 +31,22 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> findAllCouponsBySearchTerm(final String searchTerm) {
-        return couponDao.findAllByTerm(searchTerm, LocalDate.now().toString())
+    public List<Coupon> findAllCouponsBySearchTermAndZipCode(final String searchTerm, final String zipCode) {
+        return couponDao.findAllByTermZipCodeOrEndDate(searchTerm,
+                        zipCode.substring(0, zipCode.length() - 1),
+                        LocalDate.now().toString())
                 .stream()
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Coupon> getAllCouponsByOptions(final CouponSearchOptions options) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCouponsByOptions'");
+    public List<Coupon> getAllCouponsByZipCode(final String zipCode) {
+        return couponDao.findAllByTermZipCodeOrEndDate("",
+                        zipCode.substring(0, zipCode.length() - 1),
+                        LocalDate.now().toString())
+                .stream()
+                .map(CouponEntity::toDomainObject)
+                .collect(Collectors.toList());
     }
 }

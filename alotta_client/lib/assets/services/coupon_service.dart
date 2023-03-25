@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:alotta_client/assets/data/coupon.dart';
-import 'package:alotta_client/assets/data/coupon_search_options.dart';
 import 'package:http/http.dart' as http;
 
 import 'api_constants.dart';
@@ -9,9 +9,25 @@ import 'api_constants.dart';
 class CouponService {
   CouponService();
 
-  Future<List<Coupon>> getAllCoupons() async {
+  Future<List<Coupon>> getAllCoupons(final String zipCode) async {
     try {
-      var url = Uri.parse(ApiConstants.getAllCoupons());
+      var url = Uri.parse(ApiConstants.getAllCoupons(zipCode));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        return couponsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
+  }
+
+  Future<List<Coupon>> getAllCouponsBySearchTerm(
+      String value, String zipCode) async {
+    try {
+      var url =
+          Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value, zipCode));
       log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
@@ -59,41 +75,5 @@ class CouponService {
     );
 
     return response.statusCode == 200;
-  }
-
-  Future<List<Coupon>> getAllCouponsBySearchTerm(String value) async {
-    try {
-      var url = Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value));
-      log('Trying to find coupons by url $url');
-      var response = await http.get(url);
-      if (response.statusCode == 200 && response.body != '[]') {
-        return couponsFromJson(response.body);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return List.empty();
-  }
-
-  Future<List<Coupon>> getAllCouponsByOptions(
-      CouponSearchOptions options) async {
-    try {
-      var url = Uri.parse(ApiConstants.getAllCoupons());
-      log('Trying to find coupons by url $url');
-
-      var body = json.encode(options.toJson());
-      var response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: body,
-      );
-
-      if (response.statusCode == 200 && response.body != '[]') {
-        return couponsFromJson(response.body);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return List.empty();
   }
 }

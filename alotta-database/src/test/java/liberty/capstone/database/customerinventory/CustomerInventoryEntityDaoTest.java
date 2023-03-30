@@ -47,7 +47,7 @@ class CustomerInventoryEntityDaoTest {
         customerInventory.setCoupon(savedCoupon);
         inventoryEntityDao.save(customerInventory);
 
-        final var result = inventoryEntityDao.findAll().get(0);
+        final var result = inventoryEntityDao.findAllByCustomer_Id(savedCustomer.getId()).get(0);
         assertAll(() -> {
             assertEquals(savedCustomer.getId(), result.getCustomer().getId());
             assertEquals(savedCustomer.getUsername(), result.getCustomer().getUsername());

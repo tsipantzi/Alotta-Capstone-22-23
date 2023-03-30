@@ -36,4 +36,9 @@ public class CustomerInventoryEntity {
         log.info("Converted CustomerInventory to domain object : {}", customerInventory);
         return customerInventory;
     }
+
+    public CustomerInventoryEntity(CouponEntity couponEntity, AppUserEntity appUserEntity){
+        this.coupon = couponEntity;
+        this.customer = appUserEntity;
+    }
 }

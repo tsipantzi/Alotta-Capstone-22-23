@@ -20,6 +20,7 @@ class CouponService {
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
         coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = false;
         return coupons;
       }
     } catch (e) {
@@ -30,7 +31,6 @@ class CouponService {
 
   Future<List<Coupon>> getAllCouponsBySearchTerm(
       String value, String zipCode) async {
-    cacheIsInvalidated = true;
     try {
       var url =
           Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value, zipCode));
@@ -38,6 +38,7 @@ class CouponService {
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
         coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = true;
         return coupons;
       }
     } catch (e) {

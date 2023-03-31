@@ -1,4 +1,4 @@
-package liberty.capstone.process.customerInventory;
+package liberty.capstone.process.customerinventory;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  
 @RequiredArgsConstructor
 @RequestMapping("/userId/{id}/coupons")
-public class CustomerInventoryController{
+public class CustomerInventoryController {
     private final CustomerInventoryService customerInventoryService;
     @PostMapping("/save")
     public Coupon saveCouponForCustomer(@PathVariable final Long id,
@@ -23,8 +23,7 @@ public class CustomerInventoryController{
     }
 
     @GetMapping
-    public List<Coupon> getAllClaimedCouponsForCustomer(
-        @PathVariable final Long id) {
+    public List<Coupon> getAllClaimedCouponsForCustomer(@PathVariable final Long id) {
         return customerInventoryService.findAllByUserIs(id);
     }
 }

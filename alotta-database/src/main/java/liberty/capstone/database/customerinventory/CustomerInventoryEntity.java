@@ -28,6 +28,12 @@ public class CustomerInventoryEntity {
     private AppUserEntity customer;
     private boolean redeemed;
 
+    public CustomerInventoryEntity(final CouponEntity couponEntity,
+                                    final AppUserEntity appUserEntity) {
+        this.coupon = couponEntity;
+        this.customer = appUserEntity;
+    }
+
     public CustomerInventory toDomainObject() {
         final var customerInventory = new CustomerInventory();
         customerInventory.setCustomer(customer.toDomainObject());
@@ -35,10 +41,5 @@ public class CustomerInventoryEntity {
         customerInventory.setRedeemed(redeemed);
         log.info("Converted CustomerInventory to domain object : {}", customerInventory);
         return customerInventory;
-    }
-
-    public CustomerInventoryEntity(CouponEntity couponEntity, AppUserEntity appUserEntity){
-        this.coupon = couponEntity;
-        this.customer = appUserEntity;
     }
 }

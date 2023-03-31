@@ -12,24 +12,26 @@ class CouponHomePage extends StatefulWidget {
   final AppUser currentUser;
   CouponHomePage({super.key, required this.currentUser});
   static const pageIndex = 1;
-  List<Coupon> coupons = List.empty();
+  List<Coupon> currentCoupons = List.empty();
+  List<CouponCard> couponCards = List.empty();
   final CouponService couponService = CouponService();
+  bool reloadAllCoupons = true;
   String searchTerm = '';
   List<String> selectedCategories = [];
-  final Map<String, bool> categoryMap = {
-    "Fast Food": false,
-    "Dine-In": false,
-    "Carry-Out": false,
-    "Mexican": false,
-    "Japanese": false,
-    "Chinese": false,
-    "Italian": false,
-    "Mediterranean": false,
-    "Subs/Sandwiches": false,
-    "Pizza": false,
-    "Burgers": false,
-    "Dessert": false,
-  };
+  List<String> categoriesAvailable = [
+    "Fast Food",
+    "Dine-In",
+    "Carry-Out",
+    "Mexican",
+    "Japanese",
+    "Chinese",
+    "Italian",
+    "Mediterranean",
+    "Subs/Sandwiches",
+    "Pizza",
+    "Burgers",
+    "Dessert",
+  ];
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -37,71 +39,79 @@ class CouponHomePage extends StatefulWidget {
 
   @override
   State<CouponHomePage> createState() => _CouponHomePageState();
-}
 
-class _CouponHomePageState extends State<CouponHomePage> {
-  void searchForCouponsByTerm(value) async {
-    widget.coupons = await widget.couponService
-        .getAllCouponsBySearchTerm(value, widget.currentUser.zipcode);
-  }
-
-  Widget getAllCoupons() {
+  /*Widget getAllCoupons() {
+    reloadAllCoupons = false;
     return FutureBuilder<List<Coupon>?>(
-        future: widget.couponService.getAllCoupons(widget.currentUser.zipcode),
+        future: couponService.getAllCoupons(currentUser.zipcode),
         builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            return Scaffold(
-              body: Stack(
-                children: [
-                  Center(
-                    child: ListView(
-                      children: snapshot.data!
-                          .map((coupon) => CouponCard(coupon: coupon))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
+            return ListView(
+              children: convertCouponsToCouponCards(snapshot.data!),
             );
           } else {
-            return const Scaffold(
-              body: Center(
-                child: Text(
-                    'There was an error or there are currently no coupons available'),
-              ),
+            return const Center(
+              child: Text(
+                  'There was an error or there are currently no coupons available'),
             );
           }
         });
   }
 
   Widget getAllCouponsBySearchTerm(final String searchTerm) {
+    reloadAllCoupons = true;
     return FutureBuilder<List<Coupon>?>(
-        future: widget.couponService
-            .getAllCouponsBySearchTerm(searchTerm, widget.currentUser.zipcode),
+        future: couponService.getAllCouponsBySearchTerm(
+            searchTerm, currentUser.zipcode),
         builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            return Scaffold(
-              body: Stack(
-                children: [
-                  Center(
-                    child: ListView(
-                      children: snapshot.data!
-                          .map((coupon) => CouponCard(coupon: coupon))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
+            return ListView(
+              children: convertCouponsToCouponCards(snapshot.data!),
             );
           } else {
-            return const Scaffold(
-              body: Center(
-                child: Text(
-                    'There was an error or there are currently no coupons available'),
-              ),
+            return const Center(
+              child: Text(
+                  'There was an error or there are currently no coupons available'),
             );
           }
         });
+  }*/
+
+  List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
+    couponCards = coupons
+        .where(couponContainsSelectedCategory)
+        .map((coupon) => CouponCard(coupon: coupon))
+        .toList();
+
+    updateGlobalCoupons(coupons);
+    return couponCards;
+  }
+
+  void updateGlobalCoupons(List<Coupon> coupons) {
+    currentCoupons = coupons.where(couponContainsSelectedCategory).toList();
+  }
+
+  void applyFilterToCurrentCoupons() {
+    if (selectedCategories.isEmpty) return;
+    if (currentCoupons.isEmpty) return;
+    currentCoupons =
+        currentCoupons.where(couponContainsSelectedCategory).toList();
+  }
+
+  bool couponContainsSelectedCategory(Coupon coupon) {
+    if (selectedCategories.isEmpty) {
+      return true;
+    }
+
+    return selectedCategories.contains(coupon.foodCategories);
+  }
+}
+
+class _CouponHomePageState extends State<CouponHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget.reloadAllCoupons = false;
   }
 
   @override
@@ -135,38 +145,57 @@ class _CouponHomePageState extends State<CouponHomePage> {
             ),
           ),
           Container(
-              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
-                ),
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
               ),
-              child: DropDownMultiSelect(
-                hint: const Text("Select food categories..."),
-                options: widget.categoryMap.keys.toList(),
-                selectedValues: widget.selectedCategories,
-                onChanged: (values) {
-                  setState(() {
-                    widget.selectedCategories = values;
-                    values.forEach((value) => {
-                          widget.categoryMap[value] =
-                              !widget.categoryMap[value]!
-                        });
-                    widget.coupons =
-                        widget.coupons.where((element) => false).toList();
-                    print("Updated the map ${widget.categoryMap}");
-                  });
-                },
-              )),
+            ),
+            child: DropDownMultiSelect(
+              decoration: null,
+              hint: const Text("Select food categories..."),
+              options: widget.categoriesAvailable,
+              selectedValues: widget.selectedCategories,
+              onChanged: (values) {
+                setState(() {
+                  widget.selectedCategories = values;
+                  widget.applyFilterToCurrentCoupons();
+                  print(
+                      "Updated the list of selected items ${widget.selectedCategories}");
+                });
+              },
+            ),
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * .68,
             width: MediaQuery.of(context).size.width,
-            child: widget.searchTerm == ''
-                ? getAllCoupons()
-                : getAllCouponsBySearchTerm(widget.searchTerm),
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  Center(
+                    child: FutureBuilder<List<Coupon>?>(
+                        future: getCoupons(),
+                        builder:
+                            (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            return ListView(
+                              children: widget
+                                  .convertCouponsToCouponCards(snapshot.data!),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text(
+                                  'There was an error or there are currently no coupons available'),
+                            );
+                          }
+                        }),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -179,13 +208,24 @@ class _CouponHomePageState extends State<CouponHomePage> {
     );
   }
 
-  // List<Coupon> filterCoupons(List<Coupon> coupons) {}
+  Future<List<Coupon>> getCoupons() async {
+    if (widget.searchTerm == '') {
+      return applyFilterToFuture(
+          widget.couponService.getAllCoupons(widget.currentUser.zipcode));
+    }
 
-  // void flipMapValue(String category) {
-  //   categoryMap.entries.forEach((entry) => {
-  //     if (entry.key == category) {
-  //       entry.value =
-  //     }
-  //   });
-  // }
+    widget.reloadAllCoupons = true;
+    return applyFilterToFuture(widget.couponService.getAllCouponsBySearchTerm(
+        widget.searchTerm, widget.currentUser.zipcode));
+  }
+
+  Future<List<Coupon>> applyFilterAndCastToFuture(List<Coupon> coupons) async {
+    return coupons.where(widget.couponContainsSelectedCategory).toList();
+  }
+
+  Future<List<Coupon>> applyFilterToFuture(
+      Future<List<Coupon>> futureCoupons) async {
+    var coupons = await futureCoupons;
+    return coupons.where(widget.couponContainsSelectedCategory).toList();
+  }
 }

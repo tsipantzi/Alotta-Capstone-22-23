@@ -1,17 +1,57 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:alotta_client/assets/data/coupon.dart';
 import 'package:http/http.dart' as http;
 
 import 'api_constants.dart';
 
 class CouponService {
+  List<Coupon> coupons = List.empty();
+  bool cacheIsInvalidated = false;
   CouponService();
 
-  Future<List<Coupon>?> getAllCoupons(final String restaurantId) async {
+  Future<List<Coupon>> getAllCoupons(final String zipCode) async {
+    if (coupons.isNotEmpty && !cacheIsInvalidated) return coupons;
+
+    try {
+      var url = Uri.parse(ApiConstants.getAllCoupons(zipCode));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = false;
+        return coupons;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
+  }
+
+  Future<List<Coupon>> getAllCouponsBySearchTerm(
+      String value, String zipCode) async {
+    try {
+      var url =
+          Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value, zipCode));
+      log('Trying to find coupons by url $url');
+      var response = await http.get(url);
+      if (response.statusCode == 200 && response.body != '[]') {
+        coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = true;
+        return coupons;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return List.empty();
+  }
+
+  Future<List<Coupon>> getAllCouponsByRestaurantId(
+      final String restaurantId) async {
     try {
       var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
-      print('Trying to find coupons by url $url');
+      log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
         return couponsFromJson(response.body);
@@ -19,7 +59,7 @@ class CouponService {
     } catch (e) {
       log(e.toString());
     }
-    return null;
+    return List.empty();
   }
 
   List<Coupon> couponsFromJson(String body) {

@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
+import 'package:multiselect/multiselect.dart';
 
 import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
@@ -11,143 +10,222 @@ import '../assets/widgets/coupon_card.dart';
 
 class CouponHomePage extends StatefulWidget {
   final AppUser currentUser;
-  const CouponHomePage({super.key, required this.currentUser});
+  CouponHomePage({super.key, required this.currentUser});
   static const pageIndex = 1;
+  List<Coupon> currentCoupons = List.empty();
+  List<CouponCard> couponCards = List.empty();
+  final CouponService couponService = CouponService();
+  bool reloadAllCoupons = true;
+  String searchTerm = '';
+  List<String> selectedCategories = [];
+  List<String> categoriesAvailable = [
+    "Fast Food",
+    "Dine-In",
+    "Carry-Out",
+    "Mexican",
+    "Japanese",
+    "Chinese",
+    "Italian",
+    "Mediterranean",
+    "Subs/Sandwiches",
+    "Pizza",
+    "Burgers",
+    "Dessert",
+  ];
 
   AppUser getCurrentUser() {
     return currentUser;
   }
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   State<CouponHomePage> createState() => _CouponHomePageState();
+
+  /*Widget getAllCoupons() {
+    reloadAllCoupons = false;
+    return FutureBuilder<List<Coupon>?>(
+        future: couponService.getAllCoupons(currentUser.zipcode),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return ListView(
+              children: convertCouponsToCouponCards(snapshot.data!),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                  'There was an error or there are currently no coupons available'),
+            );
+          }
+        });
+  }
+
+  Widget getAllCouponsBySearchTerm(final String searchTerm) {
+    reloadAllCoupons = true;
+    return FutureBuilder<List<Coupon>?>(
+        future: couponService.getAllCouponsBySearchTerm(
+            searchTerm, currentUser.zipcode),
+        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return ListView(
+              children: convertCouponsToCouponCards(snapshot.data!),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                  'There was an error or there are currently no coupons available'),
+            );
+          }
+        });
+  }*/
+
+  List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
+    couponCards = coupons
+        .where(couponContainsSelectedCategory)
+        .map((coupon) => CouponCard(coupon: coupon))
+        .toList();
+
+    updateGlobalCoupons(coupons);
+    return couponCards;
+  }
+
+  void updateGlobalCoupons(List<Coupon> coupons) {
+    currentCoupons = coupons.where(couponContainsSelectedCategory).toList();
+  }
+
+  void applyFilterToCurrentCoupons() {
+    if (selectedCategories.isEmpty) return;
+    if (currentCoupons.isEmpty) return;
+    currentCoupons =
+        currentCoupons.where(couponContainsSelectedCategory).toList();
+  }
+
+  bool couponContainsSelectedCategory(Coupon coupon) {
+    if (selectedCategories.isEmpty) {
+      return true;
+    }
+
+    return selectedCategories.contains(coupon.foodCategories);
+  }
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
   @override
+  void initState() {
+    super.initState();
+    widget.reloadAllCoupons = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final CouponService couponService = CouponService();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return FutureBuilder<List<Coupon>?>(
-        future: couponService.getAllCoupons("1"),
-        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-          if (snapshot.hasData) {
-            return Scaffold(
-              appBar: AlottaTitle(),
+    return Scaffold(
+      appBar: AlottaTitle(),
+      body: ListView(
+        padding: const EdgeInsets.all(8.0),
+        children: <Widget>[
+          TextField(
+            onChanged: (value) => setState(() => widget.searchTerm = value),
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(width: 4.0),
+              ),
+              hintText: "Search Coupons...",
+              prefixIcon: const Icon(Icons.search),
+              prefixIconColor: Colors.black,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
+              ),
+            ),
+            child: DropDownMultiSelect(
+              decoration: null,
+              hint: const Text("Select food categories..."),
+              options: widget.categoriesAvailable,
+              selectedValues: widget.selectedCategories,
+              onChanged: (values) {
+                setState(() {
+                  widget.selectedCategories = values;
+                  widget.applyFilterToCurrentCoupons();
+                  print(
+                      "Updated the list of selected items ${widget.selectedCategories}");
+                });
+              },
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * .68,
+            width: MediaQuery.of(context).size.width,
+            child: Scaffold(
               body: Stack(
                 children: [
                   Center(
-                    child: ListView(
-                      children: snapshot.data!
-                          .map(
-                            (coupon) => CouponCard(
-                              coupon: coupon,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 5,
-                    right: 0,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryGreen,
-                        shape: const CircleBorder(),
-                      ),
-                      onPressed: _createCoupon,
-                      child: const Text(
-                        '+',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                    child: FutureBuilder<List<Coupon>?>(
+                        future: getCoupons(),
+                        builder:
+                            (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            return ListView(
+                              children: widget
+                                  .convertCouponsToCouponCards(snapshot.data!),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text(
+                                  'There was an error or there are currently no coupons available'),
+                            );
+                          }
+                        }),
                   ),
                 ],
               ),
-              bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
-                currentUser: widget.currentUser,
-                context: context,
-                currentIndex: CouponHomePage.pageIndex,
-              ),
-            );
-          } else {
-            return Scaffold(
-              appBar: AlottaTitle(),
-              body: const Center(
-                child: Text(
-                    'There was an error or there are currently no coupons available'),
-              ),
-              bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
-                currentUser: widget.currentUser,
-                context: context,
-                currentIndex: CouponHomePage.pageIndex,
-              ),
-            );
-          }
-        });
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        selectedItemColor: primaryOrangeMaterialColor,
+        currentUser: widget.currentUser,
+        context: context,
+        currentIndex: CouponHomePage.pageIndex,
+      ),
+    );
   }
 
-  Future<void> _createCoupon() async {
-    final CouponService couponService = CouponService();
-
-    final List<Coupon> couponsToCreate = [
-      Coupon(
-        title: 'Bens Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 10.0,
-        dollarsOff: 10,
-        totalNumberOfCoupons: 10,
-        numberOfCouponsSold: 10,
-      ),
-      Coupon(
-        title: 'James Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 20.0,
-        dollarsOff: 20,
-        totalNumberOfCoupons: 20,
-        numberOfCouponsSold: 20,
-      ),
-      Coupon(
-        title: 'Deans Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 30.0,
-        dollarsOff: 30,
-        totalNumberOfCoupons: 30,
-        numberOfCouponsSold: 30,
-      ),
-      Coupon(
-        title: 'Richard Coupon',
-        description: 'Lorem ipsum dolor sit amet, consectetur',
-        discount: 40.0,
-        dollarsOff: 40,
-        totalNumberOfCoupons: 40,
-        numberOfCouponsSold: 40,
-      ),
-    ];
-
-    final result = couponService.createCoupon(
-        couponsToCreate[Random().nextInt(couponsToCreate.length)], "1");
-
-    if (await result) {
-      Navigator.of(context)
-          .pushNamed('home', arguments: widget.getCurrentUser());
+  Future<List<Coupon>> getCoupons() async {
+    if (widget.searchTerm == '') {
+      return applyFilterToFuture(
+          widget.couponService.getAllCoupons(widget.currentUser.zipcode));
     }
+
+    widget.reloadAllCoupons = true;
+    return applyFilterToFuture(widget.couponService.getAllCouponsBySearchTerm(
+        widget.searchTerm, widget.currentUser.zipcode));
+  }
+
+  Future<List<Coupon>> applyFilterAndCastToFuture(List<Coupon> coupons) async {
+    return coupons.where(widget.couponContainsSelectedCategory).toList();
+  }
+
+  Future<List<Coupon>> applyFilterToFuture(
+      Future<List<Coupon>> futureCoupons) async {
+    var coupons = await futureCoupons;
+    return coupons.where(widget.couponContainsSelectedCategory).toList();
   }
 }

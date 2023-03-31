@@ -30,12 +30,14 @@ public class CouponController {
     }
 
     @GetMapping("/search")
-    public List<Coupon> getAllCouponsBySearchTerm(@RequestParam final String searchTerm) {
-        final List<Coupon> coupons = couponService.findAllCouponsBySearchTerm(searchTerm);
+    public List<Coupon> getAllCouponsBySearchTerm(@RequestParam final String zipCode,
+                                                  @RequestParam(required = false) final String searchTerm) {
+        final List<Coupon> coupons = searchTerm != null
+                ? couponService.findAllCouponsBySearchTermAndZipCode(searchTerm, zipCode)
+                : couponService.getAllCouponsByZipCode(zipCode);
         log.info(searchTermInfoString(coupons.size(), searchTerm));
         return coupons;
     }
-
 
     private static String couponByIdString(final Coupon coupon) {
         return String.format("Got Coupon: %s by Id", coupon);

@@ -11,6 +11,7 @@ class Coupon {
   final String title;
   @JsonKey(name: 'couponInfo')
   final String description;
+  final String foodCategories;
   final Image image = Image.network(
       'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png');
   @JsonKey(name: 'percentageOff')
@@ -27,6 +28,7 @@ class Coupon {
     this.id = 0,
     this.title = '',
     this.description = '',
+    this.foodCategories = '',
     this.discount = 0,
     this.dollarsOff = 0,
     this.totalNumberOfCoupons = 0,

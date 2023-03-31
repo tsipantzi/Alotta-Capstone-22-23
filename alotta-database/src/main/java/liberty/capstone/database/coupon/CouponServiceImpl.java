@@ -5,6 +5,7 @@ import liberty.capstone.core.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +24,27 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<Coupon> findAllCoupons() {
-        return couponDao.findAll()
+        return couponDao.findAllByCurrentlyActive(LocalDate.now().toString())
                 .stream()
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Coupon> findAllCouponsBySearchTerm(final String searchTerm) {
-        return couponDao.findAllByTerm(searchTerm)
+    public List<Coupon> findAllCouponsBySearchTermAndZipCode(final String searchTerm, final String zipCode) {
+        return couponDao.findAllByTermZipCodeOrEndDate(searchTerm,
+                        zipCode.substring(0, zipCode.length() - 1),
+                        LocalDate.now().toString())
+                .stream()
+                .map(CouponEntity::toDomainObject)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsByZipCode(final String zipCode) {
+        return couponDao.findAllByTermZipCodeOrEndDate("",
+                        zipCode.substring(0, zipCode.length() - 1),
+                        LocalDate.now().toString())
                 .stream()
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());

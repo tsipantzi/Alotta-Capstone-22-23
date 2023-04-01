@@ -188,7 +188,7 @@ class _CreateCouponPage extends State<CreateCouponPage> {
       endDate: DateTime.parse(endDate.value.text),
     );
 
-    log('Creating coupon ${couponToCreate.title}');
+    log('Creating coupon ${couponToCreate.title} with startDate : ${couponToCreate.startDate} and endDate : ${couponToCreate.endDate}');
     final CouponService service = CouponService();
 
     return await service.createCoupon(

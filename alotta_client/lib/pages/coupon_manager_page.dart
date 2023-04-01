@@ -74,7 +74,9 @@ class CouponManagerPage extends StatelessWidget {
                             Center(
                               child: ListView(
                                 children: snapshot.data!
-                                    .map((coupon) => CouponCard(coupon: coupon))
+                                    .map((coupon) => CouponCard(
+                                        coupon: coupon,
+                                        userId: userRestaurant.appUser.id))
                                     .toList(),
                               ),
                             ),

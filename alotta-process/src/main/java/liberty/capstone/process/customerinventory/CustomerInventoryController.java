@@ -2,28 +2,28 @@ package liberty.capstone.process.customerinventory;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.customerinventory.CustomerInventoryService;
 import lombok.RequiredArgsConstructor;
- 
+
+@Slf4j
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/userId/{id}/coupons")
+@RequestMapping("/userId")
 public class CustomerInventoryController {
     private final CustomerInventoryService customerInventoryService;
-    @PostMapping("/save")
-    public Coupon saveCouponForCustomer(@PathVariable final Long id,
-                                        @RequestParam final Long couponId) {
-        return customerInventoryService.saveCouponForCustomer(id, couponId).getCoupon();
+    @PostMapping("/{id}/coupons/save")
+    public Coupon saveCouponForCustomer(@PathVariable final String id,
+                                        @RequestParam final String couponId) {
+        return customerInventoryService.saveCouponForCustomer(Long.parseLong(id), Long.parseLong(couponId))
+                .getCoupon();
     }
 
-    @GetMapping
-    public List<Coupon> getAllClaimedCouponsForCustomer(@PathVariable final Long id) {
-        return customerInventoryService.findAllByUserIs(id);
+    @GetMapping("/{id}/coupons")
+    public List<Coupon> getAllClaimedCouponsForCustomer(@PathVariable final String id) {
+        return customerInventoryService.findAllByUserIs(Long.parseLong(id));
     }
 }

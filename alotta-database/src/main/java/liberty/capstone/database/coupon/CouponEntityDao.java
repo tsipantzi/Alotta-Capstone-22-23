@@ -44,4 +44,15 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
                                                      @Param("zipcodePrefix") String zipcodePrefix,
                                                      @Param("date") String date);
 
+    @Query(value = """
+                    SELECT * FROM Coupon c 
+                    INNER JOIN restaurant_inventory ri ON c.id = ri.coupon_id
+                    INNER JOIN restaurant r ON ri.restaurant_id = r.id AND r.ZIP_CODE LIKE :zipcodePrefix%
+                    WHERE
+                    c.START_DATE IS NOT NULL AND c.START_DATE <= :date
+                    AND c.END_DATE IS NOT NULL AND c.END_DATE >= :date
+                    """, nativeQuery = true)
+    List<CouponEntity> findAllByZipCodeOrEndDate(@Param("zipcodePrefix") String zipcodePrefix,
+                                                     @Param("date") String date);
+
 }

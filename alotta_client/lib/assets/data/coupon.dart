@@ -20,23 +20,21 @@ class Coupon {
   final int totalNumberOfCoupons;
   final int numberOfCouponsSold;
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
-  final DateTime _startDate;
+  final DateTime startDate;
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
-  final DateTime _endDate;
+  final DateTime endDate;
 
-  Coupon({
-    this.id = 0,
-    this.title = '',
-    this.description = '',
-    this.foodCategories = '',
-    this.discount = 0,
-    this.dollarsOff = 0,
-    this.totalNumberOfCoupons = 0,
-    this.numberOfCouponsSold = 0,
-    DateTime? startDate,
-    DateTime? endDate,
-  })  : _startDate = startDate ?? _defaultDate,
-        _endDate = endDate ?? _defaultDate;
+  Coupon(
+      {this.id = 0,
+      this.title = '',
+      this.description = '',
+      this.foodCategories = '',
+      this.discount = 0,
+      this.dollarsOff = 0,
+      this.totalNumberOfCoupons = 0,
+      this.numberOfCouponsSold = 0,
+      required this.startDate,
+      required this.endDate});
 
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
 
@@ -44,12 +42,11 @@ class Coupon {
 
   int get numberOfCouponsLeft => totalNumberOfCoupons - numberOfCouponsSold;
 
-  String get startDateShort => DateFormat('MM/dd').format(_startDate);
-  String get endDateShort => DateFormat('MM/dd').format(_endDate);
+  String get startDateShort => DateFormat('MM/dd').format(startDate);
+  String get endDateShort => DateFormat('MM/dd').format(endDate);
 
-  static DateTime _fromJson(int int) =>
-      DateTime.fromMillisecondsSinceEpoch(int);
-  static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
+  static DateTime _fromJson(String date) => DateTime.parse(date);
+  static String _toJson(DateTime time) => DateFormat('yyyy-MM-dd').format(time);
 
   Image getImage(double height, double width) {
     return Image(

@@ -40,47 +40,10 @@ class CouponHomePage extends StatefulWidget {
   @override
   State<CouponHomePage> createState() => _CouponHomePageState();
 
-  /*Widget getAllCoupons() {
-    reloadAllCoupons = false;
-    return FutureBuilder<List<Coupon>?>(
-        future: couponService.getAllCoupons(currentUser.zipcode),
-        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return ListView(
-              children: convertCouponsToCouponCards(snapshot.data!),
-            );
-          } else {
-            return const Center(
-              child: Text(
-                  'There was an error or there are currently no coupons available'),
-            );
-          }
-        });
-  }
-
-  Widget getAllCouponsBySearchTerm(final String searchTerm) {
-    reloadAllCoupons = true;
-    return FutureBuilder<List<Coupon>?>(
-        future: couponService.getAllCouponsBySearchTerm(
-            searchTerm, currentUser.zipcode),
-        builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return ListView(
-              children: convertCouponsToCouponCards(snapshot.data!),
-            );
-          } else {
-            return const Center(
-              child: Text(
-                  'There was an error or there are currently no coupons available'),
-            );
-          }
-        });
-  }*/
-
   List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
     couponCards = coupons
         .where(couponContainsSelectedCategory)
-        .map((coupon) => CouponCard(coupon: coupon))
+        .map((coupon) => CouponCard(coupon: coupon, userId: currentUser.id))
         .toList();
 
     updateGlobalCoupons(coupons);
@@ -210,8 +173,9 @@ class _CouponHomePageState extends State<CouponHomePage> {
 
   Future<List<Coupon>> getCoupons() async {
     if (widget.searchTerm == '') {
-      return applyFilterToFuture(
-          widget.couponService.getAllCoupons(widget.currentUser.zipcode));
+      return applyFilterToFuture(widget.couponService.getAllCoupons(widget
+          .currentUser.zipcode
+          .substring(0, widget.currentUser.zipcode.length - 2)));
     }
 
     widget.reloadAllCoupons = true;

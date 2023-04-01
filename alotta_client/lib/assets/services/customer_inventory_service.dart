@@ -16,13 +16,14 @@ class CustomerInventoryService {
       url,
       headers: {"Content-Type": "application/json"},
     );
+    log('Got result ${response.body}');
     return response.statusCode == 200;
   }
 
   Future<List<Coupon>> getAllClaimedCouponsForCustomer(final int userId) async {
     try {
       var url =
-          Uri.parse(ApiConstants.getAllCalimedCouponsForCustomerUrl(userId));
+          Uri.parse(ApiConstants.getAllClaimedCouponsForCustomerUrl(userId));
       log('Trying to find all claimed coupons for user $userId');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {

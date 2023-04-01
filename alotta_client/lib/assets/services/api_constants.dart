@@ -19,7 +19,7 @@ class ApiConstants {
 
   // Coupons without Restaurant Info endpoints
   static String getAllCoupons(final String zipCode) {
-    return '$baseUrl$_couponParam?zipCode=$zipCode';
+    return '$baseUrl$_couponParam$_search?zipCode=$zipCode';
   }
 
   static String getCouponById(final String couponId) {
@@ -57,7 +57,7 @@ class ApiConstants {
     return '$baseUrl$_userIdParam/$userId$_couponParam$_saveParam?couponId=$couponId';
   }
 
-  static String getAllCalimedCouponsForCustomerUrl(final int userId) {
+  static String getAllClaimedCouponsForCustomerUrl(final int userId) {
     return '$baseUrl$_userIdParam/$userId$_couponParam';
   }
 }

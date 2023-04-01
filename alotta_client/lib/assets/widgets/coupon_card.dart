@@ -1,14 +1,17 @@
+import 'package:alotta_client/assets/services/customer_inventory_service.dart';
 import 'package:flutter/material.dart';
 
 import '../colors/colors.dart';
 import '../data/coupon.dart';
 
 class CouponCard extends StatefulWidget {
+  final int userId;
   final Coupon coupon;
 
   const CouponCard({
     super.key,
     required this.coupon,
+    required this.userId,
   });
 
   @override
@@ -128,7 +131,7 @@ class _CouponCardState extends State<CouponCard> {
                     bottom: 8,
                     left: 50,
                     child: TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => claimCoupon(context),
                       child: const Text(
                         'Claim Coupon',
                         style: TextStyle(
@@ -327,5 +330,11 @@ class _CouponCardState extends State<CouponCard> {
         ),
       ),
     );
+  }
+
+  void claimCoupon(BuildContext context) async {
+    final CustomerInventoryService service = CustomerInventoryService();
+    await service.saveCouponForCustomer(widget.userId, widget.coupon.id);
+    Navigator.pop(context);
   }
 }

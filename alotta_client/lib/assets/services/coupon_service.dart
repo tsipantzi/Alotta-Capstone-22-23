@@ -7,15 +7,21 @@ import 'package:http/http.dart' as http;
 import 'api_constants.dart';
 
 class CouponService {
+  List<Coupon> coupons = List.empty();
+  bool cacheIsInvalidated = false;
   CouponService();
 
   Future<List<Coupon>> getAllCoupons(final String zipCode) async {
+    if (coupons.isNotEmpty && !cacheIsInvalidated) return coupons;
+
     try {
       var url = Uri.parse(ApiConstants.getAllCoupons(zipCode));
       log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
-        return couponsFromJson(response.body);
+        coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = false;
+        return coupons;
       }
     } catch (e) {
       log(e.toString());
@@ -31,7 +37,9 @@ class CouponService {
       log('Trying to find coupons by url $url');
       var response = await http.get(url);
       if (response.statusCode == 200 && response.body != '[]') {
-        return couponsFromJson(response.body);
+        coupons = couponsFromJson(response.body);
+        cacheIsInvalidated = true;
+        return coupons;
       }
     } catch (e) {
       log(e.toString());

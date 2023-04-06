@@ -9,6 +9,7 @@ import 'package:alotta_client/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/coupon_manager_page.dart';
+import '../../pages/customer_inventory_page.dart';
 import '../../pages/edit_restaurant_page.dart';
 import '../../pages/restaurant_manager_page.dart';
 import '../data/restaurant.dart';
@@ -87,6 +88,14 @@ class RouteGenerator {
           if (args is UserRestaurant) {
             return MaterialPageRoute(
                 builder: (context) => CreateCouponPage(userRestaurant: args));
+          }
+          return _errorRoute();
+        }
+      case 'customerInventoryPage':
+        {
+          if (args is AppUser) {
+            return MaterialPageRoute(
+                builder: (context) => CustomerInventoryPage(currentUser: args));
           }
           return _errorRoute();
         }

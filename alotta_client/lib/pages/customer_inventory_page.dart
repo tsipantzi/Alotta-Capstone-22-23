@@ -1,3 +1,4 @@
+import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +14,7 @@ class CustomerInventoryPage extends StatefulWidget {
   List<Coupon> currentCoupons = List.empty();
   List<CouponCard> couponCards = List.empty();
   final CustomerInventoryService customerService = CustomerInventoryService();
-  bool reloadAllCoupons = true;
   //not sure what to make the curent index
-  static const pageIndex = 2;
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -27,26 +26,18 @@ class CustomerInventoryPage extends StatefulWidget {
   //not sure if I need the where statement or what goes in there for me
   List<Widget> convertCouponstoCouponCards(List<Coupon> coupons) {
     couponCards = coupons
-        .where()
-        .map((coupon) => couponCard(coupon: coupon, userId: currentUser.id))
+        .map((coupon) => CouponCard(
+              coupon: coupon,
+              userId: currentUser.id,
+              couponState: CouponState.redeemable,
+            ))
         .toList();
 
-    updateGlobalCoupons(coupons);
     return couponCards;
   }
-
-  // void updateGlobalCoupons(List<Coupon> coupons) {
-  //   currentCoupons = coupons.where()
-  // }
 }
 
 class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
-  @override
-  void initState() {
-    super.initState();
-    widget.reloadAllCoupons = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +59,7 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
                           if (snapshot.hasData && snapshot.data != null) {
                             return ListView(
                               children: widget
-                                  .convertCouponsToCouponCards(snapshot.data!),
+                                  .convertCouponstoCouponCards(snapshot.data!),
                             );
                           } else {
                             return const Center(
@@ -83,12 +74,6 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: AlottaNavigationBar(
-        selectedItemColor: primaryOrangeMaterialColor,
-        currentUser: widget.currentUser,
-        context: context,
-        currentIndex: CustomerInventoryPage.pageIndex,
       ),
     );
   }

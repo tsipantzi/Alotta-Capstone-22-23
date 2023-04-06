@@ -49,3 +49,4 @@ alotta_client/pubspec.lock
 alotta_client/README 2.md
 alotta_client/pubspec.lock
 README 2.md
+*.lock

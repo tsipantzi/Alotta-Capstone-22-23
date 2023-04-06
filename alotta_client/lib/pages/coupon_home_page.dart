@@ -162,6 +162,11 @@ class _CouponHomePageState extends State<CouponHomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.shopping_cart),
+        onPressed: () {},
+      ),
       bottomNavigationBar: AlottaNavigationBar(
         selectedItemColor: primaryOrangeMaterialColor,
         currentUser: widget.currentUser,

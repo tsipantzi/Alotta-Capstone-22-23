@@ -48,6 +48,41 @@ class CustomerInventoryEntityDaoTest {
         inventoryEntityDao.save(customerInventory);
 
         final var result = inventoryEntityDao.findAllByCustomer_Id(savedCustomer.getId()).get(0);
+        assertResultIsSavedCustomerAndCoupon(savedCustomer, savedCoupon, result);
+    }
+
+    @Test
+    void canFindAllByCustomerAndCoupon() {
+        final var customer = new AppUserEntity();
+        customer.setUsername("TestName");
+        customer.setPassword("password");
+        customer.setAccountType("Business");
+        customer.setFirstName("Dean");
+        customer.setLastName("Natale");
+        customer.setEmail("email@email.com");
+        customer.setPhoneNumber("5404218636");
+        customer.setZipcode("24515");
+
+        final var coupon = new CouponEntity();
+        coupon.setCouponInfo("This is the coupon info");
+
+        final var savedCustomer = customerDao.save(customer);
+        final var savedCoupon = couponDao.save(coupon);
+        final var customerInventory = new CustomerInventoryEntity();
+        customerInventory.setCustomer(savedCustomer);
+        customerInventory.setCoupon(savedCoupon);
+        inventoryEntityDao.save(customerInventory);
+
+        final var result = inventoryEntityDao.findAllByCustomer_IdAndCoupon_Id(savedCustomer.getId(), savedCoupon.getId()).get(0);
+
+        assertResultIsSavedCustomerAndCoupon(savedCustomer, savedCoupon, result);
+    }
+
+
+
+    private void assertResultIsSavedCustomerAndCoupon(final AppUserEntity savedCustomer,
+                                                      final CouponEntity savedCoupon,
+                                                      final CustomerInventoryEntity result) {
         assertAll(() -> {
             assertEquals(savedCustomer.getId(), result.getCustomer().getId());
             assertEquals(savedCustomer.getUsername(), result.getCustomer().getUsername());
@@ -62,6 +97,5 @@ class CustomerInventoryEntityDaoTest {
             assertEquals(savedCoupon.getId(), result.getCoupon().getId());
             assertEquals(savedCoupon.getCouponInfo(), result.getCoupon().getCouponInfo());
         });
-        log.info("Successfully created CustomerInventory item : {}", result);
     }
 }

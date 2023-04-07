@@ -7,4 +7,6 @@ import java.util.List;
 @SuppressWarnings({"MethodName", "PMD.MethodNamingConventions"})
 public interface CustomerInventoryEntityDao extends JpaRepository<CustomerInventoryEntity, Long> {
     List<CustomerInventoryEntity> findAllByCustomer_Id(Long customerId);
+
+    List<CustomerInventoryEntity> findAllByCustomer_IdAndCoupon_Id(Long customerId, Long couponId);
 }

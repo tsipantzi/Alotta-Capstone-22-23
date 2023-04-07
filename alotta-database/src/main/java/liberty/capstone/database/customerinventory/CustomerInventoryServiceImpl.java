@@ -4,6 +4,8 @@ import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.customerinventory.CustomerInventory;
 import liberty.capstone.core.customerinventory.CustomerInventoryService;
 import liberty.capstone.database.appuser.AppUserDao;
+import liberty.capstone.database.appuser.AppUserEntity;
+import liberty.capstone.database.coupon.CouponEntity;
 import liberty.capstone.database.coupon.CouponEntityDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomerInventoryServiceImpl implements CustomerInventoryService {
+    public static final String USER_DOES_NOT_EXIST = "User %s does not exist";
+    public static final String COUPON_DOES_NOT_EXIST = "Coupon %s does not exist";
+    public static final String CUSTOMER_INVENTORY_DOES_NOT_EXIST = "Customer %s has not claimed Coupon %s";
     private final CustomerInventoryEntityDao customerInventoryDao;
     private final CouponEntityDao couponDao;
     private final AppUserDao appUserDao;
@@ -24,8 +29,7 @@ public class CustomerInventoryServiceImpl implements CustomerInventoryService {
     @Override
     @Transactional
     public List<Coupon> findAllByUserIs(final Long userId) {
-        appUserDao.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Customer does not exist"));
+        getUserOrThrow(userId);
         
         return customerInventoryDao.findAllByCustomer_Id(userId)
                 .stream()
@@ -37,16 +41,52 @@ public class CustomerInventoryServiceImpl implements CustomerInventoryService {
     @Override
     public CustomerInventory saveCouponForCustomer(final Long userId,
                                                    final Long couponId) {
-        final var user = appUserDao.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("app user %s does not exist ", userId)));
+        final var user = getUserOrThrow(userId);
 
-        final var foundCoupon = couponDao.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        String.format("Coupon %s does not exist", couponId)));
+        final var foundCoupon = getCouponOrThrow(couponId);
 
         return customerInventoryDao.saveAndFlush(new CustomerInventoryEntity(foundCoupon, user))
                 .toDomainObject();
+    }
+
+    @Override
+    public boolean redeemCoupon(final Long userId,
+                                final Long couponId) {
+        getUserOrThrow(userId);
+        getCouponOrThrow(couponId);
+
+        final var foundCustomerInventory = getCustomerInventoryOrThrow(userId, couponId);
+
+
+        if (foundCustomerInventory.isRedeemed()) {
+            log.warn(String.format("Customer %s has already redeemed coupon %s", userId, couponId));
+            return false;
+        } else {
+            foundCustomerInventory.setRedeemed(true);
+            customerInventoryDao.saveAndFlush(foundCustomerInventory);
+            log.info(String.format("Customer %s has redeemed coupon %s", userId, couponId));
+            return true;
+        }
+    }
+
+    private CustomerInventoryEntity getCustomerInventoryOrThrow(final Long userId, final Long couponId) {
+        return customerInventoryDao.findAllByCustomer_IdAndCoupon_Id(userId, couponId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format(CUSTOMER_INVENTORY_DOES_NOT_EXIST, userId, couponId)));
+    }
+
+    private CouponEntity getCouponOrThrow(final Long couponId) {
+        return couponDao.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format(COUPON_DOES_NOT_EXIST, couponId)));
+    }
+
+    private AppUserEntity getUserOrThrow(final Long userId) {
+        return appUserDao.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format(USER_DOES_NOT_EXIST, userId)));
     }
 
 }

@@ -1,3 +1,4 @@
+import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/data/restaurant_coupons.dart';
 import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +76,10 @@ class CouponManagerPage extends StatelessWidget {
                               child: ListView(
                                 children: snapshot.data!
                                     .map((coupon) => CouponCard(
-                                        coupon: coupon,
-                                        userId: userRestaurant.appUser.id))
+                                          coupon: coupon,
+                                          userId: userRestaurant.appUser.id,
+                                          couponState: CouponState.disabled,
+                                        ))
                                     .toList(),
                               ),
                             ),

@@ -44,3 +44,9 @@ alotta_client/linux/
 alotta_client/windows/
 alotta_client/android/
 alotta_client/web/
+alotta_client/pubspec.lock
+*.icloud
+alotta_client/README 2.md
+alotta_client/pubspec.lock
+README 2.md
+*.lock

@@ -39,11 +39,10 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
 
     @Override
     public Coupon saveCoupon(final Long restaurantId, final Coupon coupon) {
-        // need to save the coupon to inventory and coupon
         final var restaurant = restaurantDao.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant Does not exist"));
 
-
+        coupon.setFoodCategories(restaurant.getFoodCategories());
         final var savedCoupon = couponDao.saveAndFlush(new CouponEntity(coupon));
         log.info(String.format("Saved coupon: %s", savedCoupon));
         final var savedRestaurantInventory = this.saveInventoryItem(restaurant,

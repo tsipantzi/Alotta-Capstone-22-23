@@ -9,7 +9,7 @@ class ApiConstants {
   static const String _update = '/update';
   static const String _create = '/create';
   static const String _search = '/search';
-  static const String _redeem = '/redeem';
+  static const String _qr = '/qr';
 
   /*
    Coupons by Restaurant endpoints
@@ -71,8 +71,8 @@ class ApiConstants {
     return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_saveParam';
   }
 
-  static String redeemCouponForCustomerUrl(
+  static String getQRCodeForCustomerAndCouponUrl(
       final int userId, final int couponId) {
-    return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_redeem';
+    return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_qr';
   }
 }

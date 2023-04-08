@@ -367,6 +367,8 @@ class _CouponCardState extends State<CouponCard> {
     Navigator.pop(context);
   }
 
-  //needs to be finished with QR code
-  void redeemCoupon(BuildContext context) async {}
+  void redeemCoupon(BuildContext context) async {
+    Navigator.pushNamed(context, 'qrCodePage',
+        arguments: [widget.userId, widget.coupon.id]);
+  }
 }

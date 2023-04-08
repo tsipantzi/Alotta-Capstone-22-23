@@ -24,12 +24,19 @@ class QrCodePage extends StatelessWidget {
           border: Border.all(color: Colors.black, width: 1),
         ),
         child: CachedNetworkImage(
+          fit: BoxFit.contain,
           imageUrl:
               ApiConstants.getQRCodeForCustomerAndCouponUrl(userId, couponId),
-          placeholder: (context, url) => const CircularProgressIndicator(),
+          placeholder: (context, url) => const Center(
+            widthFactor: 200,
+            heightFactor: 200,
+            child: CircularProgressIndicator(
+              backgroundColor: primaryCream,
+              color: primaryOrangeMaterialColor,
+            ),
+          ),
           errorWidget: (context, url, error) =>
               const Icon(color: primaryCream, Icons.error, size: 200),
-          fit: BoxFit.cover,
         ),
       ),
     );

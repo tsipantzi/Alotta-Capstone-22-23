@@ -1,5 +1,5 @@
 package liberty.capstone.process.qr;
 
 public interface QRCodeBuilderService {
-    String buildRedeemUrl(String userId, String couponId);
+    QRCodeRequest buildQRCodeRequest(String userId, String couponId);
 }

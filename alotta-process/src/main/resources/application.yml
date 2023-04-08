@@ -9,3 +9,8 @@ spring:
     hibernate.ddl-auto: update
     show-sql: true
     properties.hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+
+alotta-properties:
+  backendUrl: http://localhost:8080
+  qrApiUrl: https://api.qr-code-generator.com/v1/create?access-token=
+  qrApiToken: OYxLPbO9S7Yrky8zH81G7jsBwzPF-mgORANb4D4Va3xgqj9PZUm3RyaK3rvGMEYG

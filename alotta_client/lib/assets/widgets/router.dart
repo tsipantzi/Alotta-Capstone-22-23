@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import '../../pages/coupon_manager_page.dart';
 import '../../pages/customer_inventory_page.dart';
 import '../../pages/edit_restaurant_page.dart';
+import '../../pages/qr_code_page.dart';
 import '../../pages/restaurant_manager_page.dart';
-import '../data/restaurant.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -96,6 +96,14 @@ class RouteGenerator {
           if (args is AppUser) {
             return MaterialPageRoute(
                 builder: (context) => CustomerInventoryPage(currentUser: args));
+          }
+          return _errorRoute();
+        }
+      case 'qrCodePage':
+        {
+          if (args is List) {
+            return MaterialPageRoute(
+                builder: (context) => QrCodePage(args[0], args[1]));
           }
           return _errorRoute();
         }

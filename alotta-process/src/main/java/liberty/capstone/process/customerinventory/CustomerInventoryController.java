@@ -46,6 +46,8 @@ public class CustomerInventoryController {
                                     @PathVariable final String couponId) {
         final QRCodeRequest request = qrCodeBuilderService.buildQRCodeRequest(id, couponId);
         log.info("QR Code Request: " + request);
-        return ResponseEntity.ok().body(qrCodeService.getQRCode(request));
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(qrCodeService.getQRCode(request));
     }
 }

@@ -8,7 +8,6 @@ import liberty.capstone.process.qr.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +41,9 @@ public class CustomerInventoryController {
     }
 
     @GetMapping(value = "/{couponId}/qr", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity getQRCode(@PathVariable final String id,
-                                    @PathVariable final String couponId) {
+    public byte[] getQRCode(@PathVariable final String id, @PathVariable final String couponId) {
         final QRCodeRequest request = qrCodeBuilderService.buildQRCodeRequest(id, couponId);
         log.info("QR Code Request: " + request);
-        return ResponseEntity.ok().body(qrCodeService.getQRCode(request));
+        return qrCodeService.getQRCode(request);
     }
 }

@@ -1,5 +1,9 @@
+import 'package:alotta_client/assets/colors/colors.dart';
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import '../assets/services/api_constants.dart';
 
 class QrCodePage extends StatelessWidget {
   final int userId;
@@ -12,17 +16,22 @@ class QrCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: FutureBuilder(
-      future: customerInventoryService.getQrCodeForCoupon(userId, couponId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Image.memory(snapshot.data!, fit: BoxFit.cover);
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return const CircularProgressIndicator();
-        }
-      },
-    ));
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.75,
+        decoration: BoxDecoration(
+          color: primaryCream,
+          border: Border.all(color: Colors.black, width: 1),
+        ),
+        child: CachedNetworkImage(
+          imageUrl:
+              ApiConstants.getQRCodeForCustomerAndCouponUrl(userId, couponId),
+          placeholder: (context, url) => const CircularProgressIndicator(),
+          errorWidget: (context, url, error) =>
+              const Icon(color: primaryCream, Icons.error, size: 200),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }

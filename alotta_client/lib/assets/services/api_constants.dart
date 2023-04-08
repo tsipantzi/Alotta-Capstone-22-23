@@ -1,5 +1,3 @@
-import '../data/coupon_search_options.dart';
-
 class ApiConstants {
   static const String baseUrl = "http://alotta-spring-app.azurewebsites.net";
   static const String _restaurantParam = "/restaurant";
@@ -11,13 +9,18 @@ class ApiConstants {
   static const String _update = '/update';
   static const String _create = '/create';
   static const String _search = '/search';
+  static const String _qr = '/qr';
 
-  // Coupons by Restaurant endpoints
+  /*
+   Coupons by Restaurant endpoints
+   */
   static String couponsForRestaurantId(final String restaurantId) {
     return '$baseUrl$_restaurantParam/$restaurantId$_couponParam';
   }
 
-  // Coupons without Restaurant Info endpoints
+  /*
+    Coupons without Restaurant Info endpoints
+   */
   static String getAllCoupons(final String zipCode) {
     return '$baseUrl$_couponParam$_search?zipCode=$zipCode';
   }
@@ -31,7 +34,9 @@ class ApiConstants {
     return '$baseUrl$_couponParam$_search?searchTerm=$searchTerm&zipCode=$zipCode';
   }
 
-  // AppUser endpoints
+  /*
+    AppUser endpoints
+   */
   static String getAppUserUrl(final String username, final String password) {
     return '$baseUrl$_appUserParam?username=$username&password=$password';
   }
@@ -40,7 +45,9 @@ class ApiConstants {
     return '$baseUrl$_appUserParam$_create';
   }
 
-  // Restaurant by AppUser endpoints
+  /*
+    Restaurant by AppUser endpoints
+   */
   static String userRestaurantsUrl() {
     return '$baseUrl$_userRestaurantsParam';
   }
@@ -53,11 +60,19 @@ class ApiConstants {
     return '$baseUrl$_userRestaurantsParam?userId=$userId';
   }
 
-  static String saveCouponForCustomerUrl(final int userId, final int couponId) {
-    return '$baseUrl$_userIdParam/$userId$_couponParam$_saveParam?couponId=$couponId';
-  }
-
+  /*
+    CustomerInventory endpoints
+   */
   static String getAllClaimedCouponsForCustomerUrl(final int userId) {
     return '$baseUrl$_userIdParam/$userId$_couponParam';
+  }
+
+  static String saveCouponForCustomerUrl(final int userId, final int couponId) {
+    return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_saveParam';
+  }
+
+  static String getQRCodeForCustomerAndCouponUrl(
+      final int userId, final int couponId) {
+    return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_qr';
   }
 }

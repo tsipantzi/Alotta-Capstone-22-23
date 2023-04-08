@@ -1,4 +1,5 @@
 import 'package:alotta_client/assets/data/app_user.dart';
+import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
@@ -15,7 +16,6 @@ class CouponHomePage extends StatefulWidget {
   List<Coupon> currentCoupons = List.empty();
   List<CouponCard> couponCards = List.empty();
   final CouponService couponService = CouponService();
-  bool reloadAllCoupons = true;
   String searchTerm = '';
   List<String> selectedCategories = [];
   List<String> categoriesAvailable = [
@@ -43,7 +43,11 @@ class CouponHomePage extends StatefulWidget {
   List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
     couponCards = coupons
         .where(couponContainsSelectedCategory)
-        .map((coupon) => CouponCard(coupon: coupon, userId: currentUser.id))
+        .map((coupon) => CouponCard(
+              coupon: coupon,
+              userId: currentUser.id,
+              couponState: CouponState.claimable,
+            ))
         .toList();
 
     updateGlobalCoupons(coupons);
@@ -71,12 +75,6 @@ class CouponHomePage extends StatefulWidget {
 }
 
 class _CouponHomePageState extends State<CouponHomePage> {
-  @override
-  void initState() {
-    super.initState();
-    widget.reloadAllCoupons = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -162,6 +160,12 @@ class _CouponHomePageState extends State<CouponHomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryGreen,
+        child: Icon(Icons.shopping_cart),
+        onPressed: () => Navigator.of(context)
+            .pushNamed('customerInventoryPage', arguments: widget.currentUser),
+      ),
       bottomNavigationBar: AlottaNavigationBar(
         selectedItemColor: primaryOrangeMaterialColor,
         currentUser: widget.currentUser,
@@ -178,7 +182,6 @@ class _CouponHomePageState extends State<CouponHomePage> {
           .substring(0, widget.currentUser.zipcode.length - 2)));
     }
 
-    widget.reloadAllCoupons = true;
     return applyFilterToFuture(widget.couponService.getAllCouponsBySearchTerm(
         widget.searchTerm, widget.currentUser.zipcode));
   }

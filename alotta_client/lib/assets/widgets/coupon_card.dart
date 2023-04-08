@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 
 import '../colors/colors.dart';
 import '../data/coupon.dart';
+import '../data/coupon_state.dart';
 
 class CouponCard extends StatefulWidget {
   final int userId;
   final Coupon coupon;
 
+  final CouponState couponState;
+
   const CouponCard({
     super.key,
     required this.coupon,
     required this.userId,
+    required this.couponState,
   });
 
   @override
@@ -127,19 +131,7 @@ class _CouponCardState extends State<CouponCard> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 8,
-                    left: 50,
-                    child: TextButton(
-                      onPressed: () => claimCoupon(context),
-                      child: const Text(
-                        'Claim Coupon',
-                        style: TextStyle(
-                          color: primaryCream,
-                        ),
-                      ),
-                    ),
-                  ),
+                  drawButtonByType(context),
                   Positioned(
                     bottom: 8,
                     right: 75,
@@ -246,6 +238,43 @@ class _CouponCardState extends State<CouponCard> {
     );
   }
 
+  Positioned drawButtonByType(BuildContext context) {
+    switch (widget.couponState) {
+      case CouponState.claimable:
+        return Positioned(
+          bottom: 8,
+          left: 50,
+          child: TextButton(
+            onPressed: () => claimCoupon(context),
+            child: const Text(
+              'Claim Coupon',
+              style: TextStyle(
+                color: primaryCream,
+              ),
+            ),
+          ),
+        );
+
+      case CouponState.redeemable:
+        return Positioned(
+          bottom: 8,
+          left: 40,
+          child: TextButton(
+            onPressed: () => redeemCoupon(context),
+            child: const Text(
+              'Redeem Coupon',
+              style: TextStyle(
+                color: primaryCream,
+              ),
+            ),
+          ),
+        );
+
+      case CouponState.disabled:
+        return const Positioned(child: Text(""));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -336,5 +365,10 @@ class _CouponCardState extends State<CouponCard> {
     final CustomerInventoryService service = CustomerInventoryService();
     await service.saveCouponForCustomer(widget.userId, widget.coupon.id);
     Navigator.pop(context);
+  }
+
+  void redeemCoupon(BuildContext context) async {
+    Navigator.pushNamed(context, 'qrCodePage',
+        arguments: [widget.userId, widget.coupon.id]);
   }
 }

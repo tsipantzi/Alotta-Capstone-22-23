@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:http/http.dart' as http;
+
 import '../data/coupon.dart';
 import 'api_constants.dart';
 
@@ -40,5 +43,20 @@ class CustomerInventoryService {
     Iterable couponIterable = jsonDecode(body);
     log('Got Iterable $couponIterable');
     return List.from(couponIterable.map((json) => Coupon.fromJson(json)));
+  }
+
+  //This may not be needed
+
+  Future<Uint8List?> getQrCodeForCoupon(
+      final int userId, final int couponId) async {
+    var url = Uri.parse(
+        ApiConstants.getQRCodeForCustomerAndCouponUrl(userId, couponId));
+    log('Trying to get QR code for coupon $couponId');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    }
+
+    return null;
   }
 }

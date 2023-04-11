@@ -136,19 +136,21 @@ class _CreateCouponPage extends State<CreateCouponPage> {
               ),
             ),
             Container(
-                height: 50,
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: RoundedButton(
-                  text: "Create Coupon",
-                  context: context,
-                  onPressed: () async => {
-                    if (await _createCoupon(widget.userRestaurant.restaurant)) {
+              height: 50,
+              margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: RoundedButton(
+                text: "Create Coupon",
+                context: context,
+                onPressed: () async => {
+                  if (await _createCoupon(widget.userRestaurant.restaurant))
+                    {
                       Navigator.of(context).pushNamed('couponManagerPage',
-                          arguments: widget.userRestaurant);
+                          arguments: widget.userRestaurant)
                     }
-                  },
-                )),
+                },
+              ),
+            ),
             Container(
               height: 50,
               margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),

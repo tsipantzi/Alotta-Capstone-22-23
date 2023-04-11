@@ -1,27 +1,51 @@
 package liberty.capstone.process.qr;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import liberty.capstone.process.config.QRCodeProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @JsonSerialize
-@SuppressWarnings({"MemberName", "MultipleStringLiterals", "PMD.FieldNamingConventions", "ConstantName",
-        "PMD.AvoidDuplicateLiterals", "PMD.FinalFieldCouldBeStatic", "PMD.UnnecessaryAnnotationValueElement"})
-@SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
+@NoArgsConstructor
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class QRCodeRequest {
-    private final String frame_name = "no-frame";
-    private final String image_format = "PNG";
-    private final String background_color = "#ffffff";
-    private final String foreground_color = "#eb7450";
-    private final String marker_right_inner_color = "#4d9f6b";
-    private final String marker_right_outer_color = "#4d9f6b";
-    private final String marker_left_inner_color = "#4d9f6b";
-    private final String marker_left_outer_color = "#4d9f6b";
-    private final String marker_bottom_inner_color = "#4d9f6b";
-    private final String marker_bottom_outer_color = "#4d9f6b";
-    private final String marker_left_template = "version13";
-    private final String marker_right_template = "version13";
-    private final String marker_bottom_template = "version13";
-    private String qr_code_text;
+    private String frameName;
+    private String imageFormat;
+    private Long imageHeight;
+    private Long imageWidth;
+    private String backgroundColor;
+    private String foregroundColor;
+    private String markerRightInnerColor;
+    private String markerRightOuterColor;
+    private String markerLeftInnerColor;
+    private String markerLeftOuterColor;
+    private String markerBottomInnerColor;
+    private String markerBottomOuterColor;
+    private String markerLeftTemplate;
+    private String markerRightTemplate;
+    private String markerBottomTemplate;
+    private String qrCodeText;
+
+    public QRCodeRequest(@NonNull QRCodeProperties properties, String qrCodeText) {
+        this.frameName = properties.getFrameName();
+        this.imageFormat = properties.getImageFormat();
+        this.imageHeight = properties.getImageHeight();
+        this.imageWidth = properties.getImageWidth();
+        this.backgroundColor = properties.getBackgroundColor();
+        this.foregroundColor = properties.getForegroundColor();
+        this.markerRightInnerColor = properties.getMarkerColor();
+        this.markerRightOuterColor = properties.getMarkerColor();
+        this.markerLeftInnerColor = properties.getMarkerColor();
+        this.markerLeftOuterColor = properties.getMarkerColor();
+        this.markerBottomInnerColor = properties.getMarkerColor();
+        this.markerBottomOuterColor = properties.getMarkerColor();
+        this.markerLeftTemplate = properties.getMarkerTemplate();
+        this.markerRightTemplate = properties.getMarkerTemplate();
+        this.markerBottomTemplate = properties.getMarkerTemplate();
+        this.qrCodeText = qrCodeText;
+    }
 }

@@ -1,5 +1,6 @@
 import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
@@ -72,6 +73,10 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
                 ],
               ),
             ),
+          ),
+          RoundedButton(
+            text: "Back",
+            context: context,
           ),
         ],
       ),

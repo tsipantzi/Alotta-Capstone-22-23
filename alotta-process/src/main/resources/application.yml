@@ -14,3 +14,13 @@ alotta-properties:
   backendUrl: http://alotta-spring-app.azurewebsites.net
   qrApiUrl: https://api.qr-code-generator.com/v1/create?access-token=
   qrApiToken: OYxLPbO9S7Yrky8zH81G7jsBwzPF-mgORANb4D4Va3xgqj9PZUm3RyaK3rvGMEYG
+
+qr-code-properties:
+  frameName: no-frame
+  imageWidth: 800
+  imageHeight: 800
+  imageFormat: PNG
+  backgroundColor: "#f8f4eb"
+  foregroundColor: "#eb7450"
+  markerColor: "#4d9f6b"
+  markerTemplate: version13

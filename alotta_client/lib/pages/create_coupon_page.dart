@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -136,21 +137,26 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             ),
             Container(
                 height: 50,
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      if (await _createCoupon(
-                          widget.userRestaurant.restaurant)) {
-                        Navigator.of(context).pushNamed('couponManagerPage',
-                            arguments: widget.userRestaurant);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4D9F6B),
-                      // ignore: prefer_const_constructors
-                      textStyle: TextStyle(fontSize: 20),
-                    ),
-                    child: const Text('Create Restaurant'))),
+                child: RoundedButton(
+                  text: "Create Coupon",
+                  context: context,
+                  onPressed: () async => {
+                    if (await _createCoupon(widget.userRestaurant.restaurant)) {
+                      Navigator.of(context).pushNamed('couponManagerPage',
+                          arguments: widget.userRestaurant);
+                    }
+                  },
+                )),
+            Container(
+              height: 50,
+              margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: RoundedButton(
+                text: "Back",
+                context: context,
+              ),
+            )
           ],
         ),
       ),

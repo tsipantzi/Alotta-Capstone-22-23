@@ -1,6 +1,6 @@
 package liberty.capstone.process.qr;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import liberty.capstone.process.config.QRCodeProperties;
@@ -11,7 +11,8 @@ import lombok.NonNull;
 @Data
 @JsonSerialize
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@SuppressWarnings("PMD.TooManyFields")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class QRCodeRequest {
     private String frameName;
     private String imageFormat;
@@ -30,7 +31,8 @@ public class QRCodeRequest {
     private String markerBottomTemplate;
     private String qrCodeText;
 
-    public QRCodeRequest(@NonNull QRCodeProperties properties, String qrCodeText) {
+    public QRCodeRequest(@NonNull final QRCodeProperties properties,
+                         final String qrCodeText) {
         this.frameName = properties.getFrameName();
         this.imageFormat = properties.getImageFormat();
         this.imageHeight = properties.getImageHeight();

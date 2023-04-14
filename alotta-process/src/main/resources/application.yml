@@ -17,8 +17,8 @@ alotta-properties:
 
 qr-code-properties:
   frameName: no-frame
-  imageWidth: 800
-  imageHeight: 800
+  imageWidth: 400
+  imageHeight: 400
   imageFormat: PNG
   backgroundColor: "#f8f4eb"
   foregroundColor: "#eb7450"

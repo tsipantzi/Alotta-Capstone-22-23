@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,8 +13,7 @@ class Coupon {
   @JsonKey(name: 'couponInfo')
   final String description;
   final String foodCategories;
-  final Image image = Image.network(
-      'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png');
+  final Image image = Image.asset('images/coupon_card_placeholder.jpg');
   @JsonKey(name: 'percentageOff')
   final double discount;
   final double dollarsOff;
@@ -48,11 +48,28 @@ class Coupon {
   static DateTime _fromJson(String date) => DateTime.parse(date);
   static String _toJson(DateTime time) => DateFormat('yyyy-MM-dd').format(time);
 
-  Image getImage(double height, double width) {
-    return Image(
-      image: image.image,
+  Container getImage(double height, double width) {
+    return Container(
       height: height,
       width: width,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(18.0),
+        ),
+        border: Border.all(
+          color: Colors.black.withOpacity(0.0),
+          width: 1,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(18.0),
+        ),
+        child: Image(
+          image: image.image,
+          fit: BoxFit.fill,
+        ),
+      ),
     );
   }
 }

@@ -88,23 +88,72 @@ class _CouponCardState extends State<CouponCard> {
                 image: AssetImage('images/pop_up_background.png'),
               ),
             ),
-            child: Expanded(
-              child: Stack(
-                alignment: Alignment.topLeft,
-                children: [
-                  Positioned(
-                    left: -10,
-                    top: 25,
-                    child: widget.coupon.getImage(110, 220),
+            child: Stack(
+              alignment: Alignment.topLeft,
+              children: [
+                Positioned(
+                  left: 0,
+                  top: 15,
+                  child: widget.coupon.getImage(
+                      MediaQuery.of(context).size.height * .16,
+                      MediaQuery.of(context).size.width * .5),
+                ),
+                Positioned(
+                  right: 15,
+                  top: 25,
+                  child: Text(
+                    coupon.title,
+                    textDirection: TextDirection.rtl,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: primaryCream,
+                      shadows: <Shadow>[
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          blurStyle: BlurStyle.solid,
+                        ),
+                      ],
+                    ),
                   ),
-                  Positioned(
-                    right: 15,
-                    top: 25,
+                ),
+                Positioned(
+                  right: 10,
+                  top: 75,
+                  width: 150,
+                  child: Text(
+                    coupon.description,
+                    overflow: TextOverflow.clip,
+                    maxLines: 3,
+                    softWrap: true,
+                    style: const TextStyle(
+                      color: primaryCream,
+                    ),
+                  ),
+                ),
+                drawButtonByType(context),
+                Positioned(
+                  bottom: 8,
+                  right: 75,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: primaryCream,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 80,
+                  left: 20,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
                     child: Text(
-                      coupon.title,
-                      textDirection: TextDirection.rtl,
+                      percentageOffText,
                       style: const TextStyle(
-                        fontSize: 20,
                         color: primaryCream,
                         shadows: <Shadow>[
                           BoxShadow(
@@ -117,120 +166,71 @@ class _CouponCardState extends State<CouponCard> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    right: 10,
-                    top: 75,
-                    width: 150,
+                ),
+                Positioned(
+                  bottom: 60,
+                  left: 20,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
                     child: Text(
-                      coupon.description,
-                      overflow: TextOverflow.clip,
-                      maxLines: 3,
-                      softWrap: true,
+                      dollarsOffText,
                       style: const TextStyle(
                         color: primaryCream,
+                        shadows: <Shadow>[
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 10,
+                            blurRadius: 10,
+                            blurStyle: BlurStyle.solid,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  drawButtonByType(context),
-                  Positioned(
-                    bottom: 8,
-                    right: 75,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: primaryCream,
-                        ),
+                ),
+                Positioned(
+                  bottom: 60,
+                  right: 50,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      numberOfCouponsLeftText,
+                      style: const TextStyle(
+                        color: primaryCream,
+                        shadows: <Shadow>[
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 10,
+                            blurRadius: 10,
+                            blurStyle: BlurStyle.solid,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 80,
-                    left: 20,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        percentageOffText,
-                        style: const TextStyle(
-                          color: primaryCream,
-                          shadows: <Shadow>[
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 10,
-                              blurRadius: 10,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
-                        ),
+                ),
+                Positioned(
+                  bottom: 80,
+                  right: 15,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      goodThroughText,
+                      style: const TextStyle(
+                        color: primaryCream,
+                        shadows: <Shadow>[
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 10,
+                            blurRadius: 10,
+                            blurStyle: BlurStyle.solid,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 60,
-                    left: 20,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        dollarsOffText,
-                        style: const TextStyle(
-                          color: primaryCream,
-                          shadows: <Shadow>[
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 10,
-                              blurRadius: 10,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 60,
-                    right: 50,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        numberOfCouponsLeftText,
-                        style: const TextStyle(
-                          color: primaryCream,
-                          shadows: <Shadow>[
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 10,
-                              blurRadius: 10,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 80,
-                    right: 15,
-                    child: TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        goodThroughText,
-                        style: const TextStyle(
-                          color: primaryCream,
-                          shadows: <Shadow>[
-                            BoxShadow(
-                              color: Colors.black,
-                              spreadRadius: 10,
-                              blurRadius: 10,
-                              blurStyle: BlurStyle.solid,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -302,14 +302,22 @@ class _CouponCardState extends State<CouponCard> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: SizedBox(
-              width: 350,
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: Stack(
                 children: <Widget>[
-                  widget.coupon.getImage(100, 200),
-                  Expanded(
+                  Positioned(
+                    top: 0.0,
+                    left: 0.0,
+                    child: widget.coupon.getImage(
+                        MediaQuery.of(context).size.height * 0.155,
+                        MediaQuery.of(context).size.width * 0.45),
+                  ),
+                  Positioned(
+                    top: 0.0,
+                    left: 225.0,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.15,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,

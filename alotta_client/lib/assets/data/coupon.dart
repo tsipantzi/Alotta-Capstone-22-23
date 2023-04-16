@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'food_category_type.dart';
 
 part 'coupon.g.dart';
 
@@ -11,9 +14,9 @@ class Coupon {
   final String title;
   @JsonKey(name: 'couponInfo')
   final String description;
-  final String foodCategories;
-  final Image image = Image.network(
-      'https://dash-bootstrap-components.opensource.faculty.ai/static/images/placeholder286x180.png');
+  @JsonKey(fromJson: _fromJsonCategories, toJson: _toJsonCategories)
+  final List<FoodCategoryType> foodCategories;
+  final Image image = Image.asset('images/coupon_card_placeholder.jpg');
   @JsonKey(name: 'percentageOff')
   final double discount;
   final double dollarsOff;
@@ -24,17 +27,18 @@ class Coupon {
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
   final DateTime endDate;
 
-  Coupon(
-      {this.id = 0,
-      this.title = '',
-      this.description = '',
-      this.foodCategories = '',
-      this.discount = 0,
-      this.dollarsOff = 0,
-      this.totalNumberOfCoupons = 0,
-      this.numberOfCouponsSold = 0,
-      required this.startDate,
-      required this.endDate});
+  Coupon({
+    this.id = 0,
+    this.title = '',
+    this.description = '',
+    this.discount = 0,
+    this.dollarsOff = 0,
+    this.totalNumberOfCoupons = 0,
+    this.numberOfCouponsSold = 0,
+    required this.foodCategories,
+    required this.startDate,
+    required this.endDate,
+  });
 
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
 
@@ -44,15 +48,56 @@ class Coupon {
 
   String get startDateShort => DateFormat('MM/dd').format(startDate);
   String get endDateShort => DateFormat('MM/dd').format(endDate);
+  List<String> get foodCategoriesStrings =>
+      foodCategories.map((e) => e.name).toList();
 
   static DateTime _fromJson(String date) => DateTime.parse(date);
   static String _toJson(DateTime time) => DateFormat('yyyy-MM-dd').format(time);
 
-  Image getImage(double height, double width) {
-    return Image(
-      image: image.image,
+  static List<FoodCategoryType> _fromJsonCategories(String foodCategories) {
+    final List<FoodCategoryType> foodCategoriesList = [];
+    final List<String> foodCategoriesStringList = foodCategories.split(',');
+    for (final foodCategory in foodCategoriesStringList) {
+      foodCategoriesList.add(fromString(foodCategory));
+    }
+    return foodCategoriesList;
+  }
+
+  static String _toJsonCategories(List<FoodCategoryType> foodCategories) {
+    String foodCategoriesString = '';
+    for (final foodCategory in foodCategories) {
+      foodCategoriesString += '${foodCategory.name},';
+    }
+    return foodCategoriesString;
+  }
+
+  static FoodCategoryType fromString(String foodCategory) {
+    return FoodCategoryType.values
+        .firstWhere((element) => element.toString() == foodCategory);
+  }
+
+  Container getImage(double height, double width) {
+    return Container(
       height: height,
       width: width,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(18.0),
+        ),
+        border: Border.all(
+          color: Colors.black.withOpacity(0.0),
+          width: 1,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(18.0),
+        ),
+        child: Image(
+          image: image.image,
+          fit: BoxFit.fill,
+        ),
+      ),
     );
   }
 }

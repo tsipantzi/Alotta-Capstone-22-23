@@ -1,5 +1,6 @@
 import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/data/coupon_state.dart';
+import 'package:alotta_client/assets/data/food_category_type.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
@@ -18,20 +19,8 @@ class CouponHomePage extends StatefulWidget {
   final CouponService couponService = CouponService();
   String searchTerm = '';
   List<String> selectedCategories = [];
-  List<String> categoriesAvailable = [
-    "Fast Food",
-    "Dine-In",
-    "Carry-Out",
-    "Mexican",
-    "Japanese",
-    "Chinese",
-    "Italian",
-    "Mediterranean",
-    "Subs/Sandwiches",
-    "Pizza",
-    "Burgers",
-    "Dessert",
-  ];
+  List<String> categoriesAvailable =
+      FoodCategoryType.values.map((e) => e.name).toList();
 
   AppUser getCurrentUser() {
     return currentUser;
@@ -70,7 +59,9 @@ class CouponHomePage extends StatefulWidget {
       return true;
     }
 
-    return selectedCategories.contains(coupon.foodCategories);
+    return coupon.foodCategoriesStrings
+        .firstWhere((category) => selectedCategories.contains(category))
+        .isNotEmpty;
   }
 }
 

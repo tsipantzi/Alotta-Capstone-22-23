@@ -141,10 +141,9 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       bottomNavigationBar: AlottaNavigationBar(
-        selectedItemColor: primaryOrangeMaterialColor,
         currentUser: widget.currentUser,
         context: context,
-        currentIndex: SettingsPage.pageIndex,
+        selectedIndex: SettingsPage.pageIndex,
       ),
     );
   }

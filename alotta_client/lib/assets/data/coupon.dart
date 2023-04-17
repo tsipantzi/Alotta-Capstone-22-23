@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -48,8 +50,6 @@ class Coupon {
 
   String get startDateShort => DateFormat('MM/dd').format(startDate);
   String get endDateShort => DateFormat('MM/dd').format(endDate);
-  List<String> get foodCategoriesStrings =>
-      foodCategories.map((e) => e.name).toList();
 
   static DateTime _fromJson(String date) => DateTime.parse(date);
   static String _toJson(DateTime time) => DateFormat('yyyy-MM-dd').format(time);
@@ -58,7 +58,9 @@ class Coupon {
     final List<FoodCategoryType> foodCategoriesList = [];
     final List<String> foodCategoriesStringList = foodCategories.split(',');
     for (final foodCategory in foodCategoriesStringList) {
-      foodCategoriesList.add(fromString(foodCategory));
+      if (foodCategory.trim().isNotEmpty) {
+        foodCategoriesList.add(FoodCategoryType.fromString(foodCategory));
+      }
     }
     return foodCategoriesList;
   }
@@ -69,11 +71,6 @@ class Coupon {
       foodCategoriesString += '${foodCategory.name},';
     }
     return foodCategoriesString;
-  }
-
-  static FoodCategoryType fromString(String foodCategory) {
-    return FoodCategoryType.values
-        .firstWhere((element) => element.toString() == foodCategory);
   }
 
   Container getImage(double height, double width) {

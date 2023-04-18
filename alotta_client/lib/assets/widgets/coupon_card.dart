@@ -1,4 +1,5 @@
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:alotta_client/main.dart';
 import 'package:flutter/material.dart';
 
 import '../colors/colors.dart';
@@ -104,18 +105,7 @@ class _CouponCardState extends State<CouponCard> {
                   child: Text(
                     coupon.title,
                     textDirection: TextDirection.rtl,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: primaryCream,
-                      shadows: <Shadow>[
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 10,
-                          blurRadius: 10,
-                          blurStyle: BlurStyle.solid,
-                        ),
-                      ],
-                    ),
+                    style: MyApp.platformBodyStyle,
                   ),
                 ),
                 Positioned(
@@ -127,21 +117,20 @@ class _CouponCardState extends State<CouponCard> {
                     overflow: TextOverflow.clip,
                     maxLines: 3,
                     softWrap: true,
-                    style: const TextStyle(
-                      color: primaryCream,
-                    ),
+                    style: MyApp.platformBodyStyle,
                   ),
                 ),
                 drawButtonByType(context),
                 Positioned(
                   bottom: 8,
-                  right: 75,
+                  right: MediaQuery.of(context).size.width * .15,
                   child: TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: primaryCream,
+                    child: Center(
+                      child: Text(
+                        'Cancel',
+                        style:
+                            MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                       ),
                     ),
                   ),
@@ -153,17 +142,7 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       percentageOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
+                      style: MyApp.platformBodyStyle,
                     ),
                   ),
                 ),
@@ -174,17 +153,7 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       dollarsOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
+                      style: MyApp.platformBodyStyle,
                     ),
                   ),
                 ),
@@ -195,17 +164,7 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       numberOfCouponsLeftText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
+                      style: MyApp.platformBodyStyle,
                     ),
                   ),
                 ),
@@ -216,17 +175,7 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       goodThroughText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
+                      style: MyApp.platformBodyStyle,
                     ),
                   ),
                 ),
@@ -243,13 +192,13 @@ class _CouponCardState extends State<CouponCard> {
       case CouponState.claimable:
         return Positioned(
           bottom: 8,
-          left: 50,
+          left: MediaQuery.of(context).size.width * .08,
           child: TextButton(
             onPressed: () => claimCoupon(context),
-            child: const Text(
-              'Claim Coupon',
-              style: TextStyle(
-                color: primaryCream,
+            child: Center(
+              child: Text(
+                'Claim Coupon',
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
               ),
             ),
           ),
@@ -261,10 +210,10 @@ class _CouponCardState extends State<CouponCard> {
           left: 40,
           child: TextButton(
             onPressed: () => redeemCoupon(context),
-            child: const Text(
-              'Redeem Coupon',
-              style: TextStyle(
-                color: primaryCream,
+            child: Center(
+              child: Text(
+                'Redeem Coupon',
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
               ),
             ),
           ),
@@ -324,34 +273,15 @@ class _CouponCardState extends State<CouponCard> {
                       children: [
                         Flexible(
                           child: Text(
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: primaryCream,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  color: Colors.black12,
-                                ),
-                                Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 4,
-                                  color: Colors.black12,
-                                )
-                              ],
-                            ),
                             widget.coupon.title,
+                            style: MyApp.platformHeadingStyle,
                             overflow: TextOverflow.visible,
                           ),
                         ),
                         Flexible(
                           child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
                             widget.coupon.description,
+                            style: MyApp.platformBodyStyle,
                             overflow: TextOverflow.clip,
                             maxLines: 6,
                             softWrap: true,

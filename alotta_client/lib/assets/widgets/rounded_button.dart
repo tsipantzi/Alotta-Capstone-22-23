@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+
 class RoundedButton extends StatelessWidget {
   final String text;
   final BuildContext context;
@@ -26,7 +28,7 @@ class RoundedButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF4D9F6B),
           // ignore: prefer_const_constructors
-          textStyle: TextStyle(fontSize: 20),
+          textStyle: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
         ),
         child: Text(text),
       ),

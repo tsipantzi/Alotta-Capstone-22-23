@@ -102,3 +102,9 @@ flutter:
       fonts:
         - asset: fonts/Lato-Regular.ttf
         - asset: fonts/Lato-Italic.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+    - family: Open Sans
+      fonts:
+        - asset: fonts/OpenSans-Regular.ttf

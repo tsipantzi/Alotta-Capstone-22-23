@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../assets/data/coupon.dart';
 import '../assets/data/restaurant.dart';
+import '../main.dart';
 
 class CreateCouponPage extends StatefulWidget {
   final UserRestaurant userRestaurant;
@@ -42,8 +43,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: title,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -55,8 +59,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: description,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -68,7 +75,7 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               height: 90,
               padding: const EdgeInsets.fromLTRB(0, 22.5, 0, 22.5),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width * .95,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: FoodCategoryType.values.map((category) {
@@ -96,8 +103,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: discount,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -109,8 +119,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: dollarsOff,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -122,8 +135,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: totalNumberOfCoupons,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -135,8 +151,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                  style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                   controller: startDate,
                   decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
                     icon: Icon(Icons.calendar_today),
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
@@ -152,8 +171,11 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
+                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
                 controller: endDate,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   icon: Icon(Icons.calendar_today),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(

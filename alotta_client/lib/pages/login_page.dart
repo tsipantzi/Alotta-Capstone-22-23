@@ -50,8 +50,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              height: 60,
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: ElevatedButton(
                 onPressed: () async {
                   final AppUser user = await _verifyUserIsLoggedInAndGetUser();

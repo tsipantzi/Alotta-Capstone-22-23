@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
 import '../assets/widgets/alotta_app_bar.dart';
+import '../main.dart';
 
 class SettingsPage extends StatefulWidget {
   final AppUser currentUser;
@@ -47,6 +48,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -61,6 +64,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 obscureText: true,
                 controller: pwTestController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -74,6 +79,8 @@ class _SettingsPageState extends State<SettingsPage> {
               child: TextField(
                 controller: firstNameController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -87,6 +94,8 @@ class _SettingsPageState extends State<SettingsPage> {
               child: TextField(
                 controller: lastNameController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -100,6 +109,8 @@ class _SettingsPageState extends State<SettingsPage> {
               child: TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),

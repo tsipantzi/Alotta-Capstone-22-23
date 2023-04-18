@@ -35,10 +35,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           children: <Widget>[
             // Text Fields * * * * * * * * * * * * * * * * * * * *
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 controller: usernameController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -47,13 +49,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -62,13 +65,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 obscureText: true,
                 controller: pwTestController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -77,12 +81,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 controller: firstNameController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -91,12 +96,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 controller: lastNameController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -105,12 +111,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFEB7450)),
@@ -119,12 +126,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
               ),
             ),
-
             // Radio Buttons * * * * * * * * * * * * * * * * * * * *
             Column(
               children: <Widget>[
                 ListTile(
                   title: const Text('Coupon Consumer'),
+                  minVerticalPadding: 5,
                   leading: Radio<AppUserAccountType>(
                     value: AppUserAccountType.CONSUMER,
                     groupValue: currentSelectedAccountType,
@@ -138,6 +145,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
                 ListTile(
                   title: const Text('Coupon Creator'),
+                  minVerticalPadding: 5,
                   leading: Radio<AppUserAccountType>(
                     value: AppUserAccountType.CREATOR,
                     groupValue: currentSelectedAccountType,
@@ -152,7 +160,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             ),
             Container(
                 height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
                       // Create account ...
@@ -171,11 +179,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ));
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4D9F6B),
-                      // ignore: prefer_const_constructors
-                      textStyle: TextStyle(fontSize: 20),
-                    ),
                     child: const Text('Create Account'))),
           ],
         ),

@@ -155,7 +155,7 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
             ),
             Container(
                 height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: ElevatedButton(
                     onPressed: () async {
                       final UserRestaurant? updatedUserRestaurant =
@@ -166,11 +166,6 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
                             arguments: widget.userRestaurant.appUser);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4D9F6B),
-                      // ignore: prefer_const_constructors
-                      textStyle: TextStyle(fontSize: 20),
-                    ),
                     child: const Text('Update Restaurant'))),
           ],
         ),

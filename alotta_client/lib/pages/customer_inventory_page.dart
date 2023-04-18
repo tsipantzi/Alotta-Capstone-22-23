@@ -74,9 +74,13 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
               ),
             ),
           ),
-          RoundedButton(
-            text: "Back",
-            context: context,
+          Container(
+            height: 50,
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: RoundedButton(
+              text: "Back",
+              context: context,
+            ),
           ),
         ],
       ),

@@ -50,49 +50,39 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                  ),
-                  onPressed: () async {
-                    final AppUser user =
-                        await _verifyUserIsLoggedInAndGetUser();
-                    if (AppUserAccountType.UNKNOWN == user.accountType) {
-                      Navigator.of(context).pushNamed('error');
-                    } else {
-                      Navigator.of(context).pushNamed('home', arguments: user);
-                    }
-                  },
-                  child: const Text('Sign In'),
-                )),
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final AppUser user = await _verifyUserIsLoggedInAndGetUser();
+                  if (AppUserAccountType.UNKNOWN == user.accountType) {
+                    Navigator.of(context).pushNamed('error');
+                  } else {
+                    Navigator.of(context).pushNamed('home', arguments: user);
+                  }
+                },
+                child: const Text('Sign In'),
+              ),
+            ),
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                  ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => CreateAccountPage()));
                   },
                   child: const Text('Create Account'),
                 )),
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Forgot Password',
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     //forgot password screen
+            //   },
+            //   child: const Text(
+            //     'Forgot Password',
+            //     style: TextStyle(color: Colors.green),
+            //   ),
+            // ),
           ],
         ),
       ),

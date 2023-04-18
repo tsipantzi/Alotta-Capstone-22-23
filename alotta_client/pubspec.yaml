@@ -42,6 +42,7 @@ dependencies:
   multiselect: ^0.1.0
   flutter_image: ^4.1.5
   cached_network_image: ^3.2.3
+  flip_card: ^0.7.0
 
 dev_dependencies:
   flutter_test:

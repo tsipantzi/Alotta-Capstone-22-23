@@ -1,4 +1,5 @@
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 import '../colors/colors.dart';
@@ -278,81 +279,180 @@ class _CouponCardState extends State<CouponCard> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Transform.translate(
-      offset: _offset,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          boxShadow: [_cardShadow],
-        ),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-          onTapDown: (TapDownDetails details) => _pressCardDown(),
-          onTapUp: (TapUpDetails details) => _pressCardUp(),
-          onTapCancel: () => _pressCardUp(),
-          onTap: () => _openCardPopup(widget.coupon, context),
-          child: Card(
-            elevation: 0,
-            borderOnForeground: true,
-            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: SizedBox(
-              width: 350,
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  widget.coupon.getImage(100, 200),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: primaryCream,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  color: Colors.black12,
-                                ),
-                                Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 4,
-                                  color: Colors.black12,
-                                )
-                              ],
+    return FlipCard(
+      front: Transform.translate(
+        offset: _offset,
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            boxShadow: [_cardShadow],
+          ),
+          child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
+            child: Card(
+              elevation: 0,
+              borderOnForeground: true,
+              color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    widget.coupon.getImage(100, 200),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: primaryCream,
+                                shadows: <Shadow>[
+                                  Shadow(
+                                    offset: Offset(-1, -1),
+                                    blurRadius: 1,
+                                    color: Colors.black12,
+                                  ),
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 4,
+                                    color: Colors.black12,
+                                  )
+                                ],
+                              ),
+                              widget.coupon.title,
+                              overflow: TextOverflow.visible,
                             ),
-                            widget.coupon.title,
-                            overflow: TextOverflow.visible,
                           ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: primaryCream,
+                              ),
+                              widget.coupon.description,
+                              overflow: TextOverflow.clip,
+                              maxLines: 6,
+                              softWrap: true,
                             ),
-                            widget.coupon.description,
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      back: Transform.translate(
+        offset: _offset,
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            boxShadow: [_cardShadow],
+          ),
+          child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
+            child: Card(
+              elevation: 0,
+              borderOnForeground: true,
+              color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    widget.coupon.getImage(100, 200),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: primaryCream,
+                                shadows: <Shadow>[
+                                  Shadow(
+                                    offset: Offset(-1, -1),
+                                    blurRadius: 1,
+                                    color: Colors.black12,
+                                  ),
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 4,
+                                    color: Colors.black12,
+                                  )
+                                ],
+                              ),
+                              "Percentage Off: ${widget.coupon.discount}%",
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: primaryCream,
+                              ),
+                              "Dollars Saved: \$${widget.coupon.dollarsOff}",
+                              overflow: TextOverflow.clip,
+                              maxLines: 6,
+                              softWrap: true,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: primaryCream,
+                              ),
+                              "Coupons Left: ${widget.coupon.numberOfCouponsLeft}",
+                              overflow: TextOverflow.clip,
+                              maxLines: 6,
+                              softWrap: true,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: primaryCream,
+                              ),
+                              "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}",
+                              overflow: TextOverflow.clip,
+                              maxLines: 6,
+                              softWrap: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

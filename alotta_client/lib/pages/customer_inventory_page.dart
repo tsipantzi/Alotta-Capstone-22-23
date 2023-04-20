@@ -74,11 +74,12 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
               ),
             ),
           ),
-          RoundedButton(
-            text: "Back",
-            context: context,
-          ),
         ],
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        context: context,
+        currentUser: widget.currentUser,
+        selectedIndex: 2,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../colors/colors.dart';
 import '../data/app_user.dart';
@@ -14,30 +15,62 @@ class AlottaTitle extends AppBar {
         );
 }
 
-class AlottaNavigationBar extends BottomNavigationBar {
-  AppUser currentUser;
-  BuildContext context;
+class AlottaNavigationBar extends GNav {
+  late AppUser currentUser;
+  late BuildContext context;
 
-  static const List<BottomNavigationBarItem> _items = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.logout),
-      label: 'Logout',
+  static const List<GButton> _items = <GButton>[
+    GButton(
+      icon: Icons.logout,
+      text: 'Logout',
     ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
+    GButton(
+      icon: Icons.home,
+      text: 'Home',
     ),
-    BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings')
+    GButton(
+      icon: Icons.settings,
+      text: 'Settings',
+    )
   ];
+
+  static const List<GButton> _consumer_items = <GButton>[
+    GButton(
+      icon: Icons.logout,
+      text: 'Logout',
+    ),
+    GButton(
+      icon: Icons.home,
+      text: 'Home',
+    ),
+    GButton(
+      icon: Icons.shopping_cart_checkout,
+      text: 'Cart',
+    ),
+    GButton(
+      icon: Icons.settings,
+      text: 'Settings',
+    )
+  ];
+
   AlottaNavigationBar({
     super.key,
-    required super.selectedItemColor,
-    required super.currentIndex,
+    required super.selectedIndex,
     required this.currentUser,
     required this.context,
   }) : super(
-          items: _items,
-          onTap: (val) => _changePage(val, context, currentUser),
+          backgroundColor: Colors.white,
+          tabBackgroundColor: primaryOrangeMaterialColor.shade100,
+          activeColor: primaryOrangeMaterialColor,
+          curve: Curves.easeOutExpo,
+          duration: const Duration(milliseconds: 500),
+          gap: 8,
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          tabMargin: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+          tabs: currentUser.accountType == AppUserAccountType.CREATOR
+              ? _items
+              : _consumer_items,
+          onTabChange: (val) => _changePage(val, context, currentUser),
         );
 
   static _changePage(int index, BuildContext context, AppUser currentUser) {
@@ -51,6 +84,16 @@ class AlottaNavigationBar extends BottomNavigationBar {
         Navigator.of(context).pushNamed('home', arguments: currentUser);
         break;
       case 2:
+        if (currentUser.accountType == AppUserAccountType.CREATOR) {
+          //Go to SettingsPage
+          Navigator.of(context).pushNamed('settings', arguments: currentUser);
+        } else {
+          //Go to CartPage
+          Navigator.of(context)
+              .pushNamed('customerInventoryPage', arguments: currentUser);
+        }
+        break;
+      case 3:
         //Go to SettingsPage
         Navigator.of(context).pushNamed('settings', arguments: currentUser);
         break;

@@ -1,3 +1,4 @@
+import 'package:alotta_client/assets/data/food_category_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

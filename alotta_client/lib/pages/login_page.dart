@@ -1,4 +1,6 @@
 import 'package:alotta_client/assets/data/app_user.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
+import 'package:alotta_client/main.dart';
 import 'package:alotta_client/pages/coupon_home_page.dart';
 import 'package:alotta_client/pages/create_account_page.dart';
 import 'package:flutter/material.dart';
@@ -26,73 +28,57 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Username',
                 controller: usernameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
+              child: MyApp.platformTextField(
+                hintText: 'Password',
                 controller: passwordController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
+                obscureText: true,
+                prefixIcon: const Icon(Icons.lock),
+              ),
+            ),
+            Container(
+              height: 60,
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+              child: RoundedButton(
+                onPressed: () async {
+                  final AppUser user = await _verifyUserIsLoggedInAndGetUser();
+                  if (AppUserAccountType.UNKNOWN == user.accountType) {
+                    Navigator.of(context).pushNamed('error');
+                  } else {
+                    Navigator.of(context).pushNamed('home', arguments: user);
+                  }
+                },
+                text: 'Sign In',
+                context: context,
               ),
             ),
             Container(
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                  ),
-                  onPressed: () async {
-                    final AppUser user =
-                        await _verifyUserIsLoggedInAndGetUser();
-                    if (AppUserAccountType.UNKNOWN == user.accountType) {
-                      Navigator.of(context).pushNamed('error');
-                    } else {
-                      Navigator.of(context).pushNamed('home', arguments: user);
-                    }
-                  },
-                  child: const Text('Sign In'),
-                )),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                  ),
+                child: RoundedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => CreateAccountPage()));
                   },
-                  child: const Text('Create Account'),
+                  text: 'Create Account',
+                  context: context,
                 )),
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text(
-                'Forgot Password',
-                style: TextStyle(color: Colors.green),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     //forgot password screen
+            //   },
+            //   child: const Text(
+            //     'Forgot Password',
+            //     style: TextStyle(color: Colors.green),
+            //   ),
+            // ),
           ],
         ),
       ),

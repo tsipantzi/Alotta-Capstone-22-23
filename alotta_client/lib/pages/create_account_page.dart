@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:alotta_client/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/data/app_user.dart';
 import '../assets/services/app_user_service.dart';
 import '../assets/widgets/alotta_app_bar.dart';
+import '../main.dart';
 
 class CreateAccountPage extends StatefulWidget {
   final AppUserService service = AppUserService();
@@ -36,94 +38,52 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             // Text Fields * * * * * * * * * * * * * * * * * * * *
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Username',
                 controller: usernameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Username',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
+              child: MyApp.platformTextField(
+                hintText: 'Password',
                 controller: passwordController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
                 obscureText: true,
+                prefixIcon: const Icon(Icons.lock),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: MyApp.platformTextField(
+                hintText: 'Re-enter Password',
                 controller: pwTestController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Re-enter Password',
-                ),
+                obscureText: true,
+                prefixIcon: const Icon(Icons.lock_reset),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'First Name',
                 controller: firstNameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'First Name',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Last Name',
                 controller: lastNameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Last Name',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Email',
                 controller: emailController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Email',
-                ),
+                prefixIcon: const Icon(Icons.email),
               ),
             ),
             // Radio Buttons * * * * * * * * * * * * * * * * * * * *
@@ -159,27 +119,40 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               ],
             ),
             Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      // Create account ...
-                      if (passwordController.value.text ==
-                          pwTestController.value.text) {
-                        if (await _createUser()) {
-                          Navigator.of(context).pushNamed('login');
-                        } else {
-                          log('User was not created');
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text("Passwords do not match"),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      }
-                    },
-                    child: const Text('Create Account'))),
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                onPressed: () async {
+                  // Create account ...
+                  if (passwordController.value.text ==
+                      pwTestController.value.text) {
+                    if (await _createUser()) {
+                      Navigator.of(context).pushNamed('login');
+                    } else {
+                      log('User was not created');
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Passwords do not match"),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  }
+                },
+                text: 'Create Account',
+                context: context,
+              ),
+            ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                onPressed: () async {
+                  Navigator.of(context).pushNamed('login');
+                },
+                text: 'Back',
+                context: context,
+              ),
+            ),
           ],
         ),
       ),

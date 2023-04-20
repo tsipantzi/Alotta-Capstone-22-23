@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:alotta_client/assets/services/app_user_service.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
-import '../assets/colors/colors.dart';
 import '../assets/data/app_user.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../main.dart';
@@ -11,7 +11,6 @@ import '../main.dart';
 class SettingsPage extends StatefulWidget {
   final AppUser currentUser;
   const SettingsPage({super.key, required this.currentUser});
-  static const int pageIndex = 2;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -44,112 +43,82 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                obscureText: true,
+              child: MyApp.platformTextField(
+                labelText: 'Password',
                 controller: passwordController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
                 obscureText: true,
+                prefixIcon: const Icon(Icons.lock),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: MyApp.platformTextField(
+                labelText: 'Re-enter Password',
                 controller: pwTestController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Re-enter Password',
-                ),
+                obscureText: true,
+                prefixIcon: const Icon(Icons.lock_reset),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
+              child: MyApp.platformTextField(
+                labelText: 'First Name',
                 controller: firstNameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'First Name',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
+              child: MyApp.platformTextField(
+                labelText: 'Last Name',
                 controller: lastNameController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Last Name',
-                ),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
-              child: TextField(
+              child: MyApp.platformTextField(
+                labelText: 'Email',
                 controller: emailController,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Email',
-                ),
+                prefixIcon: const Icon(Icons.email),
               ),
             ),
             Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      var updatedAppUser = await _updateUser();
-                      // Create account ...
-                      if (passwordController.value.text ==
-                          pwTestController.value.text) {
-                        if (updatedAppUser != null) {
-                          Navigator.of(context)
-                              .pushNamed('home', arguments: widget.currentUser);
-                        } else {
-                          log('User was not updated');
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text("Passwords do not match"),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      }
-                    },
-                    child: const Text('Update Account'))),
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                onPressed: () async {
+                  var updatedAppUser = await _updateUser();
+                  // Create account ...
+                  if (passwordController.value.text ==
+                      pwTestController.value.text) {
+                    if (updatedAppUser != null) {
+                      Navigator.of(context)
+                          .pushNamed('home', arguments: widget.currentUser);
+                    } else {
+                      log('User was not updated');
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Passwords do not match"),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  }
+                },
+                text: 'Update Account',
+                context: context,
+              ),
+            ),
           ],
         ),
       ),
       bottomNavigationBar: AlottaNavigationBar(
         currentUser: widget.currentUser,
         context: context,
-        selectedIndex: SettingsPage.pageIndex,
+        selectedIndex:
+            widget.currentUser.accountType == AppUserAccountType.CREATOR
+                ? 2
+                : 3,
       ),
     );
   }

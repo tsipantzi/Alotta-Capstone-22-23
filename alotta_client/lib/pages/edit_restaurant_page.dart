@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import '../assets/data/restaurant.dart';
 import '../assets/services/restaurant_service.dart';
 import '../assets/widgets/alotta_app_bar.dart';
+import '../main.dart';
 
 class EditRestaurantPage extends StatefulWidget {
   final UserRestaurant userRestaurant;
@@ -51,106 +52,58 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Restaurant Name',
                 controller: restaurantName,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Restaurant Name',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Phone Number',
                 controller: phoneNumber,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Phone Number',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'About Me',
                 controller: aboutMe,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'About Me',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Food Categories',
                 controller: foodCategories,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Food Categories',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Email',
                 controller: email,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Email',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Max Catering Size Per Person',
                 controller: maxCateringSizePerPerson,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Max Catering Size per Person',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Minimum Day Notice For Catering',
                 controller: minimumDayNoticeForCatering,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Minimum Day Notice for Catering',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'ZipCode',
                 controller: zipCode,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Zip Code',
-                ),
               ),
             ),
             Container(

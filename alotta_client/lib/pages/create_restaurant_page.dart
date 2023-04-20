@@ -41,50 +41,23 @@ class _CreateRestaurantPage extends State<CreateRestaurantPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Restaurant Name',
                 controller: restaurantName,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Restaurant Name',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Phone Number',
                 controller: phoneNumber,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Phone Number',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'About Me',
                 controller: aboutMe,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'About Me',
-                ),
               ),
             ),
             Container(
@@ -116,66 +89,30 @@ class _CreateRestaurantPage extends State<CreateRestaurantPage> {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Email',
                 controller: email,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Email',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Max Catering Size Per Person',
                 controller: maxCateringSizePerPerson,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Max Catering Size per Person',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Minimum Day Notice For Catering',
                 controller: minimumDayNoticeForCatering,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Minimum Day Notice for Catering',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+              child: MyApp.platformTextField(
+                hintText: 'Zip Code',
                 controller: zipCode,
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Zip Code',
-                ),
               ),
             ),
             Container(

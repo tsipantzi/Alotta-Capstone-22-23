@@ -100,16 +100,17 @@ class _CouponCardState extends State<CouponCard> {
                       MediaQuery.of(context).size.width * .5),
                 ),
                 Positioned(
-                  right: 15,
-                  top: 25,
+                  right: 50,
+                  top: 40,
                   child: Text(
                     coupon.title,
                     textDirection: TextDirection.rtl,
-                    style: MyApp.platformBodyStyle,
+                    style: MyApp.platformHeadingStyle
+                        .copyWith(color: primaryCream, fontSize: 20),
                   ),
                 ),
                 Positioned(
-                  right: 10,
+                  right: 5,
                   top: 75,
                   width: 150,
                   child: Text(
@@ -117,7 +118,8 @@ class _CouponCardState extends State<CouponCard> {
                     overflow: TextOverflow.clip,
                     maxLines: 3,
                     softWrap: true,
-                    style: MyApp.platformBodyStyle,
+                    style:
+                        MyApp.platformBodyStyle.copyWith(color: primaryCream),
                   ),
                 ),
                 drawButtonByType(context),
@@ -129,8 +131,8 @@ class _CouponCardState extends State<CouponCard> {
                     child: Center(
                       child: Text(
                         'Cancel',
-                        style:
-                            MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+                        style: MyApp.platformHeadingStyle
+                            .copyWith(color: primaryCream),
                       ),
                     ),
                   ),
@@ -142,7 +144,8 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       percentageOffText,
-                      style: MyApp.platformBodyStyle,
+                      style:
+                          MyApp.platformBodyStyle.copyWith(color: primaryCream),
                     ),
                   ),
                 ),
@@ -153,7 +156,8 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       dollarsOffText,
-                      style: MyApp.platformBodyStyle,
+                      style:
+                          MyApp.platformBodyStyle.copyWith(color: primaryCream),
                     ),
                   ),
                 ),
@@ -164,7 +168,8 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       numberOfCouponsLeftText,
-                      style: MyApp.platformBodyStyle,
+                      style:
+                          MyApp.platformBodyStyle.copyWith(color: primaryCream),
                     ),
                   ),
                 ),
@@ -175,7 +180,8 @@ class _CouponCardState extends State<CouponCard> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       goodThroughText,
-                      style: MyApp.platformBodyStyle,
+                      style:
+                          MyApp.platformBodyStyle.copyWith(color: primaryCream),
                     ),
                   ),
                 ),
@@ -198,7 +204,10 @@ class _CouponCardState extends State<CouponCard> {
             child: Center(
               child: Text(
                 'Claim Coupon',
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+                style: MyApp.platformHeadingStyle.copyWith(
+                  fontSize: 20,
+                  color: primaryCream,
+                ),
               ),
             ),
           ),
@@ -213,7 +222,10 @@ class _CouponCardState extends State<CouponCard> {
             child: Center(
               child: Text(
                 'Redeem Coupon',
-                style: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
+                style: MyApp.platformHeadingStyle.copyWith(
+                  fontSize: 20,
+                  color: primaryCream,
+                ),
               ),
             ),
           ),
@@ -274,14 +286,16 @@ class _CouponCardState extends State<CouponCard> {
                         Flexible(
                           child: Text(
                             widget.coupon.title,
-                            style: MyApp.platformHeadingStyle,
+                            style: MyApp.platformHeadingStyle
+                                .copyWith(color: primaryCream, fontSize: 20),
                             overflow: TextOverflow.visible,
                           ),
                         ),
                         Flexible(
                           child: Text(
                             widget.coupon.description,
-                            style: MyApp.platformBodyStyle,
+                            style: MyApp.platformBodyStyle
+                                .copyWith(color: primaryCream),
                             overflow: TextOverflow.clip,
                             maxLines: 6,
                             softWrap: true,

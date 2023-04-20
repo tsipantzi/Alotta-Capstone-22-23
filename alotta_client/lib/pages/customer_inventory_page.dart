@@ -74,15 +74,12 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
               ),
             ),
           ),
-          Container(
-            height: 50,
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: RoundedButton(
-              text: "Back",
-              context: context,
-            ),
-          ),
         ],
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        context: context,
+        currentUser: widget.currentUser,
+        selectedIndex: 2,
       ),
     );
   }

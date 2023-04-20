@@ -10,6 +10,7 @@ import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
+import '../main.dart';
 
 class CouponHomePage extends StatefulWidget {
   final AppUser currentUser;
@@ -58,22 +59,10 @@ class _CouponHomePageState extends State<CouponHomePage> {
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
-          TextField(
+          MyApp.platformTextField(
+            hintText: 'Search coupons...',
             onChanged: (value) => setState(() => widget.searchTerm = value),
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(width: 4.0),
-              ),
-              hintText: "Search Coupons...",
-              prefixIcon: const Icon(Icons.search),
-              prefixIconColor: Colors.black,
-            ),
+            prefixIcon: const Icon(Icons.search),
           ),
           Container(
             height: 90,
@@ -133,12 +122,6 @@ class _CouponHomePageState extends State<CouponHomePage> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryGreen,
-        child: const Icon(Icons.shopping_cart),
-        onPressed: () => Navigator.of(context)
-            .pushNamed('customerInventoryPage', arguments: widget.currentUser),
       ),
       bottomNavigationBar: AlottaNavigationBar(
         currentUser: widget.currentUser,

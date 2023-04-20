@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../colors/colors.dart';
 import 'food_category_type.dart';
 
 part 'coupon.g.dart';
@@ -79,10 +80,10 @@ class Coupon {
       width: width,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
-          Radius.circular(18.0),
+          Radius.circular(20),
         ),
         border: Border.all(
-          color: Colors.black.withOpacity(0.0),
+          color: Colors.transparent,
           width: 1,
         ),
       ),

@@ -47,7 +47,7 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).size.height * .68,
+            height: MediaQuery.of(context).size.height * .75,
             width: MediaQuery.of(context).size.width,
             child: Scaffold(
               body: Stack(

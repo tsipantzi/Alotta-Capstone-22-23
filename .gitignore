@@ -50,3 +50,6 @@ alotta_client/README 2.md
 alotta_client/pubspec.lock
 README 2.md
 *.lock
+alotta_client/ios/Flutter/Debug.xcconfig
+alotta_client/ios/Flutter/Release.xcconfig
+.gitignore

@@ -94,7 +94,7 @@ class _CouponHomePageState extends State<CouponHomePage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * .68,
+            height: MediaQuery.of(context).size.height * .58,
             width: MediaQuery.of(context).size.width,
             child: Scaffold(
               body: Stack(

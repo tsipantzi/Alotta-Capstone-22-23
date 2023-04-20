@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:alotta_client/assets/colors/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -26,20 +28,9 @@ class MyApp extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         scaffoldBackgroundColor: const Color(0xFFF8F4EB),
-        fontFamily: 'Nexa',
-        primaryTextTheme: const TextTheme(
-          bodyText1: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: primaryCream,
-            shadows: <Shadow>[
-              Shadow(
-                color: primaryOrangeMaterialColor,
-                offset: Offset(-0.33, 2.53),
-                blurRadius: 0,
-              ),
-            ],
-          ),
+        primaryTextTheme: TextTheme(
+          headline1: platformHeadingStyle,
+          bodyText1: platformBodyStyle,
         ),
         elevatedButtonTheme: const ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -47,6 +38,98 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  static TextStyle get platformHeadingStyle {
+    if (Platform.isIOS) {
+      return const TextStyle(
+        fontFamily: 'San Francisco',
+        fontWeight: FontWeight.w800,
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    } else if (Platform.isAndroid) {
+      return const TextStyle(
+        fontFamily: 'Roboto',
+        fontWeight: FontWeight.w800,
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    } else {
+      return const TextStyle(
+        fontFamily: 'Open Sans',
+        fontWeight: FontWeight.w800,
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    }
+  }
+
+  static TextStyle get platformBodyStyle {
+    if (Platform.isIOS) {
+      return const TextStyle(
+        fontFamily: 'San Francisco',
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    } else if (Platform.isAndroid) {
+      return const TextStyle(
+        fontFamily: 'Roboto',
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    } else {
+      return const TextStyle(
+        fontFamily: 'Open Sans',
+        fontSize: 16.0,
+        color: Colors.black,
+      );
+    }
+  }
+
+  static TextField platformTextField({
+    String? hintText,
+    String? labelText,
+    Function(String)? onChanged,
+    Function()? onTap,
+    TextEditingController? controller,
+    Icon? prefixIcon,
+    bool obscureText = false,
+    bool readOnly = false,
+  }) {
+    return TextField(
+      controller: controller,
+      onChanged: onChanged,
+      onTap: onTap,
+      obscureText: obscureText,
+      readOnly: readOnly,
+      style: MyApp.platformHeadingStyle
+          .copyWith(color: primaryOrangeMaterialColor, fontSize: 16),
+      decoration: _inputDecoration(hintText, labelText)
+          .copyWith(prefixIcon: prefixIcon),
+    );
+  }
+
+  static InputDecoration _inputDecoration(String? hintText, String? labelText) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: const BorderSide(
+          width: 4.0,
+          color: primaryOrangeMaterialColor,
+          style: BorderStyle.solid,
+        ),
+      ),
+      hintText: hintText,
+      labelText: labelText,
+      labelStyle: MyApp.platformHeadingStyle
+          .copyWith(color: primaryOrangeMaterialColor),
+      hintStyle: MyApp.platformHeadingStyle
+          .copyWith(color: primaryOrangeMaterialColor),
+      prefixIconColor: primaryOrangeMaterialColor,
     );
   }
 }

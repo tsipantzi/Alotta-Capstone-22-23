@@ -58,10 +58,9 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
                 currentUser: widget.currentUser,
                 context: context,
-                currentIndex: RestaurantManagerPage.pageIndex,
+                selectedIndex: RestaurantManagerPage.pageIndex,
               ),
             );
           } else {
@@ -86,10 +85,9 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                 ],
               ),
               bottomNavigationBar: AlottaNavigationBar(
-                selectedItemColor: primaryOrangeMaterialColor,
                 currentUser: widget.currentUser,
                 context: context,
-                currentIndex: RestaurantManagerPage.pageIndex,
+                selectedIndex: RestaurantManagerPage.pageIndex,
               ),
             );
           }

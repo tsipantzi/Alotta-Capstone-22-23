@@ -1,6 +1,8 @@
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:alotta_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../colors/colors.dart';
 import '../data/coupon.dart';
@@ -24,23 +26,22 @@ class CouponCard extends StatefulWidget {
 }
 
 class _CouponCardState extends State<CouponCard> {
-  static const BoxShadow _defaultShadow = BoxShadow(
-    color: Colors.grey,
-    blurRadius: .005,
-    spreadRadius: -7,
-    offset: Offset(-3, 3),
-    blurStyle: BlurStyle.solid,
-  );
-
-  BoxShadow _cardShadow = _defaultShadow;
   Offset _offset = const Offset(0, 0);
 
-  drawButtonByType(BuildContext context) {
+  Widget drawButtonByType(BuildContext context) {
     switch (widget.couponState) {
       case CouponState.claimable:
         return TextButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green)),
+            elevation: MaterialStateProperty.all(5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
+            minimumSize: MaterialStateProperty.all(const Size(150, 35)),
+          ),
           onPressed: () => claimCoupon(context),
           child: const Text(
             'Claim Coupon',
@@ -53,7 +54,17 @@ class _CouponCardState extends State<CouponCard> {
       case CouponState.redeemable:
         return TextButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green)),
+            elevation: MaterialStateProperty.all(5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(150, 35),
+            ),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
+          ),
           onPressed: () => redeemCoupon(context),
           child: const Text(
             'Redeem Coupon',
@@ -72,181 +83,8 @@ class _CouponCardState extends State<CouponCard> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return FlipCard(
-      front: Transform.translate(
-        offset: _offset,
-        child: Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            boxShadow: [_cardShadow],
-          ),
-          child: InkWell(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            splashFactory: NoSplash.splashFactory,
-            highlightColor: Colors.transparent,
-            child: Card(
-              elevation: 0,
-              borderOnForeground: true,
-              color: primaryOrangeMaterialColor.shade900.withOpacity(1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SizedBox(
-                width: 350,
-                height: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    widget.coupon.getImage(100, 200),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: primaryCream,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  color: Colors.black12,
-                                ),
-                                Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 4,
-                                  color: Colors.black12,
-                                )
-                              ],
-                            ),
-                            widget.coupon.title,
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
-                            widget.coupon.description,
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      back: Transform.translate(
-        offset: _offset,
-        child: Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            boxShadow: [_cardShadow],
-          ),
-          child: InkWell(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            splashFactory: NoSplash.splashFactory,
-            highlightColor: Colors.transparent,
-            child: Card(
-              elevation: 0,
-              borderOnForeground: true,
-              color: primaryOrangeMaterialColor.shade900.withOpacity(1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SizedBox(
-                width: 350,
-                height: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    widget.coupon.getImage(100, 200),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: primaryCream,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  color: Colors.black12,
-                                ),
-                                Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 4,
-                                  color: Colors.black12,
-                                )
-                              ],
-                            ),
-                            "Percentage Off: ${widget.coupon.discount}%",
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
-                            "Dollars Saved: \$${widget.coupon.dollarsOff}",
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
-                            "Coupons Left: ${widget.coupon.numberOfCouponsLeft}",
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
-                            "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}",
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
-                          ),
-                        ),
-                        drawButtonByType(context),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      front: frontOfCoupon(),
+      back: backOfCoupon(),
     );
   }
 
@@ -259,5 +97,159 @@ class _CouponCardState extends State<CouponCard> {
   void redeemCoupon(BuildContext context) async {
     Navigator.pushNamed(context, 'qrCodePage',
         arguments: [widget.userId, widget.coupon.id]);
+  }
+
+  Widget frontOfCoupon() {
+    return Transform.translate(
+      offset: _offset,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          child: Card(
+            elevation: 15,
+            borderOnForeground: true,
+            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              width: 350,
+              height: 200,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: widget.coupon.getImage(200, 200),
+                  ),
+                  Positioned(
+                    top: 50,
+                    right: 0,
+                    width: 170,
+                    child: Text(
+                      widget.coupon.title,
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream, fontSize: 20),
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    right: 0,
+                    width: 170,
+                    child: Text(
+                      'Savings of ${widget.coupon.discount}% or '
+                      '\$${widget.coupon.dollarsOff}',
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget backOfCoupon() {
+    return Transform.translate(
+      offset: _offset,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          child: Card(
+            elevation: 15,
+            borderOnForeground: true,
+            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              width: 350,
+              height: 200,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 5,
+                    top: 5,
+                    child: widget.coupon.getImage(150, 150),
+                  ),
+                  Positioned(
+                    left: 5,
+                    bottom: 1,
+                    child: drawButtonByType(context),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 25,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Percentage Off: ${widget.coupon.discount}%",
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 50,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Dollars Saved: \$${widget.coupon.dollarsOff}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 75,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Coupons Left: ${widget.coupon.numberOfCouponsLeft}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 100,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

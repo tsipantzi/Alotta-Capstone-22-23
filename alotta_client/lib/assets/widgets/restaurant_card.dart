@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
 import '../colors/colors.dart';
 
 class RestaurantCard extends StatelessWidget {
@@ -90,28 +91,32 @@ class RestaurantCard extends StatelessWidget {
                       Flexible(
                         flex: 0,
                         child: Text(
-                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          style: MyApp.platformHeadingStyle
+                              .copyWith(color: primaryCream),
                           userRestaurant.restaurant.name,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
-                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          style: MyApp.platformBodyStyle
+                              .copyWith(color: primaryCream),
                           userRestaurant.restaurant.zipCode,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
-                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          style: MyApp.platformBodyStyle
+                              .copyWith(color: primaryCream),
                           userRestaurant.restaurant.email,
                           overflow: TextOverflow.visible,
                         ),
                       ),
                       Flexible(
                         child: Text(
-                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          style: MyApp.platformBodyStyle
+                              .copyWith(color: primaryCream),
                           "Active coupons: ${userRestaurant.restaurant.numberOfActiveCoupons}",
                           overflow: TextOverflow.visible,
                         ),

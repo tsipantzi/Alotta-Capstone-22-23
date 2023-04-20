@@ -96,12 +96,16 @@ class CouponManagerPage extends StatelessWidget {
                     }
                   }),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed('createCouponPage', arguments: userRestaurant);
-              },
-              child: const Text('Create Coupon'),
+            Container(
+              height: 40,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed('createCouponPage', arguments: userRestaurant);
+                },
+                child: const Text('Create Coupon'),
+              ),
             ),
           ],
         ),

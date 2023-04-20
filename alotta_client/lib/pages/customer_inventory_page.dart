@@ -1,5 +1,6 @@
 import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 import '../assets/colors/colors.dart';
@@ -46,7 +47,7 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).size.height * .68,
+            height: MediaQuery.of(context).size.height * .75,
             width: MediaQuery.of(context).size.width,
             child: Scaffold(
               body: Stack(
@@ -74,6 +75,11 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        context: context,
+        currentUser: widget.currentUser,
+        selectedIndex: 2,
       ),
     );
   }

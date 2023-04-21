@@ -46,7 +46,7 @@ public class CouponServiceImpl implements CouponService {
                         LocalDate.now().toString())
                 .stream()
                 .filter(coupon -> usersCurrentCouponIds.isEmpty()
-                        || usersCurrentCouponIds.contains(coupon.getId()))
+                        || !usersCurrentCouponIds.contains(coupon.getId()))
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
@@ -60,7 +60,7 @@ public class CouponServiceImpl implements CouponService {
                         LocalDate.now().toString())
                 .stream()
                 .filter(coupon -> usersCurrentCouponIds.isEmpty()
-                        || usersCurrentCouponIds.contains(coupon.getId()))
+                        || !usersCurrentCouponIds.contains(coupon.getId()))
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }

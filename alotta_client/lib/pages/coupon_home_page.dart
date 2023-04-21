@@ -133,15 +133,17 @@ class _CouponHomePageState extends State<CouponHomePage> {
 
   Future<List<Coupon>> getCoupons() async {
     if (widget.searchTerm == '') {
-      return applyFilterToFuture(widget.couponService.getAllCoupons(widget
-          .currentUser.zipcode
-          .substring(0, widget.currentUser.zipcode.length - 2)));
+      return applyFilterToFuture(
+        widget.couponService.getAllCoupons(widget.currentUser),
+      );
     }
 
-    return applyFilterToFuture(widget.couponService.getAllCouponsBySearchTerm(
+    return applyFilterToFuture(
+      widget.couponService.getAllCouponsBySearchTerm(
         widget.searchTerm,
-        widget.currentUser.zipcode
-            .substring(0, widget.currentUser.zipcode.length - 2)));
+        widget.currentUser,
+      ),
+    );
   }
 
   Future<List<Coupon>> applyFilterToFuture(

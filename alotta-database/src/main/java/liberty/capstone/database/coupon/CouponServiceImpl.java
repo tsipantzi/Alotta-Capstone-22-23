@@ -1,7 +1,10 @@
 package liberty.capstone.database.coupon;
 
+import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.coupon.CouponService;
+import liberty.capstone.database.customerinventory.CustomerInventoryEntity;
+import liberty.capstone.database.customerinventory.CustomerInventoryEntityDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class CouponServiceImpl implements CouponService {
 
     private final CouponEntityDao couponDao;
+    private final CustomerInventoryEntityDao customerInventoryDao;
 
     @Override
     public Coupon findCouponById(final Long couponId) {
@@ -33,24 +37,40 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> findAllCouponsBySearchTermAndZipCode(final String searchTerm, final String zipCode) {
-        log.info("Getting all coupons by search term : {} and zipCode : {}", searchTerm, zipCode);
+    public List<Coupon> findAllCouponsBySearchTermAndZipCode(final String searchTerm, final AppUser user) {
+        final var usersCurrentCouponIds = getCouponIdsForUser(user.getId());
+
+        log.info("Getting all coupons by search term : {} for user : {}", searchTerm, user.getUsername());
         return couponDao.findAllByTermZipCodeOrEndDate(searchTerm,
-                        getZipcodePrefix(zipCode),
+                        getZipcodePrefix(user.getZipcode()),
                         LocalDate.now().toString())
                 .stream()
+                .filter(coupon -> usersCurrentCouponIds.isEmpty()
+                        || usersCurrentCouponIds.contains(coupon.getId()))
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Coupon> getAllCouponsByZipCode(final String zipCode) {
-        log.info("Getting all coupons by zipCode : {}", zipCode);
-        return couponDao.findAllByZipCodeOrEndDate(getZipcodePrefix(zipCode),
+    public List<Coupon> getAllCouponsByZipCode(final AppUser user) {
+        final var usersCurrentCouponIds = getCouponIdsForUser(user.getId());
+
+        log.info("Getting all coupons for user : {}", user.getUsername());
+        return couponDao.findAllByZipCodeOrEndDate(getZipcodePrefix(user.getZipcode()),
                         LocalDate.now().toString())
                 .stream()
+                .filter(coupon -> usersCurrentCouponIds.isEmpty()
+                        || usersCurrentCouponIds.contains(coupon.getId()))
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
+    }
+
+    private List<Long> getCouponIdsForUser(final Long userId) {
+        return customerInventoryDao.findAllByCustomer_Id(userId)
+                .stream()
+                .map(CustomerInventoryEntity::getCoupon)
+                .map(CouponEntity::getId)
+                .toList();
     }
 
     private String getZipcodePrefix(final String zipCode) {

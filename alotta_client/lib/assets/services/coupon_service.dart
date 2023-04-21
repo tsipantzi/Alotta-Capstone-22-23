@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:alotta_client/assets/data/app_user.dart';
 import 'package:alotta_client/assets/data/coupon.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,13 +12,20 @@ class CouponService {
   bool cacheIsInvalidated = false;
   CouponService();
 
-  Future<List<Coupon>> getAllCoupons(final String zipCode) async {
+  Future<List<Coupon>> getAllCoupons(
+    final AppUser user,
+  ) async {
     if (coupons.isNotEmpty && !cacheIsInvalidated) return coupons;
 
     try {
-      var url = Uri.parse(ApiConstants.getAllCoupons(zipCode));
+      var url = Uri.parse(ApiConstants.getAllCoupons());
       log('Trying to find coupons by url $url');
-      var response = await http.get(url);
+      var response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(user.toJson()),
+      );
+
       if (response.statusCode == 200 && response.body != '[]') {
         coupons = couponsFromJson(response.body);
         cacheIsInvalidated = false;
@@ -30,12 +38,18 @@ class CouponService {
   }
 
   Future<List<Coupon>> getAllCouponsBySearchTerm(
-      String value, String zipCode) async {
+    final String value,
+    final AppUser user,
+  ) async {
     try {
-      var url =
-          Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value, zipCode));
+      var url = Uri.parse(ApiConstants.getAllCouponsForSearchTerm(value));
       log('Trying to find coupons by url $url');
-      var response = await http.get(url);
+      var response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(user.toJson()),
+      );
+
       if (response.statusCode == 200 && response.body != '[]') {
         coupons = couponsFromJson(response.body);
         cacheIsInvalidated = true;

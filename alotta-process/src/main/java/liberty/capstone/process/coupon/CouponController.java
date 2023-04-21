@@ -30,7 +30,7 @@ public class CouponController {
         return coupon;
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public List<Coupon> getAllCouponsBySearchTerm(@RequestBody final AppUser user,
                                                   @RequestParam(required = false) final String searchTerm) {
         final List<Coupon> coupons = searchTerm != null

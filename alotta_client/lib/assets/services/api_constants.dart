@@ -22,7 +22,7 @@ class ApiConstants {
     Coupons without Restaurant Info endpoints
    */
   static String getAllCoupons() {
-    return '$baseUrl$_couponParam$_search?';
+    return '$baseUrl$_couponParam$_search';
   }
 
   static String getCouponById(final String couponId) {

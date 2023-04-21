@@ -1,5 +1,8 @@
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
+import 'package:flip_card/flip_card.dart';
+import 'package:alotta_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../colors/colors.dart';
 import '../data/coupon.dart';
@@ -23,349 +26,65 @@ class CouponCard extends StatefulWidget {
 }
 
 class _CouponCardState extends State<CouponCard> {
-  static const BoxShadow _defaultShadow = BoxShadow(
-    color: Colors.grey,
-    blurRadius: .005,
-    spreadRadius: -7,
-    offset: Offset(-3, 3),
-    blurStyle: BlurStyle.solid,
-  );
-
-  static const BoxShadow _pressedDownShadow = BoxShadow(
-    color: Colors.grey,
-    blurRadius: .05,
-    spreadRadius: -8,
-    offset: Offset(-1, 1),
-    blurStyle: BlurStyle.solid,
-  );
-
-  BoxShadow _cardShadow = _defaultShadow;
   Offset _offset = const Offset(0, 0);
 
-  void _pressCardDown() {
-    setState(() {
-      _cardShadow = _pressedDownShadow;
-      _offset = const Offset(-3, 3);
-    });
-  }
-
-  void _pressCardUp() {
-    setState(() {
-      _cardShadow = _defaultShadow;
-      _offset = const Offset(0, 0);
-    });
-  }
-
-  void _openCardPopup(final Coupon coupon, final BuildContext context) {
-    final String percentageOffText =
-        "Percentage Off: ${widget.coupon.discount}%";
-    final String dollarsOffText =
-        "Dollars Saved: ${widget.coupon.dollarsOff}\$";
-    final String numberOfCouponsLeftText =
-        "Coupons Left: ${widget.coupon.numberOfCouponsLeft}";
-    final String goodThroughText =
-        "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}";
-    showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(
-          vertical: 0,
-          horizontal: 0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        children: [
-          Container(
-            width: 340,
-            height: 280,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(0),
-              color: Colors.transparent,
-              image: const DecorationImage(
-                image: AssetImage('images/pop_up_background.png'),
-              ),
-            ),
-            child: Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                Positioned(
-                  left: 0,
-                  top: 15,
-                  child: widget.coupon.getImage(
-                      MediaQuery.of(context).size.height * .16,
-                      MediaQuery.of(context).size.width * .5),
-                ),
-                Positioned(
-                  right: 15,
-                  top: 25,
-                  child: Text(
-                    coupon.title,
-                    textDirection: TextDirection.rtl,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: primaryCream,
-                      shadows: <Shadow>[
-                        BoxShadow(
-                          color: Colors.black,
-                          spreadRadius: 10,
-                          blurRadius: 10,
-                          blurStyle: BlurStyle.solid,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 10,
-                  top: 75,
-                  width: 150,
-                  child: Text(
-                    coupon.description,
-                    overflow: TextOverflow.clip,
-                    maxLines: 3,
-                    softWrap: true,
-                    style: const TextStyle(
-                      color: primaryCream,
-                    ),
-                  ),
-                ),
-                drawButtonByType(context),
-                Positioned(
-                  bottom: 8,
-                  right: 75,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: primaryCream,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 80,
-                  left: 20,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      percentageOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 60,
-                  left: 20,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      dollarsOffText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 60,
-                  right: 50,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      numberOfCouponsLeftText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 80,
-                  right: 15,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      goodThroughText,
-                      style: const TextStyle(
-                        color: primaryCream,
-                        shadows: <Shadow>[
-                          BoxShadow(
-                            color: Colors.black,
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            blurStyle: BlurStyle.solid,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Positioned drawButtonByType(BuildContext context) {
+  Widget drawButtonByType(BuildContext context) {
     switch (widget.couponState) {
       case CouponState.claimable:
-        return Positioned(
-          bottom: 8,
-          left: 50,
-          child: TextButton(
-            onPressed: () => claimCoupon(context),
-            child: const Text(
-              'Claim Coupon',
-              style: TextStyle(
-                color: primaryCream,
+        return TextButton(
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.all(5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
+            ),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
+            minimumSize: MaterialStateProperty.all(const Size(150, 35)),
+          ),
+          onPressed: () => claimCoupon(context),
+          child: const Text(
+            'Claim Coupon',
+            style: TextStyle(
+              color: primaryCream,
             ),
           ),
         );
 
       case CouponState.redeemable:
-        return Positioned(
-          bottom: 8,
-          left: 40,
-          child: TextButton(
-            onPressed: () => redeemCoupon(context),
-            child: const Text(
-              'Redeem Coupon',
-              style: TextStyle(
-                color: primaryCream,
+        return TextButton(
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.all(5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(150, 35),
+            ),
+            backgroundColor: MaterialStateProperty.all(Colors.green),
+          ),
+          onPressed: () => redeemCoupon(context),
+          child: const Text(
+            'Redeem Coupon',
+            style: TextStyle(
+              color: primaryCream,
             ),
           ),
         );
 
       case CouponState.disabled:
-        return const Positioned(child: Text(""));
+        return const Text("");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Transform.translate(
-      offset: _offset,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          boxShadow: [_cardShadow],
-        ),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-          onTapDown: (TapDownDetails details) => _pressCardDown(),
-          onTapUp: (TapUpDetails details) => _pressCardUp(),
-          onTapCancel: () => _pressCardUp(),
-          onTap: () => _openCardPopup(widget.coupon, context),
-          child: Card(
-            elevation: 0,
-            borderOnForeground: true,
-            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.height * 0.15,
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    child: widget.coupon.getImage(
-                        MediaQuery.of(context).size.height * 0.155,
-                        MediaQuery.of(context).size.width * 0.45),
-                  ),
-                  Positioned(
-                    top: 0.0,
-                    left: 225.0,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: primaryCream,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 1,
-                                  color: Colors.black12,
-                                ),
-                                Shadow(
-                                  offset: Offset(2, 2),
-                                  blurRadius: 4,
-                                  color: Colors.black12,
-                                )
-                              ],
-                            ),
-                            widget.coupon.title,
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: primaryCream,
-                            ),
-                            widget.coupon.description,
-                            overflow: TextOverflow.clip,
-                            maxLines: 6,
-                            softWrap: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    return FlipCard(
+      front: frontOfCoupon(),
+      back: backOfCoupon(),
     );
   }
 
@@ -378,5 +97,159 @@ class _CouponCardState extends State<CouponCard> {
   void redeemCoupon(BuildContext context) async {
     Navigator.pushNamed(context, 'qrCodePage',
         arguments: [widget.userId, widget.coupon.id]);
+  }
+
+  Widget frontOfCoupon() {
+    return Transform.translate(
+      offset: _offset,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          child: Card(
+            elevation: 15,
+            borderOnForeground: true,
+            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              width: 350,
+              height: 200,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: widget.coupon.getImage(200, 200),
+                  ),
+                  Positioned(
+                    top: 50,
+                    right: 0,
+                    width: 170,
+                    child: Text(
+                      widget.coupon.title,
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream, fontSize: 20),
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 50,
+                    right: 0,
+                    width: 170,
+                    child: Text(
+                      'Savings of ${widget.coupon.discount}% or '
+                      '\$${widget.coupon.dollarsOff}',
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget backOfCoupon() {
+    return Transform.translate(
+      offset: _offset,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          child: Card(
+            elevation: 15,
+            borderOnForeground: true,
+            color: primaryOrangeMaterialColor.shade900.withOpacity(1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              width: 350,
+              height: 200,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 5,
+                    top: 5,
+                    child: widget.coupon.getImage(150, 150),
+                  ),
+                  Positioned(
+                    left: 5,
+                    bottom: 1,
+                    child: drawButtonByType(context),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 25,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Percentage Off: ${widget.coupon.discount}%",
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 50,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Dollars Saved: \$${widget.coupon.dollarsOff}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 75,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Coupons Left: ${widget.coupon.numberOfCouponsLeft}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 100,
+                    width: 200,
+                    child: Text(
+                      style: MyApp.platformHeadingStyle
+                          .copyWith(color: primaryCream),
+                      "Good Through: ${widget.coupon.startDateShort} - ${widget.coupon.endDateShort}",
+                      overflow: TextOverflow.clip,
+                      maxLines: 6,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 package liberty.capstone.process.coupon;
 
+import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.restaurant.RestaurantService;
@@ -74,8 +75,10 @@ class CouponControllerTest {
     }
     @Test
     void getAllCouponsBySearchTerm_SearchByCoupon() {
+        final var appUser = new AppUser();
+        appUser.setZipcode("123455");
 
-        final var results = instance.getAllCouponsBySearchTerm("123455", "Coupon");
+        final var results = instance.getAllCouponsBySearchTerm(appUser, "Coupon");
 
         assertTrue(results.contains(savedCouponOne));
         assertTrue(results.contains(savedCouponTwo));
@@ -83,8 +86,10 @@ class CouponControllerTest {
 
     @Test
     void getAllCouponsBySearchTerm_SearchByCouponOne() {
+        final var appUser = new AppUser();
+        appUser.setZipcode("123455");
 
-        final var results = instance.getAllCouponsBySearchTerm("123455", "Coupon Title One");
+        final var results = instance.getAllCouponsBySearchTerm(appUser, "Coupon Title One");
         final var expectedResults = List.of(savedCouponOne);
 
         assertEquals(expectedResults, results);

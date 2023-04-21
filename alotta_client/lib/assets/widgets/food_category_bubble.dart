@@ -1,3 +1,4 @@
+import 'package:alotta_client/assets/data/food_category_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,22 +33,24 @@ class _FoodCategoryBubbleState extends State<FoodCategoryBubble> {
               offset: const Offset(0, 2),
             ),
           ],
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color:
                 widget.isSelected ? primaryGreen : primaryOrangeMaterialColor,
             width: 2,
           ),
-          color: primaryCream,
+          color: Colors.white,
         ),
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-        child: Text(
-          widget.category,
-          style: TextStyle(
-            color:
-                widget.isSelected ? primaryGreen : primaryOrangeMaterialColor,
-            fontWeight: FontWeight.bold,
+        child: Center(
+          child: Text(
+            widget.category,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  color: widget.isSelected
+                      ? primaryGreen
+                      : primaryOrangeMaterialColor,
+                ),
           ),
         ),
       ),

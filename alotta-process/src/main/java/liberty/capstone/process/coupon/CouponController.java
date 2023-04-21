@@ -1,5 +1,6 @@
 package liberty.capstone.process.coupon;
 
+import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.coupon.CouponService;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +31,11 @@ public class CouponController {
     }
 
     @GetMapping("/search")
-    public List<Coupon> getAllCouponsBySearchTerm(@RequestParam final String zipCode,
+    public List<Coupon> getAllCouponsBySearchTerm(@RequestBody final AppUser user,
                                                   @RequestParam(required = false) final String searchTerm) {
         final List<Coupon> coupons = searchTerm != null
-                ? couponService.findAllCouponsBySearchTermAndZipCode(searchTerm, zipCode)
-                : couponService.getAllCouponsByZipCode(zipCode);
+                ? couponService.findAllCouponsBySearchTermAndZipCode(searchTerm, user)
+                : couponService.getAllCouponsByZipCode(user);
         log.info(searchTermInfoString(coupons.size(), searchTerm));
         return coupons;
     }

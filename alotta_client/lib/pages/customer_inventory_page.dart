@@ -47,7 +47,7 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).size.height * .68,
+            height: MediaQuery.of(context).size.height * .75,
             width: MediaQuery.of(context).size.width,
             child: Scaffold(
               body: Stack(
@@ -74,11 +74,12 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
               ),
             ),
           ),
-          RoundedButton(
-            text: "Back",
-            context: context,
-          ),
         ],
+      ),
+      bottomNavigationBar: AlottaNavigationBar(
+        context: context,
+        currentUser: widget.currentUser,
+        selectedIndex: 2,
       ),
     );
   }

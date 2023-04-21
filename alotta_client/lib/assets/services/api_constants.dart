@@ -21,17 +21,16 @@ class ApiConstants {
   /*
     Coupons without Restaurant Info endpoints
    */
-  static String getAllCoupons(final String zipCode) {
-    return '$baseUrl$_couponParam$_search?zipCode=$zipCode';
+  static String getAllCoupons() {
+    return '$baseUrl$_couponParam$_search?';
   }
 
   static String getCouponById(final String couponId) {
     return '$baseUrl$_couponParam/$couponId';
   }
 
-  static String getAllCouponsForSearchTerm(
-      final String searchTerm, final String zipCode) {
-    return '$baseUrl$_couponParam$_search?searchTerm=$searchTerm&zipCode=$zipCode';
+  static String getAllCouponsForSearchTerm(final String searchTerm) {
+    return '$baseUrl$_couponParam$_search?searchTerm=$searchTerm';
   }
 
   /*

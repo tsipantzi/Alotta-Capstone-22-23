@@ -33,6 +33,7 @@ public class CustomerInventoryServiceImpl implements CustomerInventoryService {
         
         return customerInventoryDao.findAllByCustomer_Id(userId)
                 .stream()
+                .filter(entity -> !entity.isRedeemed())
                 .map(CustomerInventoryEntity::toDomainObject)
                 .map(CustomerInventory::getCoupon)
                 .collect(Collectors.toList());

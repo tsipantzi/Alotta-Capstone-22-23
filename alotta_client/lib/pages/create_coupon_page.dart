@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../assets/data/coupon.dart';
 import '../assets/data/restaurant.dart';
+import '../main.dart';
 
 class CreateCouponPage extends StatefulWidget {
   final UserRestaurant userRestaurant;
@@ -41,34 +42,22 @@ class _CreateCouponPage extends State<CreateCouponPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Coupon Title',
                 controller: title,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Coupon Title',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Coupon Description',
                 controller: description,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Coupon Description',
-                ),
               ),
             ),
             Container(
               height: 90,
               padding: const EdgeInsets.fromLTRB(0, 22.5, 0, 22.5),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width * .95,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: FoodCategoryType.values.map((category) {
@@ -95,72 +84,41 @@ class _CreateCouponPage extends State<CreateCouponPage> {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Discount Percentage',
                 controller: discount,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Discount Percent',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Dollars Off',
                 controller: dollarsOff,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Dollars Off',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Number of Coupons Available',
                 controller: totalNumberOfCoupons,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Number of Coupons',
-                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                  controller: startDate,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.calendar_today),
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFFEB7450)),
-                    ),
-                    labelText: 'Coupon Starting Date',
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    await _openDatePicker(context, startDate);
-                  }),
+              child: MyApp.platformTextField(
+                hintText: 'Coupon Start Date',
+                controller: startDate,
+                onTap: () async {
+                  await _openDatePicker(context, startDate);
+                },
+                readOnly: true,
+              ),
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
+              child: MyApp.platformTextField(
+                hintText: 'Coupon Expiration Date',
                 controller: endDate,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.calendar_today),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFEB7450)),
-                  ),
-                  labelText: 'Coupon Expiration Date',
-                ),
                 readOnly: true,
                 onTap: () async {
                   await _openDatePicker(context, endDate);

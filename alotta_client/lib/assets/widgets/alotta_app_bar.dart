@@ -19,14 +19,14 @@ class AlottaNavigationBar extends GNav {
   late AppUser currentUser;
   late BuildContext context;
 
-  static const List<GButton> _items = <GButton>[
+  static const List<GButton> _creator_items = <GButton>[
     GButton(
       icon: Icons.logout,
       text: 'Logout',
     ),
     GButton(
       icon: Icons.home,
-      text: 'Home',
+      text: 'Restaurants',
     ),
     GButton(
       icon: Icons.settings,
@@ -65,10 +65,10 @@ class AlottaNavigationBar extends GNav {
           curve: Curves.easeOutExpo,
           duration: const Duration(milliseconds: 500),
           gap: 8,
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           tabMargin: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
           tabs: currentUser.accountType == AppUserAccountType.CREATOR
-              ? _items
+              ? _creator_items
               : _consumer_items,
           onTabChange: (val) => _changePage(val, context, currentUser),
         );

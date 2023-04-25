@@ -12,7 +12,7 @@ import 'api_constants.dart';
 class CustomerInventoryService {
   CustomerInventoryService();
 
-  Future<bool> saveCouponForCustomer(
+  Future<Coupon?> saveCouponForCustomer(
       final int userId, final int couponId) async {
     var url =
         Uri.parse(ApiConstants.saveCouponForCustomerUrl(userId, couponId));
@@ -21,8 +21,12 @@ class CustomerInventoryService {
       url,
       headers: {"Content-Type": "application/json"},
     );
+
+    if (response.statusCode == 200) {
+      return Coupon.fromJson(jsonDecode(response.body));
+    }
     log('Got result ${response.body}');
-    return response.statusCode == 200;
+    return null;
   }
 
   Future<List<Coupon>> getAllClaimedCouponsForCustomer(final int userId) async {

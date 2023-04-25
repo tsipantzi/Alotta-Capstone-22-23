@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:alotta_client/assets/data/user_restaurant.dart';
+import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -107,19 +108,30 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
               ),
             ),
             Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: ElevatedButton(
-                    onPressed: () async {
-                      final UserRestaurant? updatedUserRestaurant =
-                          await _updateRestaurant(widget.userRestaurant);
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                onPressed: () async {
+                  final UserRestaurant? updatedUserRestaurant =
+                      await _updateRestaurant(widget.userRestaurant);
 
-                      if (updatedUserRestaurant != null) {
-                        Navigator.of(context).pushNamed('home',
-                            arguments: widget.userRestaurant.appUser);
-                      }
-                    },
-                    child: const Text('Update Restaurant'))),
+                  if (updatedUserRestaurant != null) {
+                    Navigator.of(context).pushNamed('home',
+                        arguments: widget.userRestaurant.appUser);
+                  }
+                },
+                text: 'Update Restaurant',
+                context: context,
+              ),
+            ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                text: 'Back',
+                context: context,
+              ),
+            ),
           ],
         ),
       ),

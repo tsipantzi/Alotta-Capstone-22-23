@@ -26,7 +26,7 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
         future: restaurantService
             .getRestaurantsForUserByUserId(widget.currentUser.id),
         builder: (context, AsyncSnapshot<List<Restaurant>?> snapshot) {
-          if (snapshot.hasData && snapshot.data!.length > 0) {
+          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             return Scaffold(
               appBar: AlottaTitle(),
               body: Stack(
@@ -44,15 +44,30 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                           .toList(),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      style: Theme.of(context).elevatedButtonTheme.style,
-                      onPressed: () {
+                  Positioned(
+                    left: 10,
+                    bottom: 10,
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
                         Navigator.of(context).pushNamed('createRestaurantPage',
                             arguments: widget.currentUser);
                       },
-                      child: const Text('Create Restaurant'),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                          color: primaryGreen,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.playlist_add,
+                            color: primaryCream,
+                            size: 50,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

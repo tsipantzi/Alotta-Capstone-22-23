@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface RestaurantEntityDao extends JpaRepository<RestaurantEntity, Long> {
     Optional<RestaurantEntity> findByName(String name);
     List<RestaurantEntity> findAllByName(String name);
+
+    List<RestaurantEntity> findAllByZipCodeLike(String zipCode);
 }

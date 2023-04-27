@@ -5,17 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.SecureRandom;
 
 @Entity
 @Data
 @Table(name = "AppUser")
 @NoArgsConstructor
 public class AppUserEntity {
-    @org.springframework.data.annotation.Transient
-    private static final Long MIN_VALUE = 10000000L;
-    @org.springframework.data.annotation.Transient
-    private static final SecureRandom RANDOM = new SecureRandom();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,10 +25,7 @@ public class AppUserEntity {
     private String zipcode;
 
     public AppUserEntity(final AppUser domainObject) {
-        this.id = domainObject.getId() != null && domainObject.getId() != 0
-                ? domainObject.getId()
-                : RANDOM.nextLong(Long.MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-
+        this.id = domainObject.getId();
         this.username = domainObject.getUsername();
         this.password = domainObject.getPassword();
         this.accountType = domainObject.getAccountType();

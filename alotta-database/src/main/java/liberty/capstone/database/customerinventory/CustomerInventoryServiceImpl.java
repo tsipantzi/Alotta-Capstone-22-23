@@ -70,6 +70,16 @@ public class CustomerInventoryServiceImpl implements CustomerInventoryService {
         }
     }
 
+    @Override
+    public void deleteCouponForCustomer(final Long userId, final Long couponId) {
+        getUserOrThrow(userId);
+        getCouponOrThrow(couponId);
+
+        final var foundCustomerInventory = getCustomerInventoryOrThrow(userId, couponId);
+
+        customerInventoryDao.delete(foundCustomerInventory);
+    }
+
     private CustomerInventoryEntity getCustomerInventoryOrThrow(final Long userId, final Long couponId) {
         return customerInventoryDao.findAllByCustomer_IdAndCoupon_Id(userId, couponId)
                 .stream()

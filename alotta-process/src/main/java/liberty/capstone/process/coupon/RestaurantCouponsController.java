@@ -5,6 +5,7 @@ import liberty.capstone.core.coupon.Coupon;
 import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +30,12 @@ public class RestaurantCouponsController {
         final var saveCoupon = inventoryService.saveCoupon(restaurantId, coupon);
         log.info("Saved Coupon into the database as : {}", saveCoupon);
         return saveCoupon;
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteCoupon(@PathVariable final Long restaurantId,
+                                       @RequestBody final Coupon coupon) {
+        inventoryService.deleteCoupon(restaurantId, coupon);
+        return ResponseEntity.ok().build();
     }
 }

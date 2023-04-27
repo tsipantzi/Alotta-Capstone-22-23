@@ -11,4 +11,6 @@ public interface CustomerInventoryService {
 
     boolean redeemCoupon(Long userId,
                          Long couponId);
+
+    void deleteCouponForCustomer(Long userId, Long couponId);
 }

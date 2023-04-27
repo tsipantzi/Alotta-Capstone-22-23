@@ -3,7 +3,6 @@ import 'package:alotta_client/assets/data/coupon_state.dart';
 import 'package:alotta_client/assets/data/restaurant_coupons.dart';
 import 'package:alotta_client/assets/data/user_restaurant.dart';
 import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
-import 'package:alotta_client/assets/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -185,7 +184,18 @@ class CouponManagerPage extends StatelessWidget {
                                         (coupon) => CouponCard(
                                           coupon: coupon,
                                           currentUser: userRestaurant.appUser,
-                                          couponState: CouponState.disabled,
+                                          couponState: CouponState.deletable,
+                                          deleteCoupon: () {
+                                            couponService
+                                                .deleteCouponFromRestaurant(
+                                                    restaurantCoupons
+                                                        .restaurant.id
+                                                        .toString(),
+                                                    coupon);
+                                            Navigator.of(context).pushNamed(
+                                                'couponManagerPage',
+                                                arguments: userRestaurant);
+                                          },
                                         ),
                                       )
                                       .toList(),

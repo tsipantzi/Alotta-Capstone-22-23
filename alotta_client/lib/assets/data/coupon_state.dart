@@ -1,1 +1,7 @@
-enum CouponState { redeemable, claimable, disabled }
+enum CouponState {
+  redeemable,
+  claimable,
+  deletable,
+  disabled,
+  redeemableAndDeletable
+}

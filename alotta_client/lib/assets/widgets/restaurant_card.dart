@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:alotta_client/assets/data/user_restaurant.dart';
+import 'package:alotta_client/assets/services/restaurant_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
@@ -22,7 +23,6 @@ class RestaurantCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
-            log("Was tapped");
             Navigator.of(context)
                 .pushNamed('couponManagerPage', arguments: userRestaurant);
           },

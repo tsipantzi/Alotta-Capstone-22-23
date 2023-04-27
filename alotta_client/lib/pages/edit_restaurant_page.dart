@@ -12,7 +12,8 @@ import '../main.dart';
 
 class EditRestaurantPage extends StatefulWidget {
   final UserRestaurant userRestaurant;
-  const EditRestaurantPage({super.key, required this.userRestaurant});
+  final RestaurantService service = RestaurantService();
+  EditRestaurantPage({super.key, required this.userRestaurant});
 
   @override
   State<EditRestaurantPage> createState() => _EditRestaurantPage();
@@ -132,6 +133,44 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
                 context: context,
               ),
             ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: RoundedButton(
+                text: 'Delete Restaurant',
+                buttonColor: Colors.red,
+                context: context,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Confirm'),
+                        content: const Text(
+                            'Are you sure you want to delete this restaurant?'),
+                        actions: [
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Delete'),
+                            onPressed: () async {
+                              await widget.service
+                                  .deleteRestaurant(widget.userRestaurant);
+                              Navigator.of(context).pushNamed('home',
+                                  arguments: widget.userRestaurant.appUser);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -153,11 +192,10 @@ class _EditRestaurantPage extends State<EditRestaurantPage> {
     );
 
     log('Updating restaurant ${restaurantToUpdate.name}');
-    final RestaurantService service = RestaurantService();
 
     UserRestaurant userRestaurantRequest = UserRestaurant(
         restaurant: restaurantToUpdate, appUser: userRestaurant.appUser);
 
-    return await service.updateRestaurant(userRestaurantRequest);
+    return await widget.service.updateRestaurant(userRestaurantRequest);
   }
 }

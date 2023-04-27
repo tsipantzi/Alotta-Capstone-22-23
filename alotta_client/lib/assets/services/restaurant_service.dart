@@ -70,6 +70,23 @@ class RestaurantService {
     return null;
   }
 
+  Future<void> deleteRestaurant(final UserRestaurant userRestaurant) async {
+    try {
+      var url = Uri.parse(ApiConstants.userRestaurantsUrl());
+      log('Attempting to delete Restaurant ${userRestaurant.restaurant.id} for user ${userRestaurant.appUser.id}');
+
+      var response = await http.delete(
+        url,
+        headers: header,
+        body: jsonEncode(userRestaurant.toJson()),
+      );
+
+      log('Deleted restaurant and received response ${response.body}');
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   UserRestaurant userRestaurantFromJson(String body) {
     log('Got JSON Body $body');
     var json = jsonDecode(body);

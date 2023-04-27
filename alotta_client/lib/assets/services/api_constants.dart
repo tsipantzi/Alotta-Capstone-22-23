@@ -18,6 +18,11 @@ class ApiConstants {
     return '$baseUrl$_restaurantParam/$restaurantId$_couponParam';
   }
 
+  static String couponForRestaurantId(
+      final String restaurantId, final String couponId) {
+    return '$baseUrl$_restaurantParam/$restaurantId$_couponParam/$couponId';
+  }
+
   /*
     Coupons without Restaurant Info endpoints
    */
@@ -59,6 +64,10 @@ class ApiConstants {
     return '$baseUrl$_userRestaurantsParam?userId=$userId';
   }
 
+  static String getRestaurantsForZipCode(final String zipCode) {
+    return '$baseUrl$_userRestaurantsParam?zipCode=$zipCode';
+  }
+
   /*
     CustomerInventory endpoints
    */
@@ -73,5 +82,10 @@ class ApiConstants {
   static String getQRCodeForCustomerAndCouponUrl(
       final int userId, final int couponId) {
     return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId$_qr';
+  }
+
+  static String deleteCouponForCustomerUrl(
+      final int userId, final int couponId) {
+    return '$baseUrl$_userIdParam/$userId$_couponParam/$couponId';
   }
 }

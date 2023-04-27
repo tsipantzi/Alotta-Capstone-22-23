@@ -24,19 +24,6 @@ class CustomerInventoryPage extends StatefulWidget {
 
   @override
   State<CustomerInventoryPage> createState() => _CustomerInventoryPageState();
-
-  //not sure if I need the where statement or what goes in there for me
-  List<Widget> convertCouponstoCouponCards(List<Coupon> coupons) {
-    couponCards = coupons
-        .map((coupon) => CouponCard(
-              coupon: coupon,
-              currentUser: currentUser,
-              couponState: CouponState.redeemable,
-            ))
-        .toList();
-
-    return couponCards;
-  }
 }
 
 class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
@@ -62,8 +49,8 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
                             snapshot.data != null &&
                             snapshot.data!.isNotEmpty) {
                           return ListView(
-                            children: widget
-                                .convertCouponstoCouponCards(snapshot.data!),
+                            children:
+                                convertCouponstoCouponCards(snapshot.data!),
                           );
                         } else {
                           return MyApp.errorDialog(
@@ -90,5 +77,23 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
   Future<List<Coupon>> getCoupons() {
     return widget.customerService
         .getAllClaimedCouponsForCustomer(widget.currentUser.id);
+  }
+
+  List<Widget> convertCouponstoCouponCards(List<Coupon> coupons) {
+    widget.couponCards = coupons
+        .map((coupon) => CouponCard(
+              coupon: coupon,
+              currentUser: widget.currentUser,
+              couponState: CouponState.redeemableAndDeletable,
+              deleteCoupon: () {
+                widget.customerService
+                    .deleteCoupon(widget.currentUser.id, coupon.id);
+                Navigator.of(context).pushNamed('customerInventoryPage',
+                    arguments: widget.currentUser);
+              },
+            ))
+        .toList();
+
+    return widget.couponCards;
   }
 }

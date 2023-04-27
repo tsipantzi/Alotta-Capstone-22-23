@@ -67,4 +67,16 @@ class CustomerInventoryService {
       throw Exception('Failed to load QR Code');
     }
   }
+
+  Future<void> deleteCoupon(int userId, int couponId) async {
+    var url =
+        Uri.parse(ApiConstants.deleteCouponForCustomerUrl(userId, couponId));
+    log('Deleting coupon $couponId for customer $userId');
+    final result = await http.delete(url);
+    if (result.statusCode == 200) {
+      log('Successfully deleted coupon $couponId for customer $userId');
+    } else {
+      log('Failed to delete coupon $couponId for customer $userId');
+    }
+  }
 }

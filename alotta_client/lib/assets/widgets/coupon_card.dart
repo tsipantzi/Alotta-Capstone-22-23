@@ -16,8 +16,10 @@ class CouponCard extends StatefulWidget {
   final AppUser currentUser;
   final Coupon coupon;
   final Function(Coupon?)? onPressed;
+  final VoidCallback? deleteCoupon;
   final CouponState couponState;
   final FlipCardController flipCardController = FlipCardController();
+  final CustomerInventoryService service = CustomerInventoryService();
 
   CouponCard({
     super.key,
@@ -25,6 +27,7 @@ class CouponCard extends StatefulWidget {
     required this.currentUser,
     required this.couponState,
     this.onPressed,
+    this.deleteCoupon,
   });
 
   @override
@@ -34,8 +37,8 @@ class CouponCard extends StatefulWidget {
 class _CouponCardState extends State<CouponCard> {
   final Offset _offset = const Offset(0, 0);
 
-  Widget drawButtonByType(BuildContext context) {
-    switch (widget.couponState) {
+  Widget drawButtonByType(BuildContext context, CouponState couponState) {
+    switch (couponState) {
       case CouponState.claimable:
         return TextButton(
           style: ButtonStyle(
@@ -78,6 +81,81 @@ class _CouponCardState extends State<CouponCard> {
               color: primaryCream,
             ),
           ),
+        );
+
+      case CouponState.deletable:
+        return TextButton(
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.all(5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(150, 35),
+            ),
+            backgroundColor: MaterialStateProperty.all(primaryCream),
+          ),
+          onPressed: () => deleteCoupon(context, widget.deleteCoupon!),
+          child: const Text(
+            'Delete Coupon',
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        );
+
+      case CouponState.redeemableAndDeletable:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 70, 0),
+              child: TextButton(
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(5),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  minimumSize: MaterialStateProperty.all(
+                    const Size(150, 35),
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                ),
+                onPressed: () => redeemCoupon(context),
+                child: const Text(
+                  'Redeem Coupon',
+                  style: TextStyle(
+                    color: primaryCream,
+                  ),
+                ),
+              ),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(5),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                minimumSize: MaterialStateProperty.all(
+                  const Size(150, 35),
+                ),
+                backgroundColor: MaterialStateProperty.all(primaryCream),
+              ),
+              onPressed: () => deleteCoupon(context, widget.deleteCoupon!),
+              child: const Text(
+                'Delete Coupon',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
         );
 
       case CouponState.disabled:
@@ -154,15 +232,7 @@ class _CouponCardState extends State<CouponCard> {
                     bottom: 50,
                     right: 0,
                     width: 170,
-                    child: Text(
-                      'Savings of ${widget.coupon.discount}% or '
-                      '\$${widget.coupon.dollarsOff}',
-                      style: MyApp.platformHeadingStyle
-                          .copyWith(color: primaryCream),
-                      overflow: TextOverflow.clip,
-                      maxLines: 6,
-                      softWrap: true,
-                    ),
+                    child: getSavingsText(),
                   ),
                 ],
               ),
@@ -203,9 +273,9 @@ class _CouponCardState extends State<CouponCard> {
                     child: widget.coupon.getImage(150, 150),
                   ),
                   Positioned(
-                    left: 5,
                     bottom: 1,
-                    child: drawButtonByType(context),
+                    left: 5,
+                    child: drawButtonByType(context, widget.couponState),
                   ),
                   Positioned(
                     right: 0,
@@ -264,5 +334,58 @@ class _CouponCardState extends State<CouponCard> {
         ),
       ),
     );
+  }
+
+  deleteCoupon(BuildContext context, VoidCallback deleteFunction) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm'),
+          content:
+              const Text('Are you sure you want to delete this restaurant?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteFunction();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Text getSavingsText() {
+    if (widget.coupon.dollarsOff != 0) {
+      return Text(
+        "Savings of \$${widget.coupon.dollarsOff}",
+        style: MyApp.platformHeadingStyle.copyWith(
+          color: primaryCream,
+        ),
+        overflow: TextOverflow.clip,
+        maxLines: 6,
+        softWrap: true,
+      );
+    } else {
+      return Text(
+        "Savings of ${widget.coupon.discount}%",
+        style: MyApp.platformHeadingStyle.copyWith(
+          color: primaryCream,
+          decoration: TextDecoration.underline,
+          decorationColor: primaryGreen,
+        ),
+        overflow: TextOverflow.clip,
+        maxLines: 6,
+        softWrap: true,
+      );
+    }
   }
 }

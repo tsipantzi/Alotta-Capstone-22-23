@@ -98,4 +98,21 @@ class CouponService {
 
     return response.statusCode == 200;
   }
+
+  Future<void> deleteCouponFromRestaurant(
+      final String restaurantId, final Coupon coupon) async {
+    var url = Uri.parse(ApiConstants.couponsForRestaurantId(restaurantId));
+
+    var response = await http.delete(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(coupon.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      log('Deleted coupon ${coupon.id} from restaurant $restaurantId');
+    } else {
+      log('Failed to delete coupon ${coupon.id} from restaurant $restaurantId');
+    }
+  }
 }

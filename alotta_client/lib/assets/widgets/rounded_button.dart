@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alotta_client/assets/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
@@ -7,10 +8,15 @@ import '../../main.dart';
 class RoundedButton extends StatelessWidget {
   final String text;
   final BuildContext context;
-  final FutureOr<void> Function()? onPressed;
+  final Function()? onPressed;
+  final Color? buttonColor;
 
   const RoundedButton(
-      {super.key, required this.text, required this.context, this.onPressed});
+      {super.key,
+      required this.text,
+      required this.context,
+      this.onPressed,
+      this.buttonColor});
 
   Function() defaultBackBehavior() {
     return () => Navigator.pop(context);
@@ -26,7 +32,7 @@ class RoundedButton extends StatelessWidget {
             ? () async => onPressed!()
             : defaultBackBehavior(),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF4D9F6B),
+          backgroundColor: buttonColor ?? primaryGreen,
           // ignore: prefer_const_constructors
           textStyle: MyApp.platformHeadingStyle.copyWith(fontSize: 20),
         ),

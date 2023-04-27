@@ -30,6 +30,24 @@ class RestaurantService {
         ErrorDescription("Could not find restaurants for user"));
   }
 
+  Future<List<Restaurant>> getRestaurantsForUserByZipcode(
+      final String zipCode) async {
+    try {
+      var url = Uri.parse(ApiConstants.getRestaurantsForZipCode(zipCode));
+      log('Trying to find restaurants for user');
+
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        return restaurantsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return Future.error(
+        ErrorDescription("Could not find restaurants for user"));
+  }
+
   Future<UserRestaurant?> createUserRestaurant(
       UserRestaurant userRestaurant) async {
     try {
@@ -68,6 +86,23 @@ class RestaurantService {
       log(e.toString());
     }
     return null;
+  }
+
+  Future<void> deleteRestaurant(final UserRestaurant userRestaurant) async {
+    try {
+      var url = Uri.parse(ApiConstants.userRestaurantsUrl());
+      log('Attempting to delete Restaurant ${userRestaurant.restaurant.id} for user ${userRestaurant.appUser.id}');
+
+      var response = await http.delete(
+        url,
+        headers: header,
+        body: jsonEncode(userRestaurant.toJson()),
+      );
+
+      log('Deleted restaurant and received response ${response.body}');
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   UserRestaurant userRestaurantFromJson(String body) {

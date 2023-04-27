@@ -26,7 +26,7 @@ public final class AppUserServiceImpl implements AppUserService {
             throw new IllegalArgumentException("Found an existing user that username so a new user cannot be created");
         }
 
-        final AppUserEntity entityToSave = generateUniqueUserId(user);
+        final AppUserEntity entityToSave = new AppUserEntity(user);
 
         return appUserDao.saveAndFlush(entityToSave).toDomainObject();
     }
@@ -37,17 +37,5 @@ public final class AppUserServiceImpl implements AppUserService {
                 new IllegalArgumentException("Could not find a user with the specified Id"));
 
         return appUserDao.saveAndFlush(new AppUserEntity(user)).toDomainObject();
-    }
-
-
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    private AppUserEntity generateUniqueUserId(final AppUser user) {
-        AppUserEntity desiredEntityWithGeneratedId = new AppUserEntity(user);
-
-        while (appUserDao.findById(desiredEntityWithGeneratedId.getId()).isPresent()) {
-            desiredEntityWithGeneratedId = new AppUserEntity(user);
-        }
-
-        return desiredEntityWithGeneratedId;
     }
 }

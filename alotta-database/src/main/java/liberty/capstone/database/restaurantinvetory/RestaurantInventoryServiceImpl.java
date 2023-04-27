@@ -51,6 +51,18 @@ public class RestaurantInventoryServiceImpl implements RestaurantInventoryServic
         return savedRestaurantInventory.toDomainObject().getCoupon();
     }
 
+    @Override
+    public void deleteCoupon(final Long restaurantId, final Coupon coupon) {
+        final var restaurant = restaurantDao.findById(restaurantId)
+                .orElseThrow(() -> new IllegalArgumentException("Restaurant Does not exist"));
+        final var couponToDelete = couponDao.findById(coupon.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Coupon Does not exist"));
+        final var restaurantInventoryToDelete = restaurantInventoryDao.findByRestaurantAndCoupon(restaurant,
+                        couponToDelete)
+                .orElseThrow(() -> new IllegalArgumentException("Restaurant Inventory Does not exist"));
+        restaurantInventoryDao.delete(restaurantInventoryToDelete);
+    }
+
     private RestaurantInventoryEntity saveInventoryItem(final RestaurantEntity restaurant,
                                    final CouponEntity coupon,
                                    final LocalDate startDate,

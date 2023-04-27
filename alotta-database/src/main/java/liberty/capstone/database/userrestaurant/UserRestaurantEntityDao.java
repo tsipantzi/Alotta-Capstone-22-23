@@ -11,4 +11,5 @@ public interface UserRestaurantEntityDao extends JpaRepository<UserRestaurantEnt
     List<UserRestaurantEntity> findAllByAppUserIs(AppUserEntity appUser);
     Optional<UserRestaurantEntity> findByAppUserIsAndRestaurantIs(AppUserEntity appUser,
                                                               RestaurantEntity restaurant);
+
 }

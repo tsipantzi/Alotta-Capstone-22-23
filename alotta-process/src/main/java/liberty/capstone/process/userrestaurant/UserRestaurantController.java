@@ -26,7 +26,7 @@ public class UserRestaurantController {
             throw new IllegalArgumentException("Must provide either userId or zipCode");
         }
 
-        return  userId != null
+        return userId != null
                 ? userRestaurantService.getRestaurantsForUserByUserId(userId)
                     .stream()
                     .map(UserRestaurant::getRestaurant)

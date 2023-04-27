@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserRestaurantServiceImpl implements UserRestaurantService {
     private static final String COULD_NOT_FIND_USER = "Could not find user %s";
-    public static final String COULD_NOT_FIND_RESTAURANT = "Could not find the specified restaurant %s";
+    private static final String COULD_NOT_FIND_RESTAURANT = "Could not find the specified restaurant %s";
     private final RestaurantEntityDao restaurantDao;
     private final AppUserDao userDao;
     private final UserRestaurantEntityDao userRestaurantDao;
@@ -34,7 +34,7 @@ public class UserRestaurantServiceImpl implements UserRestaurantService {
 
     @Override
     public List<Restaurant> getAllRestaurantsForZipCode(final String zipCode) {
-        return restaurantDao.findAllByZipCodeLike(zipCode.substring(0, zipCode.length() - 2))
+        return restaurantDao.findAllByZipCodeLike(zipCode.substring(0, zipCode.length() - 2) + "%")
                 .stream()
                 .map(RestaurantEntity::toDomainObject)
                 .collect(Collectors.toList());
@@ -84,9 +84,10 @@ public class UserRestaurantServiceImpl implements UserRestaurantService {
                         new IllegalArgumentException(String.format(COULD_NOT_FIND_RESTAURANT,
                                 userRestaurant.getRestaurant().getName())));
 
-        final var entityToDelete = userRestaurantDao.findByAppUserIsAndRestaurantIs(appUser, restaurantEntity).orElseThrow(() ->
-                new IllegalArgumentException("The user %s does not have the restaurant %s saved"
-                        .formatted(appUser.getUsername(), restaurantEntity.getName())));
+        final var entityToDelete = userRestaurantDao.findByAppUserIsAndRestaurantIs(appUser, restaurantEntity)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("The user %s does not have the restaurant %s saved"
+                                .formatted(appUser.getUsername(), restaurantEntity.getName())));
 
         userRestaurantDao.delete(entityToDelete);
     }

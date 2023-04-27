@@ -50,7 +50,11 @@ class AlottaNavigationBar extends GNav {
     GButton(
       icon: Icons.settings,
       text: 'Settings',
-    )
+    ),
+    GButton(
+      icon: Icons.restaurant,
+      text: 'Restaurants',
+    ),
   ];
 
   AlottaNavigationBar({
@@ -96,6 +100,11 @@ class AlottaNavigationBar extends GNav {
       case 3:
         //Go to SettingsPage
         Navigator.of(context).pushNamed('settings', arguments: currentUser);
+        break;
+      case 4:
+        //Go to RestaurantViewerPage
+        Navigator.of(context)
+            .pushNamed('restaurantViewerPage', arguments: currentUser);
         break;
     }
   }

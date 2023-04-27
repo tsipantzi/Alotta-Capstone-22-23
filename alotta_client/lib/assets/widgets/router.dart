@@ -5,6 +5,8 @@ import 'package:alotta_client/pages/create_account_page.dart';
 import 'package:alotta_client/pages/create_coupon_page.dart';
 import 'package:alotta_client/pages/create_restaurant_page.dart';
 import 'package:alotta_client/pages/login_page.dart';
+import 'package:alotta_client/pages/restaurant_coupons_page.dart';
+import 'package:alotta_client/pages/restaurant_viewer_page.dart';
 import 'package:alotta_client/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -104,6 +106,23 @@ class RouteGenerator {
           if (args is List) {
             return MaterialPageRoute(
                 builder: (context) => QrCodePage(args[0], args[1]));
+          }
+          return _errorRoute();
+        }
+      case 'restaurantViewerPage':
+        {
+          if (args is AppUser) {
+            return MaterialPageRoute(
+                builder: (context) => RestaurantViewerPage(currentUser: args));
+          }
+          return _errorRoute();
+        }
+      case 'restaurantCouponsPage':
+        {
+          if (args is UserRestaurant) {
+            return MaterialPageRoute(
+                builder: (context) =>
+                    RestaurantCouponsPage(userRestaurant: args));
           }
           return _errorRoute();
         }

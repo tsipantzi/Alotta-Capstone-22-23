@@ -1,22 +1,22 @@
-import 'package:alotta_client/assets/colors/colors.dart';
-import 'package:alotta_client/assets/data/coupon_state.dart';
-import 'package:alotta_client/assets/data/restaurant_coupons.dart';
-import 'package:alotta_client/assets/data/user_restaurant.dart';
-import 'package:alotta_client/assets/widgets/alotta_app_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
+import '../assets/data/coupon_state.dart';
+import '../assets/data/restaurant_coupons.dart';
+import '../assets/data/user_restaurant.dart';
 import '../assets/services/coupon_service.dart';
+import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
 import '../main.dart';
 
-class CouponManagerPage extends StatelessWidget {
-  static const int pageIndex = 1;
+class RestaurantCouponsPage extends StatelessWidget {
   final UserRestaurant userRestaurant;
   final RestaurantCoupons restaurantCoupons;
   final CouponService couponService = CouponService();
-  CouponManagerPage({super.key, required this.userRestaurant})
+  RestaurantCouponsPage({super.key, required this.userRestaurant})
       : restaurantCoupons =
             RestaurantCoupons(restaurant: userRestaurant.restaurant);
 
@@ -26,7 +26,7 @@ class CouponManagerPage extends StatelessWidget {
       bottomNavigationBar: AlottaNavigationBar(
         context: context,
         currentUser: userRestaurant.appUser,
-        selectedIndex: 3,
+        selectedIndex: 5,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -173,9 +173,7 @@ class CouponManagerPage extends StatelessWidget {
                     future: couponService.getAllCouponsByRestaurantId(
                         restaurantCoupons.restaurant.id.toString()),
                     builder: (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-                      if (snapshot.hasData &&
-                          snapshot.data != null &&
-                          snapshot.data!.isNotEmpty) {
+                      if (snapshot.hasData && snapshot.data != null) {
                         return Scaffold(
                           body: Stack(
                             children: [
@@ -186,17 +184,15 @@ class CouponManagerPage extends StatelessWidget {
                                         (coupon) => CouponCard(
                                           coupon: coupon,
                                           currentUser: userRestaurant.appUser,
-                                          couponState: CouponState.deletable,
-                                          deleteCoupon: () {
-                                            couponService
-                                                .deleteCouponFromRestaurant(
-                                                    restaurantCoupons
-                                                        .restaurant.id
-                                                        .toString(),
-                                                    coupon);
-                                            Navigator.of(context).pushNamed(
-                                                'couponManagerPage',
-                                                arguments: userRestaurant);
+                                          couponState: CouponState.claimable,
+                                          onPressed: (Coupon? coupon) {
+                                            if (coupon != null) {
+                                              Navigator.of(context).pushNamed(
+                                                'customerInventoryPage',
+                                                arguments:
+                                                    userRestaurant.appUser,
+                                              );
+                                            }
                                           },
                                         ),
                                       )
@@ -213,32 +209,6 @@ class CouponManagerPage extends StatelessWidget {
                         );
                       }
                     }),
-              ),
-            ),
-            Positioned(
-              left: 10,
-              bottom: 10,
-              child: InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed('createCouponPage', arguments: userRestaurant);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    color: primaryGreen,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.playlist_add,
-                      color: primaryCream,
-                      size: 50,
-                    ),
-                  ),
-                ),
               ),
             ),
           ],

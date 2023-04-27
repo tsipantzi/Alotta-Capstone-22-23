@@ -87,14 +87,30 @@ class _RestaurantManagerPageState extends State<RestaurantManagerPage> {
                     child: Text("You currently have no restaurants attached to "
                         "this account. Please add a restaurant."),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {
+                  Positioned(
+                    left: 10,
+                    bottom: 10,
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
                         Navigator.of(context).pushNamed('createRestaurantPage',
                             arguments: widget.currentUser);
                       },
-                      child: const Text('Create Restaurant'),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                          color: primaryGreen,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.playlist_add,
+                            color: primaryCream,
+                            size: 50,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

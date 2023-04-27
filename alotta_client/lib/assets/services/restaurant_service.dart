@@ -30,6 +30,24 @@ class RestaurantService {
         ErrorDescription("Could not find restaurants for user"));
   }
 
+  Future<List<Restaurant>> getRestaurantsForUserByZipcode(
+      final String zipCode) async {
+    try {
+      var url = Uri.parse(ApiConstants.getRestaurantsForZipCode(zipCode));
+      log('Trying to find restaurants for user');
+
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        return restaurantsFromJson(response.body);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return Future.error(
+        ErrorDescription("Could not find restaurants for user"));
+  }
+
   Future<UserRestaurant?> createUserRestaurant(
       UserRestaurant userRestaurant) async {
     try {

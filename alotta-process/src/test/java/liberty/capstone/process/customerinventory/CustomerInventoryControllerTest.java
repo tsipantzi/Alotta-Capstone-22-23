@@ -3,7 +3,6 @@ package liberty.capstone.process.customerinventory;
 import liberty.capstone.core.appuser.AppUser;
 import liberty.capstone.core.appuser.AppUserService;
 import liberty.capstone.core.coupon.Coupon;
-import liberty.capstone.core.coupon.CouponService;
 import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.restaurant.RestaurantService;
 import liberty.capstone.core.restaurantinventory.RestaurantInventoryService;
@@ -68,7 +67,7 @@ class CustomerInventoryControllerTest {
     void deleteCouponForCustomer() {
         final var user = new AppUser();
         user.setZipcode("12345");
-        user.setUsername("Test User1");
+        user.setUsername("Test User2");
         user.setPassword("Test Password");
 
         savedUser = appUserService.createAppUser(user);

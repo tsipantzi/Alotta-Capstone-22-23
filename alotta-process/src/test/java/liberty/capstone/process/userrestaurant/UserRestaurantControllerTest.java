@@ -25,7 +25,7 @@ class UserRestaurantControllerTest {
     void getAllRestaurants_CanFindAllRestaurants_byUserId() {
         final var user = new AppUser();
         user.setZipcode("12345");
-        user.setUsername("Test User1");
+        user.setUsername("Test User3");
         user.setPassword("Test Password");
 
         savedUser = appUserService.createAppUser(user);
@@ -49,19 +49,19 @@ class UserRestaurantControllerTest {
     @Test
     void getAllRestaurants_CanFindAllRestaurants_byZipCode() {
         final var user = new AppUser();
-        user.setZipcode("12345");
-        user.setUsername("Test User2");
+        user.setZipcode("54321");
+        user.setUsername("Test User4");
         user.setPassword("Test Password");
 
         savedUser = appUserService.createAppUser(user);
 
         final var restaurant = new Restaurant();
         restaurant.setName("Test Restaurant");
-        restaurant.setZipCode("12346");
+        restaurant.setZipCode("54322");
 
         savedRestaurant = instance.saveRestaurantForUser(new UserRestaurant(savedUser, restaurant)).getRestaurant();
 
-        final var results = instance.getAllRestaurants(null, "12345");
+        final var results = instance.getAllRestaurants(null, "54321");
         assertEquals(1, results.size());
         final var result = results.get(0);
 
@@ -75,7 +75,7 @@ class UserRestaurantControllerTest {
     void deleteRestaurantForUser_CanDeleteRestaurant() {
         final var user = new AppUser();
         user.setZipcode("12345");
-        user.setUsername("Test User3");
+        user.setUsername("Test User5");
         user.setPassword("Test Password");
 
         savedUser = appUserService.createAppUser(user);

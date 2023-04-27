@@ -157,6 +157,7 @@ class _CouponCardState extends State<CouponCard> {
             ),
           ],
         );
+
       case CouponState.disabled:
         return const Text("");
     }
@@ -231,15 +232,7 @@ class _CouponCardState extends State<CouponCard> {
                     bottom: 50,
                     right: 0,
                     width: 170,
-                    child: Text(
-                      'Savings of ${widget.coupon.discount}% or '
-                      '\$${widget.coupon.dollarsOff}',
-                      style: MyApp.platformHeadingStyle
-                          .copyWith(color: primaryCream),
-                      overflow: TextOverflow.clip,
-                      maxLines: 6,
-                      softWrap: true,
-                    ),
+                    child: getSavingsText(),
                   ),
                 ],
               ),
@@ -368,5 +361,31 @@ class _CouponCardState extends State<CouponCard> {
         );
       },
     );
+  }
+
+  Text getSavingsText() {
+    if (widget.coupon.dollarsOff != 0) {
+      return Text(
+        "Savings of \$${widget.coupon.dollarsOff}",
+        style: MyApp.platformHeadingStyle.copyWith(
+          color: primaryCream,
+        ),
+        overflow: TextOverflow.clip,
+        maxLines: 6,
+        softWrap: true,
+      );
+    } else {
+      return Text(
+        "Savings of ${widget.coupon.discount}%",
+        style: MyApp.platformHeadingStyle.copyWith(
+          color: primaryCream,
+          decoration: TextDecoration.underline,
+          decorationColor: primaryGreen,
+        ),
+        overflow: TextOverflow.clip,
+        maxLines: 6,
+        softWrap: true,
+      );
+    }
   }
 }

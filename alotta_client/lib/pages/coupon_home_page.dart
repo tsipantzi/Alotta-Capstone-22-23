@@ -4,9 +4,7 @@ import 'package:alotta_client/assets/data/food_category_type.dart';
 import 'package:alotta_client/assets/services/coupon_service.dart';
 import 'package:alotta_client/assets/widgets/food_category_bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:multiselect/multiselect.dart';
 
-import '../assets/colors/colors.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
@@ -17,23 +15,13 @@ class CouponHomePage extends StatefulWidget {
   CouponHomePage({super.key, required this.currentUser});
   static const pageIndex = 1;
   List<Coupon> currentCoupons = List.empty();
-  List<CouponCard> couponCards = List.empty();
+  List<CouponCard> couponCards = List.empty(growable: true);
   final CouponService couponService = CouponService();
   String searchTerm = '';
   List<String> selectedCategories = [];
 
   @override
   State<CouponHomePage> createState() => _CouponHomePageState();
-
-  List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
-    return currentCoupons
-        .map((coupon) => CouponCard(
-              coupon: coupon,
-              userId: currentUser.id,
-              couponState: CouponState.claimable,
-            ))
-        .toList();
-  }
 
   bool couponContainsSelectedCategory(Coupon coupon) {
     if (selectedCategories.isEmpty) {
@@ -106,13 +94,13 @@ class _CouponHomePageState extends State<CouponHomePage> {
                             (context, AsyncSnapshot<List<Coupon>?> snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
                             return ListView(
-                              children: widget.convertCouponsToCouponCards(
+                              children: convertCouponsToCouponCards(
                                   widget.currentCoupons),
                             );
                           } else {
-                            return const Center(
-                              child: Text(
-                                  'There was an error or there are currently no coupons available'),
+                            return Center(
+                              child: MyApp.errorDialog(context,
+                                  'There are currently no coupons available in your area'),
                             );
                           }
                         }),
@@ -152,5 +140,25 @@ class _CouponHomePageState extends State<CouponHomePage> {
     widget.currentCoupons =
         coupons.where(widget.couponContainsSelectedCategory).toList();
     return widget.currentCoupons;
+  }
+
+  List<Widget> convertCouponsToCouponCards(List<Coupon> coupons) {
+    return coupons.map((coupon) {
+      final couponCard = CouponCard(
+        coupon: coupon,
+        currentUser: widget.currentUser,
+        couponState: CouponState.claimable,
+        onPressed: (Coupon? coupon) => setState(
+          () {
+            widget.couponService.cacheIsInvalidated = true;
+            if (widget.couponCards.isNotEmpty) {
+              widget.couponCards.first.flipCardController.toggleCard();
+            }
+          },
+        ),
+      );
+      widget.couponCards.add(couponCard);
+      return couponCard;
+    }).toList();
   }
 }

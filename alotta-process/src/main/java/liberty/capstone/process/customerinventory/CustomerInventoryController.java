@@ -8,6 +8,7 @@ import liberty.capstone.process.qr.QRCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +46,12 @@ public class CustomerInventoryController {
         final QRCodeRequest request = qrCodeBuilderService.buildQRCodeRequest(id, couponId);
         log.info("QR Code Request: " + request);
         return qrCodeService.getQRCode(request);
+    }
+
+    @DeleteMapping("/{couponId}")
+    public ResponseEntity deleteCouponForCustomer(@PathVariable final String id,
+                                                  @PathVariable final String couponId) {
+        customerInventoryService.deleteCouponForCustomer(Long.parseLong(id), Long.parseLong(couponId));
+        return ResponseEntity.ok().build();
     }
 }

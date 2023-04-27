@@ -1,5 +1,6 @@
 package liberty.capstone.database.userrestaurant;
 
+import liberty.capstone.core.restaurant.Restaurant;
 import liberty.capstone.core.userrestaurant.UserRestaurant;
 import liberty.capstone.core.userrestaurant.UserRestaurantService;
 import liberty.capstone.database.appuser.AppUserDao;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserRestaurantServiceImpl implements UserRestaurantService {
     private static final String COULD_NOT_FIND_USER = "Could not find user %s";
+    private static final String COULD_NOT_FIND_RESTAURANT = "Could not find the specified restaurant %s";
     private final RestaurantEntityDao restaurantDao;
     private final AppUserDao userDao;
     private final UserRestaurantEntityDao userRestaurantDao;
@@ -26,8 +28,16 @@ public class UserRestaurantServiceImpl implements UserRestaurantService {
                 .orElseThrow(() -> new IllegalArgumentException("Could not find a user for the given ID"));
 
         return userRestaurantDao.findAllByAppUserIs(user).stream()
-                    .map(this::toUserRestaurantObject)
+                    .map(UserRestaurantEntity::toDomainObject)
                     .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Restaurant> getAllRestaurantsForZipCode(final String zipCode) {
+        return restaurantDao.findAllByZipCodeLike(zipCode.substring(0, zipCode.length() - 2) + "%")
+                .stream()
+                .map(RestaurantEntity::toDomainObject)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -62,8 +72,24 @@ public class UserRestaurantServiceImpl implements UserRestaurantService {
         return savedUserRestaurant.toDomainObject();
     }
 
-    private UserRestaurant toUserRestaurantObject(final UserRestaurantEntity entity) {
-        return new UserRestaurant(entity.getAppUser().toDomainObject(), entity.getRestaurant().toDomainObject());
+    @Override
+    public void deleteRestaurant(final UserRestaurant userRestaurant) {
+        final AppUserEntity appUser = userDao.findById(userRestaurant.getAppUser().getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException(String.format(COULD_NOT_FIND_USER,
+                                userRestaurant.getAppUser().getUsername())));
+
+        final var restaurantEntity = restaurantDao.findById(userRestaurant.getRestaurant().getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException(String.format(COULD_NOT_FIND_RESTAURANT,
+                                userRestaurant.getRestaurant().getName())));
+
+        final var entityToDelete = userRestaurantDao.findByAppUserIsAndRestaurantIs(appUser, restaurantEntity)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("The user %s does not have the restaurant %s saved"
+                                .formatted(appUser.getUsername(), restaurantEntity.getName())));
+
+        userRestaurantDao.delete(entityToDelete);
     }
 
 }

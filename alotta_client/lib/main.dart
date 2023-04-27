@@ -69,18 +69,21 @@ class MyApp extends StatelessWidget {
   static TextStyle get platformBodyStyle {
     if (Platform.isIOS) {
       return const TextStyle(
+        letterSpacing: 1,
         fontFamily: 'San Francisco',
         fontSize: 16.0,
         color: Colors.black,
       );
     } else if (Platform.isAndroid) {
       return const TextStyle(
+        letterSpacing: 1,
         fontFamily: 'Roboto',
         fontSize: 16.0,
         color: Colors.black,
       );
     } else {
       return const TextStyle(
+        letterSpacing: 1,
         fontFamily: 'Open Sans',
         fontSize: 16.0,
         color: Colors.black,
@@ -130,6 +133,30 @@ class MyApp extends StatelessWidget {
       hintStyle: MyApp.platformHeadingStyle
           .copyWith(color: primaryOrangeMaterialColor),
       prefixIconColor: primaryOrangeMaterialColor,
+    );
+  }
+
+  static Widget errorDialog(BuildContext context, String message) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: primaryOrangeMaterialColor,
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: 200,
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+        child: Center(
+          child: Text(
+            message,
+            style: MyApp.platformHeadingStyle.copyWith(
+              color: primaryCream,
+              fontSize: 26,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
     );
   }
 }

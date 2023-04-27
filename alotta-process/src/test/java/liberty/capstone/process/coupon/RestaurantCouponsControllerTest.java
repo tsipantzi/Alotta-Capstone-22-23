@@ -46,4 +46,22 @@ class RestaurantCouponsControllerTest {
                 () -> assertTrue(results.stream().allMatch(coupon -> "Test Title".equals(coupon.getTitle())))
         );
     }
+
+    @Test
+    void deleteCouponForRestaurant_CanDeleteCoupon() {
+        final var coupon = new Coupon();
+        coupon.setTitle("Test Title");
+        coupon.setStartDate(LocalDate.now());
+
+        final var restaurant = new Restaurant();
+        restaurant.setName("Test Restaurant");
+
+        final var savedRestaurantId = restaurantService.saveRestaurant(restaurant).getId();
+        final var savedCoupon = instance.saveCoupon(savedRestaurantId, coupon);
+
+        instance.deleteCoupon(savedRestaurantId, savedCoupon);
+
+        final var results = instance.getAllCouponsForRestaurant(savedRestaurantId);
+        assertFalse(results.stream().anyMatch(c -> c.getId().equals(savedCoupon.getId())));
+    }
 }

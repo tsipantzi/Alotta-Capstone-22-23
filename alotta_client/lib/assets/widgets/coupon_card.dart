@@ -1,24 +1,30 @@
+import 'dart:async';
+
 import 'package:alotta_client/assets/services/customer_inventory_service.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:alotta_client/main.dart';
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../colors/colors.dart';
+import '../data/app_user.dart';
 import '../data/coupon.dart';
 import '../data/coupon_state.dart';
 
 class CouponCard extends StatefulWidget {
-  final int userId;
+  final AppUser currentUser;
   final Coupon coupon;
-
+  final Function(Coupon?)? onPressed;
   final CouponState couponState;
+  final FlipCardController flipCardController = FlipCardController();
 
-  const CouponCard({
+  CouponCard({
     super.key,
     required this.coupon,
-    required this.userId,
+    required this.currentUser,
     required this.couponState,
+    this.onPressed,
   });
 
   @override
@@ -26,7 +32,7 @@ class CouponCard extends StatefulWidget {
 }
 
 class _CouponCardState extends State<CouponCard> {
-  Offset _offset = const Offset(0, 0);
+  final Offset _offset = const Offset(0, 0);
 
   Widget drawButtonByType(BuildContext context) {
     switch (widget.couponState) {
@@ -85,18 +91,25 @@ class _CouponCardState extends State<CouponCard> {
     return FlipCard(
       front: frontOfCoupon(),
       back: backOfCoupon(),
+      direction: FlipDirection.VERTICAL,
+      controller: widget.flipCardController,
     );
   }
 
   void claimCoupon(BuildContext context) async {
     final CustomerInventoryService service = CustomerInventoryService();
-    await service.saveCouponForCustomer(widget.userId, widget.coupon.id);
-    Navigator.pop(context);
+    final result = await service.saveCouponForCustomer(
+        widget.currentUser.id, widget.coupon.id);
+    if (widget.onPressed != null && result != null) {
+      await widget.onPressed!(result);
+    } else if (widget.onPressed != null) {
+      await widget.onPressed!(null);
+    }
   }
 
   void redeemCoupon(BuildContext context) async {
-    Navigator.pushNamed(context, 'qrCodePage',
-        arguments: [widget.userId, widget.coupon.id]);
+    Navigator.of(context).pushNamed('qrCodePage',
+        arguments: [widget.currentUser, widget.coupon.id]);
   }
 
   Widget frontOfCoupon() {

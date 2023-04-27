@@ -74,7 +74,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private String getZipcodePrefix(final String zipCode) {
-        final var prefix = zipCode.substring(0, zipCode.length() - 1);
+        final var prefix = zipCode.substring(0, zipCode.length() - 2);
         log.info("Searching by prefix {}", prefix);
         return prefix;
     }

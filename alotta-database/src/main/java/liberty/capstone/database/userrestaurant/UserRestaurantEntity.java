@@ -17,10 +17,10 @@ public class UserRestaurantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JoinColumn(referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private AppUserEntity appUser;
     @JoinColumn(referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private RestaurantEntity restaurant;
 
     public UserRestaurantEntity(final AppUserEntity appUser,

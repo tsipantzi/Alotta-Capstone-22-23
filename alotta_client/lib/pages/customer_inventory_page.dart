@@ -8,6 +8,7 @@ import '../assets/data/app_user.dart';
 import '../assets/data/coupon.dart';
 import '../assets/widgets/alotta_app_bar.dart';
 import '../assets/widgets/coupon_card.dart';
+import '../main.dart';
 
 class CustomerInventoryPage extends StatefulWidget {
   final AppUser currentUser;
@@ -29,7 +30,7 @@ class CustomerInventoryPage extends StatefulWidget {
     couponCards = coupons
         .map((coupon) => CouponCard(
               coupon: coupon,
-              userId: currentUser.id,
+              currentUser: currentUser,
               couponState: CouponState.redeemable,
             ))
         .toList();
@@ -54,21 +55,22 @@ class _CustomerInventoryPageState extends State<CustomerInventoryPage> {
                 children: [
                   Center(
                     child: FutureBuilder<List<Coupon>?>(
-                        future: getCoupons(),
-                        builder:
-                            (context, AsyncSnapshot<List<Coupon>?> snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            return ListView(
-                              children: widget
-                                  .convertCouponstoCouponCards(snapshot.data!),
-                            );
-                          } else {
-                            return const Center(
-                              child: Text(
-                                  'There was an error or there are currently no coupons available'),
-                            );
-                          }
-                        }),
+                      future: getCoupons(),
+                      builder:
+                          (context, AsyncSnapshot<List<Coupon>?> snapshot) {
+                        if (snapshot.hasData &&
+                            snapshot.data != null &&
+                            snapshot.data!.isNotEmpty) {
+                          return ListView(
+                            children: widget
+                                .convertCouponstoCouponCards(snapshot.data!),
+                          );
+                        } else {
+                          return MyApp.errorDialog(
+                              context, 'You currently do not have any coupons');
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),

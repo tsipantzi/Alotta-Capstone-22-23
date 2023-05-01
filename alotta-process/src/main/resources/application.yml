@@ -12,7 +12,7 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
 alotta-properties:
-  backendUrl: https://alotta-backend.herokuapp.com/
+  backendUrl: https://alotta-backend.herokuapp.com
   qrApiUrl: https://api.qr-code-generator.com/v1/create?access-token=
   qrApiToken: OYxLPbO9S7Yrky8zH81G7jsBwzPF-mgORANb4D4Va3xgqj9PZUm3RyaK3rvGMEYG
 

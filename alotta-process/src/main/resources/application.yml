@@ -1,17 +1,16 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://alotta-db.database.windows.net:1433;database=alotta-db;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;createDatabaseIfNotExist=true;
-    username: alotta-admin@alotta-db
-    password: lucapston2023!
-    database: alotta-db
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
   jpa:
-    hibernate.ddl-auto: update
-    show-sql: true
-    properties.hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate.ddl-auto: create
+    show-sql: false
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
 alotta-properties:
-  backendUrl: http://alotta-spring-app.azurewebsites.net
+  backendUrl: https://alotta-backend.herokuapp.com/
   qrApiUrl: https://api.qr-code-generator.com/v1/create?access-token=
   qrApiToken: OYxLPbO9S7Yrky8zH81G7jsBwzPF-mgORANb4D4Va3xgqj9PZUm3RyaK3rvGMEYG
 

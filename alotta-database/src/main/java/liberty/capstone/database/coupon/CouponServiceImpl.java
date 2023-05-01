@@ -30,7 +30,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<Coupon> findAllCoupons() {
-        return couponDao.findAllByCurrentlyActive(LocalDate.now().toString())
+        return couponDao.findAllByCurrentlyActive(LocalDate.now())
                 .stream()
                 .map(CouponEntity::toDomainObject)
                 .collect(Collectors.toList());
@@ -43,7 +43,7 @@ public class CouponServiceImpl implements CouponService {
         log.info("Getting all coupons by search term : {} for user : {}", searchTerm, user.getUsername());
         return couponDao.findAllByTermZipCodeOrEndDate(searchTerm,
                         getZipcodePrefix(user.getZipcode()),
-                        LocalDate.now().toString())
+                        LocalDate.now())
                 .stream()
                 .filter(coupon -> usersCurrentCouponIds.isEmpty()
                         || !usersCurrentCouponIds.contains(coupon.getId()))
@@ -57,7 +57,7 @@ public class CouponServiceImpl implements CouponService {
 
         log.info("Getting all coupons for user : {}", user.getUsername());
         return couponDao.findAllByZipCodeOrEndDate(getZipcodePrefix(user.getZipcode()),
-                        LocalDate.now().toString())
+                        LocalDate.now())
                 .stream()
                 .filter(coupon -> usersCurrentCouponIds.isEmpty()
                         || !usersCurrentCouponIds.contains(coupon.getId()))

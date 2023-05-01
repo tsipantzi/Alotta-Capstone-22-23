@@ -1,5 +1,6 @@
 package liberty.capstone.database.coupon;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,14 +19,14 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
                     OR COUPON_INFO LIKE %:term%
                     OR FOOD_CATEGORIES LIKE %:term%)
                     """, nativeQuery = true)
-    List<CouponEntity> findAllByTerm(@Param("term") String term, @Param("date") String date);
+    List<CouponEntity> findAllByTerm(@Param("term") String term, @Param("date") LocalDate date);
     
     @Query(value = """
                     SELECT * from Coupon WHERE
                     START_DATE IS NOT NULL AND START_DATE <= :date
                     AND END_DATE IS NOT NULL AND END_DATE >= :date
                     """, nativeQuery = true)
-    List<CouponEntity> findAllByCurrentlyActive(@Param("date") String date);
+    List<CouponEntity> findAllByCurrentlyActive(@Param("date") LocalDate date);
 
     @Query(value = """
                     SELECT * FROM Coupon c 
@@ -42,7 +43,7 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
                     """, nativeQuery = true)
     List<CouponEntity> findAllByTermZipCodeOrEndDate(@Param("term") String term,
                                                      @Param("zipcodePrefix") String zipcodePrefix,
-                                                     @Param("date") String date);
+                                                     @Param("date") LocalDate date);
 
     @Query(value = """
                     SELECT * FROM Coupon c 
@@ -53,6 +54,6 @@ public interface CouponEntityDao extends JpaRepository<CouponEntity, Long> {
                     AND c.END_DATE IS NOT NULL AND c.END_DATE >= :date
                     """, nativeQuery = true)
     List<CouponEntity> findAllByZipCodeOrEndDate(@Param("zipcodePrefix") String zipcodePrefix,
-                                                     @Param("date") String date);
+                                                     @Param("date") LocalDate date);
 
 }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -57,12 +56,10 @@ class CustomerInventoryService {
       final int userId, final int couponId) async {
     var url = Uri.parse(
         ApiConstants.getQRCodeForCustomerAndCouponUrl(userId, couponId));
-    final client = HttpClient();
     log('Trying to get QR code for coupon $couponId');
-    final request = await client.getUrl(url);
-    final response = await request.close();
+    final response = await http.get(url);
     if (response.statusCode == 200) {
-      return consolidateHttpClientResponseBytes(response);
+      return response.bodyBytes;
     } else {
       throw Exception('Failed to load QR Code');
     }

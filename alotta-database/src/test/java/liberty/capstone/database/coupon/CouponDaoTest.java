@@ -49,13 +49,13 @@ class CouponDaoTest {
     @Test
     void findAllByTerm(){
         //tests CouponType
-        assertFalse(couponDao.findAllByTerm("Type", TODAY.toString()).isEmpty());
+        assertFalse(couponDao.findAllByTerm("Type", TODAY).isEmpty());
         //tests CouponTitle
-        assertFalse(couponDao.findAllByTerm("title", TODAY.toString()).isEmpty());
+        assertFalse(couponDao.findAllByTerm("title", TODAY).isEmpty());
         //tests food Categories
-        assertFalse(couponDao.findAllByTerm("American", TODAY.toString()).isEmpty());
+        assertFalse(couponDao.findAllByTerm("American", TODAY).isEmpty());
         //tests Coupon Info
-        assertFalse(couponDao.findAllByTerm("info", TODAY.toString()).isEmpty());
+        assertFalse(couponDao.findAllByTerm("info", TODAY).isEmpty());
     }
 
     @Test
@@ -75,7 +75,7 @@ class CouponDaoTest {
 
         final var excludedEntity = couponDao.saveAndFlush(entity);
 
-        final var results = couponDao.findAllByCurrentlyActive(TODAY.toString());
+        final var results = couponDao.findAllByCurrentlyActive(TODAY);
 
         log.warn("Got results : {}", results);
 

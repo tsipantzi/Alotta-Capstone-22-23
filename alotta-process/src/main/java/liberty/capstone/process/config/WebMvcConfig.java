@@ -14,7 +14,8 @@ public class WebMvcConfig {
             public void addCorsMappings(
                     final CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://alotta-app.herokuapp.com");
+                        .allowedOrigins("https://alotta-app.herokuapp.com")
+                        .allowedMethods("*");
             }
         };
     }
